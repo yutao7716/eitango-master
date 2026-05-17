@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌟 えいたんごマスター</title>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #a29bfe;
+      --secondary: #fd79a8;
+      --accent1: #fdcb6e;
+      --accent2: #00b894;
+      --accent3: #74b9ff;
+      --bg: #f0f4ff;
+      --card: #ffffff;
+      --text: #2d3436;
+      --text-sub: #636e72;
+      --radius: 20px;
+      --shadow: 0 8px 24px rgba(108,92,231,0.13);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN','BIZ UDPGothic','Meiryo',sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #fce4f0 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* ── NAV BAR ── */
+    .nav-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff;
+      display: flex; justify-content: space-around;
+      padding: 8px 0 env(safe-area-inset-bottom, 12px);
+      box-shadow: 0 -4px 20px rgba(108,92,231,0.13);
+      z-index: 100;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      cursor: pointer; padding: 4px 12px; border-radius: 12px;
+      background: none; border: none; color: #b2bec3; transition: all .2s;
+    }
+    .nav-item.active { color: var(--primary); background: #f0edff; }
+    .nav-item .ni { font-size: 22px; }
+    .nav-item .nl { font-size: 10px; font-weight: bold; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; padding: 20px 16px 90px; max-width: 520px; margin: 0 auto; }
+    .screen.active { display: block; }
+    .screen-title {
+      text-align: center; font-size: 22px; font-weight: bold;
+      color: var(--primary); margin-bottom: 16px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow);
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 24px; border-radius: 50px; font-size: 15px; font-weight: bold;
+      cursor: pointer; border: none; transition: all .2s; line-height: 1.3;
+    }
+    .btn:active { transform: scale(.95); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--accent2); color: #fff; }
+    .btn-danger  { background: #ff7675; color: #fff; }
+    .btn-warning { background: var(--accent1); color: var(--text); }
+    .btn-info    { background: var(--accent3); color: var(--text); }
+    .btn-block   { width: 100%; margin-bottom: 10px; }
+
+    /* ── PROGRESS BAR ── */
+    .prog-wrap { background: #e8eaed; border-radius: 50px; height: 12px; overflow: hidden; margin-bottom: 12px; }
+    .prog-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--primary-light), var(--primary)); transition: width .5s; }
+
+    /* ── STAR BADGE ── */
+    .star-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: linear-gradient(135deg, var(--accent1), #e17055);
+      color: #fff; padding: 5px 14px; border-radius: 50px; font-weight: bold; font-size: 15px;
+    }
+
+    /* ── COUNTER ROW ── */
+    .counter-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--text-sub); }
+
+    /* ── FLASHCARD ── */
+    .fc-wrap { perspective: 1000px; margin: 16px 0; }
+    .fc-card {
+      width: 100%; height: 230px; position: relative;
+      transform-style: preserve-3d; transition: transform .55s;
+      cursor: pointer; border-radius: var(--radius);
+    }
+    .fc-card.flipped { transform: rotateY(180deg); }
+    .fc-front, .fc-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: var(--radius);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 24px; box-shadow: var(--shadow);
+    }
+    .fc-front { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; }
+    .fc-back  { background: linear-gradient(135deg, #00b894, #55efc4); color: #fff; transform: rotateY(180deg); }
+    .fc-word  { font-size: 40px; font-weight: bold; letter-spacing: 2px; margin-bottom: 8px; }
+    .fc-kana  { font-size: 15px; opacity: .85; margin-bottom: 6px; }
+    .fc-pos   { font-size: 12px; background: rgba(255,255,255,.25); padding: 2px 12px; border-radius: 50px; }
+    .fc-meaning { font-size: 24px; font-weight: bold; margin-bottom: 8px; text-align: center; }
+    .fc-ex    { font-size: 12px; opacity: .8; text-align: center; line-height: 1.6; }
+    .tap-hint { font-size: 11px; opacity: .65; margin-top: 14px; }
+    .fc-btn-row { display: flex; gap: 10px; margin-top: 4px; }
+    .fc-btn-row .btn { flex: 1; }
+
+    /* ── QUIZ ── */
+    .quiz-q {
+      font-size: 30px; font-weight: bold; text-align: center; color: var(--primary);
+      padding: 20px 16px; background: #fff; border-radius: var(--radius);
+      box-shadow: var(--shadow); margin-bottom: 16px; line-height: 1.4;
+    }
+    .quiz-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .qc {
+      padding: 14px 10px; border-radius: 16px; font-size: 14px; font-weight: bold;
+      cursor: pointer; border: 3px solid #e8eaed; background: #fff;
+      text-align: center; transition: all .2s; line-height: 1.5; font-family: inherit;
+    }
+    .qc:hover { border-color: var(--primary-light); background: #f0edff; }
+    .qc.correct { border-color: var(--accent2)!important; background: #e8fff5!important; color: #00b894!important; }
+    .qc.wrong   { border-color: #ff7675!important; background: #fff0f0!important; color: #ff7675!important; }
+    .qc.reveal  { border-color: var(--accent2)!important; background: #e8fff5!important; color: #00b894!important; }
+    .qc:disabled { cursor: default; }
+    .mode-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .mode-btn { flex: 1; padding: 10px 8px; border-radius: 14px; border: 2px solid #e8eaed; background: #fff; font-size: 12px; font-weight: bold; cursor: pointer; text-align: center; transition: all .2s; font-family: inherit; line-height: 1.5; }
+    .mode-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+
+    /* ── TYPING ── */
+    .t-meaning-box { font-size: 26px; font-weight: bold; color: var(--primary); margin: 12px 0 4px; text-align: center; line-height: 1.5; }
+    .t-reading-sub  { font-size: 12px; color: var(--text-sub); text-align: center; margin-bottom: 16px; }
+    .t-input {
+      width: 100%; padding: 14px 18px; font-size: 22px;
+      border: 3px solid var(--primary-light); border-radius: 16px;
+      outline: none; text-align: center; letter-spacing: 3px;
+      font-family: 'Courier New', monospace; transition: border-color .2s;
+    }
+    .t-input:focus { border-color: var(--primary); }
+    .t-input.correct { border-color: var(--accent2); background: #e8fff5; }
+    .t-input.wrong   { border-color: #ff7675; background: #fff0f0; }
+    .hint-btn {
+      background: none; border: 2px dashed var(--primary-light);
+      color: var(--primary); font-size: 13px; padding: 6px 16px;
+      border-radius: 50px; cursor: pointer; font-family: inherit; margin: 10px auto; display: block;
+    }
+
+    /* ── RESULT ── */
+    .result-box { text-align: center; padding: 20px; }
+    .result-emoji { font-size: 64px; margin-bottom: 8px; }
+    .result-num   { font-size: 48px; font-weight: bold; color: var(--primary); }
+    .result-label { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; }
+    .result-comment { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+    .result-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── STAT GRID ── */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .stat-card { background: #fff; border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+    .stat-icon  { font-size: 28px; margin-bottom: 4px; }
+    .stat-val   { font-size: 28px; font-weight: bold; color: var(--primary); }
+    .stat-lbl   { font-size: 11px; color: var(--text-sub); }
+
+    /* ── HOME MENU ── */
+    .mascot { text-align: center; padding: 10px 0 4px; }
+    .mascot-em { font-size: 72px; display: inline-block; animation: jump 2.5s ease-in-out infinite; }
+    .home-title { font-size: 26px; font-weight: bold; color: var(--primary); text-align: center; margin-bottom: 2px; }
+    .home-sub { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 18px; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .menu-card {
+      background: #fff; border-radius: var(--radius); padding: 18px 12px;
+      text-align: center; cursor: pointer; box-shadow: var(--shadow);
+      transition: transform .2s; border: 3px solid transparent;
+    }
+    .menu-card:hover { transform: translateY(-3px); }
+    .menu-card:active { transform: scale(.95); }
+    .menu-card.mc-fc   { border-color: var(--primary-light); }
+    .menu-card.mc-quiz { border-color: var(--secondary); }
+    .menu-card.mc-type { border-color: var(--accent1); }
+    .menu-card.mc-prog { border-color: var(--accent2); }
+    .mc-em   { font-size: 34px; margin-bottom: 6px; }
+    .mc-name { font-size: 14px; font-weight: bold; }
+    .mc-desc { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+    /* ── WORD LIST ── */
+    .wl-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; background: #fff; border-radius: 14px;
+      margin-bottom: 7px; box-shadow: 0 2px 8px rgba(108,92,231,.07);
+    }
+    .wl-word { font-size: 16px; font-weight: bold; color: var(--primary); flex: 0 0 120px; }
+    .wl-mean { font-size: 12px; color: var(--text-sub); flex: 1; }
+    .wl-star { font-size: 16px; }
+
+    /* ── LEVEL BANNER ── */
+    .level-banner {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius); padding: 18px 20px; text-align: center;
+      color: #fff; margin-bottom: 14px;
+    }
+    .level-em   { font-size: 36px; }
+    .level-name { font-size: 20px; font-weight: bold; margin: 4px 0; }
+    .level-sub  { font-size: 13px; opacity: .85; }
+
+    /* ── FEEDBACK ── */
+    .fb-row { text-align: center; margin-top: 10px; padding: 12px 0; }
+    .fb-text { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .fb-detail { font-size: 13px; color: var(--text-sub); margin-bottom: 14px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes jump { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation: fadeUp .35s ease; }
+
+    ruby rt { font-size: .58em; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+  NAV BAR
+  ============================================================ -->
+<nav class="nav-bar">
+  <button class="nav-item active" id="nav-home"      onclick="go('home')">
+    <span class="ni">🏠</span><span class="nl">ホーム</span>
+  </button>
+  <button class="nav-item" id="nav-flashcard" onclick="go('flashcard')">
+    <span class="ni">🃏</span><span class="nl">カード</span>
+  </button>
+  <button class="nav-item" id="nav-quiz"      onclick="go('quiz')">
+    <span class="ni">❓</span><span class="nl">クイズ</span>
+  </button>
+  <button class="nav-item" id="nav-typing"    onclick="go('typing')">
+    <span class="ni">⌨️</span><span class="nl">タイピング</span>
+  </button>
+  <button class="nav-item" id="nav-progress"  onclick="go('progress')">
+    <span class="ni">⭐</span><span class="nl">せいせき</span>
+  </button>
+</nav>
+
+<!-- ============================================================
+  HOME
+  ============================================================ -->
+<div class="screen active" id="screen-home">
+  <div class="mascot"><span class="mascot-em">🦊</span></div>
+  <div class="home-title">えいたんごマスター</div>
+  <div class="home-sub">
+    <ruby>英検<rt>えいけん</rt></ruby><ruby>準<rt>じゅん</rt></ruby>２<ruby>級<rt>きゅう</rt></ruby>
+    ・<ruby>小学生<rt>しょうがくせい</rt></ruby>むけ
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-weight:bold;font-size:14px;">きょうの<ruby>進捗<rt>しんちょく</rt></ruby></span>
+      <span class="star-badge">⭐ <span id="h-stars">0</span></span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="h-prog" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-sub);">
+      <span><ruby>覚<rt>おぼ</rt></ruby>えた: <b id="h-learned">0</b> / <span id="h-total">100</span></span>
+      <span><ruby>連続<rt>れんぞく</rt></ruby>: <b id="h-streak">0</b><ruby>日<rt>にち</rt></ruby> 🔥</span>
+    </div>
+  </div>
+
+  <div class="menu-grid">
+    <div class="menu-card mc-fc"   onclick="go('flashcard')">
+      <div class="mc-em">🃏</div>
+      <div class="mc-name">フラッシュカード</div>
+      <div class="mc-desc"><ruby>単語<rt>たんご</rt></ruby>をカードで<ruby>確認<rt>かくにん</rt></ruby></div>
+    </div>
+    <div class="menu-card mc-quiz" onclick="go('quiz')">
+      <div class="mc-em">❓</div>
+      <div class="mc-name">４<ruby>択<rt>たく</rt></ruby>クイズ</div>
+      <div class="mc-desc">４つからこたえをえらぼう</div>
+    </div>
+    <div class="menu-card mc-type" onclick="go('typing')">
+      <div class="mc-em">⌨️</div>
+      <div class="mc-name">タイピング</div>
+      <div class="mc-desc"><ruby>英語<rt>えいご</rt></ruby>をうちこんでみよう</div>
+    </div>
+    <div class="menu-card mc-prog" onclick="go('progress')">
+      <div class="mc-em">📊</div>
+      <div class="mc-name">せいせき</div>
+      <div class="mc-desc"><ruby>記録<rt>きろく</rt></ruby>をたしかめよう</div>
+    </div>
+  </div>
+
+  <div class="card" style="text-align:center;">
+    <div style="font-size:13px;margin-bottom:4px;">🎯 きょうの<ruby>目標<rt>もくひょう</rt></ruby></div>
+    <div id="h-goal" style="font-size:22px;font-weight:bold;color:var(--primary);">10<ruby>語<rt>ご</rt></ruby><ruby>覚<rt>おぼ</rt></ruby>えよう！</div>
+  </div>
+</div>
+
+<!-- ============================================================
+  FLASHCARD
+  ============================================================ -->
+<div class="screen" id="screen-flashcard">
+  <div class="screen-title">🃏 フラッシュカード</div>
+
+  <div class="counter-row">
+    <span id="fc-counter">1 / 100</span>
+    <span class="star-badge">⭐ <span id="fc-stars">0</span></span>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="fc-prog" style="width:1%"></div></div>
+
+  <!-- Card -->
+  <div class="fc-wrap" id="fc-wrap">
+    <div class="fc-card" id="fc-card" onclick="fcFlip()">
+      <div class="fc-front">
+        <div class="fc-pos"  id="fc-pos">名詞</div>
+        <div class="fc-word" id="fc-word">ability</div>
+        <div class="fc-kana" id="fc-kana">アビリティ</div>
+        <div class="tap-hint">👆 タップして<ruby>意味<rt>いみ</rt></ruby>をみる</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-meaning" id="fc-meaning">できること・とくいなこと</div>
+        <div class="fc-ex"      id="fc-ex"></div>
+        <div class="tap-hint">👆 タップしてもどる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="fc-btn-row" id="fc-btns">
+    <button class="btn btn-danger"  onclick="fcAns(false)">😕 もう<ruby>一度<rt>いちど</rt></ruby></button>
+    <button class="btn btn-success" onclick="fcAns(true)">😄 わかった！</button>
+  </div>
+
+  <!-- Result -->
+  <div id="fc-result" class="hidden result-box fade-up">
+    <div class="result-emoji">🎉</div>
+    <div style="font-size:22px;font-weight:bold;margin-bottom:6px;">カードおわり！</div>
+    <div style="font-size:15px;color:var(--text-sub);margin-bottom:18px;">
+      <ruby>覚<rt>おぼ</rt></ruby>えた: <b id="fc-r-learned">0</b> / <span id="fc-r-total">100</span>
+    </div>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="fcRestart()">もう一度やる</button>
+      <button class="btn btn-info"    onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  QUIZ
+  ============================================================ -->
+<div class="screen" id="screen-quiz">
+  <div class="screen-title">❓ ４<ruby>択<rt>たく</rt></ruby>クイズ</div>
+
+  <!-- Start -->
+  <div id="q-start">
+    <div class="card" style="text-align:center;padding:26px;">
+      <div style="font-size:50px;margin-bottom:10px;">❓</div>
+      <div style="font-size:17px;font-weight:bold;margin-bottom:6px;"><ruby>英語<rt>えいご</rt></ruby>の<ruby>意味<rt>いみ</rt></ruby>を<ruby>選<rt>えら</rt></ruby>ぼう！</div>
+      <div style="font-size:12px;color:var(--text-sub);margin-bottom:18px;">10もんチャレンジ ⭐</div>
+      <div class="mode-row">
+        <button class="mode-btn active" id="qm-enja" onclick="setQMode('en-ja')">🇬🇧→🇯🇵<br><ruby>英語<rt>えいご</rt></ruby>→<ruby>日本語<rt>にほんご</rt></ruby></button>
+        <button class="mode-btn"        id="qm-jaen" onclick="setQMode('ja-en')">🇯🇵→🇬🇧<br><ruby>日本語<rt>にほんご</rt></ruby>→<ruby>英語<rt>えいご</rt></ruby></button>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="qStart()">🚀 スタート！</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="q-game" class="hidden">
+    <div class="counter-row">
+      <span><span id="q-num">1</span> / 10もん</span>
+      <span class="star-badge">⭐ <span id="q-stars">0</span></span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="q-prog" style="width:10%"></div></div>
+
+    <div class="quiz-q" id="q-question">ability</div>
+
+    <div class="quiz-choices" id="q-choices">
+      <button class="qc" id="qc0"></button>
+      <button class="qc" id="qc1"></button>
+      <button class="qc" id="qc2"></button>
+      <button class="qc" id="qc3"></button>
+    </div>
+
+    <div id="q-fb" class="hidden fb-row fade-up">
+      <div class="fb-text"   id="q-fb-text"></div>
+      <div class="fb-detail" id="q-fb-detail"></div>
+      <button class="btn btn-primary" onclick="qNext()">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="q-result" class="hidden result-box fade-up">
+    <div class="result-emoji"   id="q-r-em">🎉</div>
+    <div class="result-num"><span id="q-r-score">0</span>/10</div>
+    <div class="result-label"><ruby>正解<rt>せいかい</rt></ruby></div>
+    <div class="result-comment" id="q-r-comment"></div>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="qRestart()">もう一度！</button>
+      <button class="btn btn-info"    onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  TYPING
+  ============================================================ -->
+<div class="screen" id="screen-typing">
+  <div class="screen-title">⌨️ タイピング</div>
+
+  <!-- Start -->
+  <div id="t-start">
+    <div class="card" style="text-align:center;padding:26px;">
+      <div style="font-size:50px;margin-bottom:10px;">⌨️</div>
+      <div style="font-size:17px;font-weight:bold;margin-bottom:6px;">
+        <ruby>意味<rt>いみ</rt></ruby>を<ruby>見<rt>み</rt></ruby>て<ruby>英語<rt>えいご</rt></ruby>を<ruby>打<rt>う</rt></ruby>ちこもう！
+      </div>
+      <div style="font-size:12px;color:var(--text-sub);margin-bottom:18px;">10もんチャレンジ ⭐</div>
+      <button class="btn btn-warning btn-block" onclick="tStart()">🚀 スタート！</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="t-game" class="hidden">
+    <div class="counter-row">
+      <span><span id="t-num">1</span> / 10もん</span>
+      <span class="star-badge">⭐ <span id="t-stars">0</span></span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="t-prog" style="width:10%"></div></div>
+
+    <div class="card" style="text-align:center;padding:22px;">
+      <div style="font-size:13px;color:var(--text-sub);">意味</div>
+      <div class="t-meaning-box" id="t-meaning">できること</div>
+      <div class="t-reading-sub">（カタカナ: <span id="t-kana"></span>）</div>
+      <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;">
+        <ruby>英語<rt>えいご</rt></ruby><ruby>文字数<rt>もじすう</rt></ruby>: <span id="t-len"></span><ruby>文字<rt>もじ</rt></ruby>
+      </div>
+      <input type="text" class="t-input" id="t-input"
+             placeholder="ここに入力..." autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" oninput="tCheck()">
+    </div>
+
+    <button class="hint-btn" id="t-hint-btn" onclick="tHint()">💡 ヒント（さいしょの<ruby>文字<rt>もじ</rt></ruby>をみる）</button>
+    <div id="t-hint-box" class="hidden" style="text-align:center;font-size:16px;color:var(--primary);font-weight:bold;margin-bottom:10px;"></div>
+
+    <div id="t-submit">
+      <button class="btn btn-warning btn-block" onclick="tSubmit()">✅ かくにん！</button>
+    </div>
+
+    <div id="t-fb" class="hidden fb-row fade-up">
+      <div class="fb-text"   id="t-fb-text"></div>
+      <div class="fb-detail" id="t-fb-detail"></div>
+      <button class="btn btn-primary" onclick="tNext()">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="t-result" class="hidden result-box fade-up">
+    <div class="result-emoji"   id="t-r-em">🎉</div>
+    <div class="result-num"><span id="t-r-score">0</span>/10</div>
+    <div class="result-label"><ruby>正解<rt>せいかい</rt></ruby></div>
+    <div class="result-comment" id="t-r-comment"></div>
+    <div class="result-btns">
+      <button class="btn btn-warning" onclick="tRestart()">もう一度！</button>
+      <button class="btn btn-info"    onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  PROGRESS
+  ============================================================ -->
+<div class="screen" id="screen-progress">
+  <div class="screen-title">📊 せいせき</div>
+
+  <div class="level-banner">
+    <div class="level-em">🦊</div>
+    <div class="level-name" id="p-level">ビギナー</div>
+    <div class="level-sub">⭐ <span id="p-stars">0</span><ruby>個<rt>こ</rt></ruby>のスター</div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-val" id="p-learned">0</div>
+      <div class="stat-lbl"><ruby>覚<rt>おぼ</rt></ruby>えた<ruby>単語<rt>たんご</rt></ruby></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-val" id="p-streak">0</div>
+      <div class="stat-lbl"><ruby>連続学習<rt>れんぞくがくしゅう</rt></ruby><ruby>日<rt>にち</rt></ruby></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">❓</div>
+      <div class="stat-val" id="p-qacc">-</div>
+      <div class="stat-lbl">クイズ<ruby>正解率<rt>せいかいりつ</rt></ruby></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⌨️</div>
+      <div class="stat-val" id="p-tacc">-</div>
+      <div class="stat-lbl">タイピング<ruby>正解率<rt>せいかいりつ</rt></ruby></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:bold;margin-bottom:10px;">
+      <ruby>覚<rt>おぼ</rt></ruby>えた<ruby>単語<rt>たんご</rt></ruby>（<span id="p-lc">0</span>/<span id="p-tc">100</span>）
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="p-prog" style="width:0%"></div></div>
+    <div id="p-wlist" style="max-height:280px;overflow-y:auto;"></div>
+  </div>
+
+  <button class="btn btn-danger btn-block" onclick="pReset()" style="margin-top:6px;">
+    🔄 <ruby>記録<rt>きろく</rt></ruby>をリセット
+  </button>
+</div>
+
+<!-- ============================================================
+  JAVASCRIPT
+  ============================================================ -->
+<script>
+// ────────────────────────────────────────────────────────────
+// VOCABULARY  (英検準2級 100語・子ども向けやくつき)
+// ────────────────────────────────────────────────────────────
+const V = [
+  // ── 名詞 ──
+  {id:1, w:"ability",      k:"アビリティ",       p:"名詞",  m:"できること・とくいなこと",              ej:"かのじょはとてもできます。"},
+  {id:2, w:"accident",     k:"アクシデント",      p:"名詞",  m:"じこ・わるいことがおきること",           ej:"みちでじこがありました。"},
+  {id:3, w:"advice",       k:"アドバイス",        p:"名詞",  m:"よいことをおしえてくれること",           ej:"アドバイスをありがとう。"},
+  {id:4, w:"agreement",    k:"アグリーメント",    p:"名詞",  m:"やくそく・みんなでさんせいすること",      ej:"わたしたちはやくそくしました。"},
+  {id:5, w:"amount",       k:"アマウント",        p:"名詞",  m:"りょう・かず",                           ej:"おおくのみずがひつようでした。"},
+  {id:6, w:"area",         k:"エリア",            p:"名詞",  m:"ばしょ・ちいき",                         ej:"わたしはこのちいきにすんでいます。"},
+  {id:7, w:"attention",    k:"アテンション",      p:"名詞",  m:"よくみること・ちゅうもく",               ej:"せんせいのはなしをよくきいてね。"},
+  {id:8, w:"audience",     k:"オーディエンス",    p:"名詞",  m:"みているひとたち・かんきゃく",           ej:"みんながてをたたきました。"},
+  {id:9, w:"behavior",     k:"ビヘイビア",        p:"名詞",  m:"ふるまい・おこない",                     ej:"かれのふるまいはとてもよかった。"},
+  {id:10,w:"culture",      k:"カルチャー",        p:"名詞",  m:"ぶんか・くにのやりかたやしゅうかん",     ej:"にほんのぶんかがすきです。"},
+  {id:11,w:"direction",    k:"ディレクション",    p:"名詞",  m:"むき・みちをおしえること",               ej:"みちをおしえてくれますか？"},
+  {id:12,w:"distance",     k:"ディスタンス",      p:"名詞",  m:"きょり・はなれているながさ",             ej:"きょりは5キロメートルです。"},
+  {id:13,w:"education",    k:"エデュケーション",  p:"名詞",  m:"べんきょう・まなぶこと",                 ej:"まなぶことはとてもたいせつです。"},
+  {id:14,w:"energy",       k:"エナジー",          p:"名詞",  m:"エネルギー・ちからやげんき",             ej:"きょうはげんきいっぱいです！"},
+  {id:15,w:"environment",  k:"エンバイロンメント",p:"名詞",  m:"しぜん・まわりのせかい",                 ej:"しぜんをまもりましょう。"},
+  {id:16,w:"experience",   k:"エクスペリエンス",  p:"名詞",  m:"けいけん・やったことがあること",         ej:"すごいけいけんでした。"},
+  {id:17,w:"future",       k:"フューチャー",      p:"名詞",  m:"みらい・これからのこと",                 ej:"しょうらいのゆめはなんですか？"},
+  {id:18,w:"knowledge",    k:"ノレッジ",          p:"名詞",  m:"ちしき・しっていること",                 ej:"かれはたくさんのちしきがあります。"},
+  {id:19,w:"language",     k:"ランゲージ",        p:"名詞",  m:"ことば・げんご",                         ej:"えいごのことばをべんきょうしています。"},
+  {id:20,w:"memory",       k:"メモリー",          p:"名詞",  m:"おもいで・おぼえていること",             ej:"わたしはよくおぼえています。"},
+  {id:21,w:"mistake",      k:"ミステイク",        p:"名詞",  m:"まちがい",                               ej:"まちがいをきにしないで。"},
+  {id:22,w:"nature",       k:"ネイチャー",        p:"名詞",  m:"しぜん・もりやうみなどのこと",           ej:"しぜんのなかにいるのがすきです。"},
+  {id:23,w:"opportunity",  k:"オポチュニティ",    p:"名詞",  m:"チャンス・よいとき",                     ej:"このチャンスをのがさないで。"},
+  {id:24,w:"population",   k:"ポピュレーション",  p:"名詞",  m:"じんこう・ひとのかず",                   ej:"じんこうがふえています。"},
+  {id:25,w:"volunteer",    k:"ボランティア",      p:"名詞",  m:"ボランティア・じぶんからすすんでたすけること", ej:"ボランティアをしたいです。"},
+
+  // ── 動詞 ──
+  {id:26,w:"accept",       k:"アクセプト",        p:"動詞",  m:"もらう・うけいれる",                     ej:"このプレゼントをうけとってください。"},
+  {id:27,w:"achieve",      k:"アチーブ",          p:"動詞",  m:"やりとげる・せいこうする",               ej:"もくひょうをたっせいできるよ。"},
+  {id:28,w:"agree",        k:"アグリー",          p:"動詞",  m:"さんせいする・なっとくする",             ej:"あなたにさんせいします。"},
+  {id:29,w:"allow",        k:"アラウ",            p:"動詞",  m:"してもいいとゆるす",                     ej:"おかあさんがそとであそんでいいといってくれた。"},
+  {id:30,w:"appear",       k:"アピア",            p:"動詞",  m:"あらわれる・みえてくる",                 ej:"よるになるとほしがあらわれます。"},
+  {id:31,w:"apply",        k:"アプライ",          p:"動詞",  m:"もうしこむ・つかう",                     ej:"このしごとにもうしこみたい。"},
+  {id:32,w:"attend",       k:"アテンド",          p:"動詞",  m:"でる・さんかする",                       ej:"まいにちがっこうにいっています。"},
+  {id:33,w:"avoid",        k:"アボイド",          p:"動詞",  m:"さける・にがすようにする",               ej:"まちがいをさけるようにして。"},
+  {id:34,w:"believe",      k:"ビリーブ",          p:"動詞",  m:"しんじる",                               ej:"あなたをしんじているよ！"},
+  {id:35,w:"borrow",       k:"ボロウ",            p:"動詞",  m:"かりる",                                 ej:"えんぴつをかしてくれますか？"},
+  {id:36,w:"carry",        k:"キャリー",          p:"動詞",  m:"はこぶ・もつ",                           ej:"このはこをはこんでください。"},
+  {id:37,w:"celebrate",    k:"セレブレイト",      p:"動詞",  m:"おいわいする",                           ej:"たんじょうびをおいわいしよう！"},
+  {id:38,w:"collect",      k:"コレクト",          p:"動詞",  m:"あつめる",                               ej:"きってをあつめています。"},
+  {id:39,w:"compare",      k:"コンペア",          p:"動詞",  m:"くらべる",                               ej:"ふたつのほんをくらべよう。"},
+  {id:40,w:"continue",     k:"コンティニュー",    p:"動詞",  m:"つづける",                               ej:"べんきょうをつづけてください。"},
+  {id:41,w:"decide",       k:"ディサイド",        p:"動詞",  m:"きめる",                                 ej:"もっとべんきょうするときめました。"},
+  {id:42,w:"describe",     k:"ディスクライブ",    p:"動詞",  m:"せつめいする・どんなものかはなす",        ej:"みたことをおしえてもらえますか？"},
+  {id:43,w:"develop",      k:"ディベロップ",      p:"動詞",  m:"のばす・そだてる",                       ej:"あたらしいかんがえをそだてよう。"},
+  {id:44,w:"discover",     k:"ディスカバー",      p:"動詞",  m:"みつける・はっけんする",                 ej:"かれはあたらしいほしをみつけました。"},
+  {id:45,w:"enjoy",        k:"エンジョイ",        p:"動詞",  m:"たのしむ",                               ej:"サッカーをたのしんでいます。"},
+  {id:46,w:"explain",      k:"エクスプレイン",    p:"動詞",  m:"せつめいする・わかりやすくはなす",        ej:"このことばをせつめいしてくれますか？"},
+  {id:47,w:"express",      k:"エクスプレス",      p:"動詞",  m:"あらわす・きもちをつたえる",             ej:"かのじょはきもちをつたえました。"},
+  {id:48,w:"gather",       k:"ギャザー",          p:"動詞",  m:"あつまる・あつめる",                     ej:"とりたちがこうえんにあつまります。"},
+  {id:49,w:"improve",      k:"インプルーブ",      p:"動詞",  m:"よくする・うまくなる",                   ej:"えいごをうまくなりたい。"},
+  {id:50,w:"include",      k:"インクルード",      p:"動詞",  m:"いれる・ふくむ",                         ej:"ねだんにぜいきんがはいっています。"},
+  {id:51,w:"introduce",    k:"イントロデュース",  p:"動詞",  m:"しょうかいする",                         ej:"ともだちをしょうかいしますね。"},
+  {id:52,w:"invite",       k:"インバイト",        p:"動詞",  m:"よぶ・さそう",                           ej:"パーティーにさそいたいな。"},
+  {id:53,w:"join",         k:"ジョイン",          p:"動詞",  m:"なかまになる・さんかする",               ej:"チームのなかまになれますか？"},
+  {id:54,w:"keep",         k:"キープ",            p:"動詞",  m:"つづける・もっておく",                   ej:"あきらめないでつづけて！"},
+  {id:55,w:"protect",      k:"プロテクト",        p:"動詞",  m:"まもる・まもってあげる",                 ej:"どうぶつをまもらなくてはいけません。"},
+  {id:56,w:"realize",      k:"リアライズ",        p:"動詞",  m:"きづく・わかる",                         ej:"まちがいにきづきました。"},
+  {id:57,w:"receive",      k:"レシーブ",          p:"動詞",  m:"うけとる・もらう",                       ej:"プレゼントをもらいました。"},
+  {id:58,w:"recognize",    k:"レコグナイズ",      p:"動詞",  m:"みわける・だれだかわかる",               ej:"かのじょのこえがわかりました。"},
+  {id:59,w:"refuse",       k:"リフューズ",        p:"動詞",  m:"ことわる・いやという",                   ej:"かれはたべものをことわりました。"},
+  {id:60,w:"remember",     k:"リメンバー",        p:"動詞",  m:"おぼえている・おもいだす",               ej:"ほんをもってくるのをわすれずに！"},
+  {id:61,w:"solve",        k:"ソルブ",            p:"動詞",  m:"といてすっきりさせる・こたえをみつける",  ej:"さんすうのもんだいをとくことができました。"},
+  {id:62,w:"succeed",      k:"サクシード",        p:"動詞",  m:"せいこうする・うまくいく",               ej:"あなたはきっとせいこうするよ！"},
+  {id:63,w:"support",      k:"サポート",          p:"動詞",  m:"おうえんする・たすける",                 ej:"おうえんするよ。"},
+  {id:64,w:"suggest",      k:"サジェスト",        p:"動詞",  m:"てあんする・おすすめする",               ej:"かのじょはあたらしいアイデアをてあんしました。"},
+  {id:65,w:"survive",      k:"サバイブ",          p:"動詞",  m:"いきのびる・のりこえる",                 ej:"しょくぶつはさむさをのりこえました。"},
+
+  // ── 形容詞 ──
+  {id:66,w:"afraid",       k:"アフレイド",        p:"形容詞",m:"こわい・おそろしい",                     ej:"くらいところがこわいです。"},
+  {id:67,w:"amazing",      k:"アメイジング",      p:"形容詞",m:"すごい！びっくりするくらいいい！",       ej:"それはすごかった！"},
+  {id:68,w:"brave",        k:"ブレイブ",          p:"形容詞",m:"ゆうかんな・こわくてもたちむかう",       ej:"かのじょはとてもゆうかんです。"},
+  {id:69,w:"careful",      k:"ケアフル",          p:"形容詞",m:"きをつける・ていねい",                   ej:"かいだんでちゅういして。"},
+  {id:70,w:"comfortable",  k:"コンフォータブル",  p:"形容詞",m:"きもちいい・らく",                       ej:"このいすはとてもらくです。"},
+  {id:71,w:"confident",    k:"コンフィデント",    p:"形容詞",m:"じしんがある・きっとできるとおもう",     ej:"きっとできるとおもっています。"},
+  {id:72,w:"creative",     k:"クリエイティブ",    p:"形容詞",m:"あたらしいかんがえができる・そうぞう力がある", ej:"かのじょはとてもそうぞう力があります。"},
+  {id:73,w:"curious",      k:"キュリアス",        p:"形容詞",m:"ふしぎがり・しりたがり",                 ej:"こどもはいつもふしぎがりです。"},
+  {id:74,w:"dangerous",    k:"デンジャラス",      p:"形容詞",m:"あぶない",                               ej:"このみちはあぶないです。"},
+  {id:75,w:"delicious",    k:"デリシャス",        p:"形容詞",m:"おいしい",                               ej:"このケーキはおいしい！"},
+  {id:76,w:"different",    k:"ディファレント",    p:"形容詞",m:"ちがう・べつの",                         ej:"わたしたちはちがうけれどともだちです。"},
+  {id:77,w:"difficult",    k:"ディフィカルト",    p:"形容詞",m:"むずかしい",                             ej:"このもんだいはむずかしいです。"},
+  {id:78,w:"excellent",    k:"エクセレント",      p:"形容詞",m:"すばらしい・さいこう！",                 ej:"こたえがすばらしい！"},
+  {id:79,w:"exciting",     k:"エキサイティング",  p:"形容詞",m:"わくわくする・たのしい！",               ej:"そのゲームはわくわくした！"},
+  {id:80,w:"famous",       k:"フェイマス",        p:"形容詞",m:"ゆうめいな・みんながしっている",         ej:"かのじょはゆうめいなかしゅです。"},
+  {id:81,w:"friendly",     k:"フレンドリー",      p:"形容詞",m:"しんせつな・やさしい",                   ej:"せんせいはとてもしんせつです。"},
+  {id:82,w:"important",    k:"インポータント",    p:"形容詞",m:"たいせつ・じゅうよう",                   ej:"ねることはけんこうにたいせつです。"},
+  {id:83,w:"impossible",   k:"インポシブル",      p:"形容詞",m:"むり・できないこと",                     ej:"むりなことはないよ！"},
+  {id:84,w:"necessary",    k:"ネセサリー",        p:"形容詞",m:"ひつよう・なければいけない",             ej:"みずはいきるためにひつようです。"},
+  {id:85,w:"nervous",      k:"ナーバス",          p:"形容詞",m:"どきどきする・きんちょうする",           ej:"テストのまえはきんちょうします。"},
+  {id:86,w:"peaceful",     k:"ピースフル",        p:"形容詞",m:"おだやか・しずかでやすらぐ",             ej:"このばしょはおだやかです。"},
+  {id:87,w:"perfect",      k:"パーフェクト",      p:"形容詞",m:"かんぺき！まちがいゼロ！",              ej:"おえかきがかんぺきだよ！"},
+  {id:88,w:"popular",      k:"ポピュラー",        p:"形容詞",m:"にんきがある・みんなにすかれている",     ej:"このゲームはにんきがあります。"},
+  {id:89,w:"possible",     k:"ポッシブル",        p:"形容詞",m:"できる・かのう",                         ej:"なんでもできる！"},
+  {id:90,w:"powerful",     k:"パワフル",          p:"形容詞",m:"ちからがつよい・すごいちからもち",       ej:"ライオンはちからがつよいです。"},
+  {id:91,w:"proud",        k:"プラウド",          p:"形容詞",m:"ほこりにおもう・じまんにおもう",         ej:"あなたをほこりにおもうよ！"},
+  {id:92,w:"serious",      k:"シリアス",          p:"形容詞",m:"まじめ・だいじなこと",                   ej:"これはだいじなもんだいです。"},
+  {id:93,w:"simple",       k:"シンプル",          p:"形容詞",m:"かんたん・シンプル",                     ej:"このルールはとてもかんたんです。"},
+  {id:94,w:"successful",   k:"サクセスフル",      p:"形容詞",m:"うまくいった・せいこうした",             ej:"かのじょはせいこうしたかがくしゃです。"},
+  {id:95,w:"terrible",     k:"テリブル",          p:"形容詞",m:"ひどい・さいあく・こわい",               ej:"それはひどいあらしでした。"},
+  {id:96,w:"useful",       k:"ユースフル",        p:"形容詞",m:"べんり・やくにたつ",                     ej:"このアプリはとてもべんりです。"},
+  {id:97,w:"various",      k:"バリアス",          p:"形容詞",m:"いろいろな・たくさんのしゅるいの",       ej:"いろいろなどうぶつがいます。"},
+  {id:98,w:"wonderful",    k:"ワンダフル",        p:"形容詞",m:"すてき・すばらしい",                     ej:"なんてすてきなひなの！"},
+  {id:99,w:"independent",  k:"インディペンデント",p:"形容詞",m:"じぶんでできる・ひとりでたてる",         ej:"かのじょはとてもじりつしています。"},
+  {id:100,w:"global",      k:"グローバル",        p:"形容詞",m:"せかいじゅうの・ちきゅうぜんたいの",     ej:"えいごはせかいじゅうでつかわれることばです。"},
+  {id:101,w:"subject",    k:"サブジェクト",      p:"名詞",  m:"かもく・だいざい",                          ej:"すきなかもくはなんですか。"},
+  {id:102,w:"homework",   k:"ホームワーク",      p:"名詞",  m:"しゅくだい",                                ej:"しゅくだいをわすれました。"},
+  {id:103,w:"textbook",   k:"テキストブック",    p:"名詞",  m:"きょうかしょ",                              ej:"きょうかしょをひらいてください。"},
+  {id:104,w:"classroom",  k:"クラスルーム",      p:"名詞",  m:"きょうしつ",                                ej:"きょうしつはひろいです。"},
+  {id:105,w:"library",    k:"ライブラリー",      p:"名詞",  m:"としょかん",                                ej:"としょかんでほんをかりました。"},
+  {id:106,w:"lesson",     k:"レッスン",          p:"名詞",  m:"じゅぎょう・けいこ",                        ej:"えいごのじゅぎょうがすきです。"},
+  {id:107,w:"grade",      k:"グレード",          p:"名詞",  m:"せいせき・がくねん",                        ej:"せいせきがあがりました。"},
+  {id:108,w:"exam",       k:"エグザム",          p:"名詞",  m:"しけん",                                    ej:"あしたしけんがあります。"},
+  {id:109,w:"test",       k:"テスト",            p:"名詞",  m:"テスト・しけん",                            ej:"テストでまんてんをとりました。"},
+  {id:110,w:"score",      k:"スコア",            p:"名詞",  m:"てんすう・スコア",                          ej:"てんすうはなんてんでしたか。"},
+  {id:111,w:"report",     k:"リポート",          p:"名詞",  m:"ほうこく・レポート",                        ej:"レポートをていしゅつしました。"},
+  {id:112,w:"rule",       k:"ルール",            p:"名詞",  m:"きまり・ルール",                            ej:"がっこうのきまりをまもりましょう。"},
+  {id:113,w:"desk",       k:"デスク",            p:"名詞",  m:"つくえ",                                    ej:"つくえのうえをかたづけました。"},
+  {id:114,w:"uniform",    k:"ユニフォーム",      p:"名詞",  m:"せいふく・ユニフォーム",                    ej:"せいふくをきています。"},
+  {id:115,w:"pencil",     k:"ペンシル",          p:"名詞",  m:"えんぴつ",                                  ej:"えんぴつでかきました。"},
+  {id:116,w:"notebook",   k:"ノートブック",      p:"名詞",  m:"ノート",                                    ej:"ノートにメモをとりました。"},
+  {id:117,w:"eraser",     k:"イレイサー",        p:"名詞",  m:"けしごむ",                                  ej:"けしごむでけしました。"},
+  {id:118,w:"ruler",      k:"ルーラー",          p:"名詞",  m:"じょうぎ",                                  ej:"じょうぎでせんをひきました。"},
+  {id:119,w:"dictionary", k:"ディクショナリー",  p:"名詞",  m:"じしょ",                                    ej:"じしょでことばをしらべました。"},
+  {id:120,w:"schedule",   k:"スケジュール",      p:"名詞",  m:"よていひょう・スケジュール",                ej:"スケジュールをかくにんしました。"},
+  {id:121,w:"club",       k:"クラブ",            p:"名詞",  m:"クラブ・ぶかつ",                            ej:"サッカークラブにはいっています。"},
+  {id:122,w:"captain",    k:"キャプテン",        p:"名詞",  m:"キャプテン・たいちょう",                    ej:"かれはチームのキャプテンです。"},
+  {id:123,w:"member",     k:"メンバー",          p:"名詞",  m:"メンバー・なかま",                          ej:"このチームのメンバーです。"},
+  {id:124,w:"animal",     k:"アニマル",          p:"名詞",  m:"どうぶつ",                                  ej:"どうぶつえんにいきました。"},
+  {id:125,w:"flower",     k:"フラワー",          p:"名詞",  m:"はな",                                      ej:"はなをかびんにかざりました。"},
+  {id:126,w:"tree",       k:"ツリー",            p:"名詞",  m:"き・きのき",                                ej:"おおきなきがあります。"},
+  {id:127,w:"forest",     k:"フォレスト",        p:"名詞",  m:"もり・はやし",                              ej:"もりをさんぽしました。"},
+  {id:128,w:"river",      k:"リバー",            p:"名詞",  m:"かわ",                                      ej:"かわでさかながつれました。"},
+  {id:129,w:"mountain",   k:"マウンテン",        p:"名詞",  m:"やま",                                      ej:"やまにのぼりました。"},
+  {id:130,w:"ocean",      k:"オーシャン",        p:"名詞",  m:"うみ・たいよう",                            ej:"うみでおよぎました。"},
+  {id:131,w:"sky",        k:"スカイ",            p:"名詞",  m:"そら",                                      ej:"そらがあおいです。"},
+  {id:132,w:"cloud",      k:"クラウド",          p:"名詞",  m:"くも",                                      ej:"くもがうかんでいます。"},
+  {id:133,w:"rain",       k:"レイン",            p:"名詞",  m:"あめ",                                      ej:"あめがふっています。"},
+  {id:134,w:"snow",       k:"スノー",            p:"名詞",  m:"ゆき",                                      ej:"ゆきがたくさんふりました。"},
+  {id:135,w:"wind",       k:"ウィンド",          p:"名詞",  m:"かぜ",                                      ej:"かぜがつよいです。"},
+  {id:136,w:"sun",        k:"サン",              p:"名詞",  m:"たいよう・おひさま",                        ej:"おひさまがかがやいています。"},
+  {id:137,w:"moon",       k:"ムーン",            p:"名詞",  m:"つき",                                      ej:"つきがきれいです。"},
+  {id:138,w:"star",       k:"スター",            p:"名詞",  m:"ほし",                                      ej:"ほしがたくさんみえます。"},
+  {id:139,w:"earth",      k:"アース",            p:"名詞",  m:"ちきゅう・だいち",                          ej:"ちきゅうをたいせつにしましょう。"},
+  {id:140,w:"island",     k:"アイランド",        p:"名詞",  m:"しま",                                      ej:"しまにわたりました。"},
+  {id:141,w:"desert",     k:"デザート",          p:"名詞",  m:"さばく",                                    ej:"さばくはとてもあついです。"},
+  {id:142,w:"volcano",    k:"ボルカーノ",        p:"名詞",  m:"かざん",                                    ej:"かざんがふんかしました。"},
+  {id:143,w:"earthquake", k:"アースクエイク",    p:"名詞",  m:"じしん",                                    ej:"じしんがおきました。"},
+  {id:144,w:"season",     k:"シーズン",          p:"名詞",  m:"きせつ",                                    ej:"すきなきせつはなつです。"},
+  {id:145,w:"spring",     k:"スプリング",        p:"名詞",  m:"はる",                                      ej:"はるになるとはながさきます。"},
+  {id:146,w:"summer",     k:"サマー",            p:"名詞",  m:"なつ",                                      ej:"なつはあついです。"},
+  {id:147,w:"autumn",     k:"オータム",          p:"名詞",  m:"あき",                                      ej:"あきにはこうようがきれいです。"},
+  {id:148,w:"winter",     k:"ウィンター",        p:"名詞",  m:"ふゆ",                                      ej:"ふゆはさむいです。"},
+  {id:149,w:"plant",      k:"プラント",          p:"名詞",  m:"しょくぶつ・くさ",                          ej:"しょくぶつをそだてています。"},
+  {id:150,w:"seed",       k:"シード",            p:"名詞",  m:"たね",                                      ej:"たねをまきました。"},
+  {id:151,w:"leaf",       k:"リーフ",            p:"名詞",  m:"は・木のは",                                ej:"もみじのはがおちました。"},
+  {id:152,w:"branch",     k:"ブランチ",          p:"名詞",  m:"えだ",                                      ej:"きのえだがおれました。"},
+  {id:153,w:"root",       k:"ルート",            p:"名詞",  m:"ね・ねっこ",                                ej:"きのねっこはふかいです。"},
+  {id:154,w:"breakfast",  k:"ブレックファスト",  p:"名詞",  m:"あさごはん",                                ej:"あさごはんをたべました。"},
+  {id:155,w:"lunch",      k:"ランチ",            p:"名詞",  m:"ひるごはん",                                ej:"ひるごはんはなにたべましたか。"},
+  {id:156,w:"dinner",     k:"ディナー",          p:"名詞",  m:"ゆうごはん",                                ej:"ゆうごはんをいっしょにたべましょう。"},
+  {id:157,w:"meal",       k:"ミール",            p:"名詞",  m:"しょくじ",                                  ej:"しょくじをたのしみました。"},
+  {id:158,w:"vegetable",  k:"ベジタブル",        p:"名詞",  m:"やさい",                                    ej:"やさいをたくさんたべましょう。"},
+  {id:159,w:"fruit",      k:"フルーツ",          p:"名詞",  m:"くだもの",                                  ej:"くだものがすきです。"},
+  {id:160,w:"meat",       k:"ミート",            p:"名詞",  m:"にく",                                      ej:"にくをやきました。"},
+  {id:161,w:"fish",       k:"フィッシュ",        p:"名詞",  m:"さかな",                                    ej:"さかなをつりました。"},
+  {id:162,w:"rice",       k:"ライス",            p:"名詞",  m:"ごはん・こめ",                              ej:"ごはんをたきました。"},
+  {id:163,w:"bread",      k:"ブレッド",          p:"名詞",  m:"パン",                                      ej:"パンをやきました。"},
+  {id:164,w:"cake",       k:"ケイク",            p:"名詞",  m:"ケーキ",                                    ej:"ケーキをつくりました。"},
+  {id:165,w:"cookie",     k:"クッキー",          p:"名詞",  m:"クッキー",                                  ej:"クッキーをやきました。"},
+  {id:166,w:"soup",       k:"スープ",            p:"名詞",  m:"スープ",                                    ej:"あたたかいスープをのみました。"},
+  {id:167,w:"juice",      k:"ジュース",          p:"名詞",  m:"ジュース",                                  ej:"オレンジジュースがすきです。"},
+  {id:168,w:"milk",       k:"ミルク",            p:"名詞",  m:"ぎゅうにゅう・ミルク",                      ej:"まいあさぎゅうにゅうをのみます。"},
+  {id:169,w:"water",      k:"ウォーター",        p:"名詞",  m:"みず",                                      ej:"みずをのんでください。"},
+  {id:170,w:"restaurant", k:"レストラン",        p:"名詞",  m:"レストラン",                                ej:"レストランでしょくじをしました。"},
+  {id:171,w:"kitchen",    k:"キッチン",          p:"名詞",  m:"だいどころ・キッチン",                      ej:"だいどころでりょうりをします。"},
+  {id:172,w:"market",     k:"マーケット",        p:"名詞",  m:"いちば・マーケット",                        ej:"いちばでやさいをかいました。"},
+  {id:173,w:"shopping",   k:"ショッピング",      p:"名詞",  m:"かいもの",                                  ej:"かいものにいきました。"},
+  {id:174,w:"body",       k:"ボディ",            p:"名詞",  m:"からだ",                                    ej:"からだをきたえましょう。"},
+  {id:175,w:"head",       k:"ヘッド",            p:"名詞",  m:"あたま",                                    ej:"あたまがいたいです。"},
+  {id:176,w:"face",       k:"フェイス",          p:"名詞",  m:"かお",                                      ej:"かおをあらいました。"},
+  {id:177,w:"eye",        k:"アイ",              p:"名詞",  m:"め",                                        ej:"めをとじてください。"},
+  {id:178,w:"ear",        k:"イヤー",            p:"名詞",  m:"みみ",                                      ej:"みみをすませてきいてください。"},
+  {id:179,w:"nose",       k:"ノーズ",            p:"名詞",  m:"はな",                                      ej:"はながかゆいです。"},
+  {id:180,w:"mouth",      k:"マウス",            p:"名詞",  m:"くち",                                      ej:"くちをあけてください。"},
+  {id:181,w:"hand",       k:"ハンド",            p:"名詞",  m:"て",                                        ej:"てをあらいましょう。"},
+  {id:182,w:"arm",        k:"アーム",            p:"名詞",  m:"うで",                                      ej:"うでをきたえました。"},
+  {id:183,w:"leg",        k:"レッグ",            p:"名詞",  m:"あし・あしのほね",                          ej:"あしがいたいです。"},
+  {id:184,w:"foot",       k:"フット",            p:"名詞",  m:"あし・あしのうら",                          ej:"あしのうらがいたいです。"},
+  {id:185,w:"heart",      k:"ハート",            p:"名詞",  m:"こころ・しんぞう",                          ej:"しんぞうがどきどきしています。"},
+  {id:186,w:"brain",      k:"ブレイン",          p:"名詞",  m:"のう・あたま",                              ej:"のうをつかってかんがえましょう。"},
+  {id:187,w:"blood",      k:"ブラッド",          p:"名詞",  m:"ち・けつえき",                              ej:"けつえきをけんさしました。"},
+  {id:188,w:"bone",       k:"ボーン",            p:"名詞",  m:"ほね",                                      ej:"ほねをつよくしましょう。"},
+  {id:189,w:"muscle",     k:"マッスル",          p:"名詞",  m:"きんにく",                                  ej:"きんにくがつきました。"},
+  {id:190,w:"skin",       k:"スキン",            p:"名詞",  m:"はだ・ひふ",                                ej:"はだをきれいにたもちましょう。"},
+  {id:191,w:"hair",       k:"ヘアー",            p:"名詞",  m:"かみ・かみのけ",                            ej:"かみをきりました。"},
+  {id:192,w:"tooth",      k:"トゥース",          p:"名詞",  m:"は・はぐき",                                ej:"はをみがきましょう。"},
+  {id:193,w:"shoulder",   k:"ショルダー",        p:"名詞",  m:"かた",                                      ej:"かたがこっています。"},
+  {id:194,w:"stomach",    k:"ストマック",        p:"名詞",  m:"おなか・いぶくろ",                          ej:"おなかがすきました。"},
+  {id:195,w:"back",       k:"バック",            p:"名詞",  m:"せなか・うしろ",                            ej:"せなかがいたいです。"},
+  {id:196,w:"health",     k:"ヘルス",            p:"名詞",  m:"けんこう",                                  ej:"けんこうがいちばんたいせつです。"},
+  {id:197,w:"medicine",   k:"メディスン",        p:"名詞",  m:"くすり",                                    ej:"くすりをのみました。"},
+  {id:198,w:"hospital",   k:"ホスピタル",        p:"名詞",  m:"びょういん",                                ej:"びょういんにいきました。"},
+  {id:199,w:"doctor",     k:"ドクター",          p:"名詞",  m:"おいしゃさん・いしゃ",                      ej:"おいしゃさんにみてもらいました。"},
+  {id:200,w:"nurse",      k:"ナース",            p:"名詞",  m:"かんごし",                                  ej:"かんごしさんはやさしいです。"},
+  {id:201,w:"pain",       k:"ペイン",            p:"名詞",  m:"いたみ",                                    ej:"いたみがありますか。"},
+  {id:202,w:"injury",     k:"インジャリー",      p:"名詞",  m:"けが",                                      ej:"けがをしてしまいました。"},
+  {id:203,w:"exercise",   k:"エクササイズ",      p:"名詞",  m:"うんどう・たいそう",                        ej:"まいにちうんどうしています。"},
+  {id:204,w:"job",        k:"ジョブ",            p:"名詞",  m:"しごと・しょくぎょう",                      ej:"しょうらいのしごとはなんですか。"},
+  {id:205,w:"office",     k:"オフィス",          p:"名詞",  m:"じむしょ・オフィス",                        ej:"ちちはオフィスではたらいています。"},
+  {id:206,w:"company",    k:"カンパニー",        p:"名詞",  m:"かいしゃ",                                  ej:"おおきなかいしゃではたらいています。"},
+  {id:207,w:"business",   k:"ビジネス",          p:"名詞",  m:"ビジネス・しょうばい",                      ej:"ビジネスをはじめました。"},
+  {id:208,w:"factory",    k:"ファクトリー",      p:"名詞",  m:"こうじょう",                                ej:"こうじょうでせいひんをつくります。"},
+  {id:209,w:"farm",       k:"ファーム",          p:"名詞",  m:"のうじょう・はたけ",                        ej:"のうじょうでやさいをそだてています。"},
+  {id:210,w:"shop",       k:"ショップ",          p:"名詞",  m:"おみせ",                                    ej:"おみせでかいものをしました。"},
+  {id:211,w:"store",      k:"ストア",            p:"名詞",  m:"みせ・ストア",                              ej:"コンビニのみせにいきました。"},
+  {id:212,w:"bank",       k:"バンク",            p:"名詞",  m:"ぎんこう",                                  ej:"ぎんこうにおかねをあずけました。"},
+  {id:213,w:"government", k:"ガバメント",        p:"名詞",  m:"せいふ",                                    ej:"せいふがほうりつをつくります。"},
+  {id:214,w:"country",    k:"カントリー",        p:"名詞",  m:"くに",                                      ej:"どのくにがすきですか。"},
+  {id:215,w:"city",       k:"シティ",            p:"名詞",  m:"まち・とし",                                ej:"おおきなまちにすんでいます。"},
+  {id:216,w:"town",       k:"タウン",            p:"名詞",  m:"まち・まちなか",                            ej:"しずかなまちです。"},
+  {id:217,w:"village",    k:"ビレッジ",          p:"名詞",  m:"むら",                                      ej:"むらでのんびりくらしています。"},
+  {id:218,w:"society",    k:"ソサエティ",        p:"名詞",  m:"しゃかい",                                  ej:"しゃかいのルールをまもりましょう。"},
+  {id:219,w:"tradition",  k:"トラディション",    p:"名詞",  m:"でんとう",                                  ej:"にほんのでんとうをたいせつにします。"},
+  {id:220,w:"history",    k:"ヒストリー",        p:"名詞",  m:"れきし",                                    ej:"れきしをべんきょうしています。"},
+  {id:221,w:"science",    k:"サイエンス",        p:"名詞",  m:"かがく",                                    ej:"かがくのじっけんをしました。"},
+  {id:222,w:"technology", k:"テクノロジー",      p:"名詞",  m:"ぎじゅつ・テクノロジー",                   ej:"あたらしいぎじゅつがでてきました。"},
+  {id:223,w:"computer",   k:"コンピューター",    p:"名詞",  m:"コンピューター",                            ej:"コンピューターをつかっています。"},
+  {id:224,w:"internet",   k:"インターネット",    p:"名詞",  m:"インターネット",                            ej:"インターネットでしらべました。"},
+  {id:225,w:"phone",      k:"フォン",            p:"名詞",  m:"でんわ",                                    ej:"でんわをかけました。"},
+  {id:226,w:"newspaper",  k:"ニュースペーパー",  p:"名詞",  m:"しんぶん",                                  ej:"しんぶんをよみました。"},
+  {id:227,w:"magazine",   k:"マガジン",          p:"名詞",  m:"ざっし",                                    ej:"ざっしをかいました。"},
+  {id:228,w:"feeling",    k:"フィーリング",      p:"名詞",  m:"きもち・かんじ",                            ej:"きもちをはなしてください。"},
+  {id:229,w:"emotion",    k:"イモーション",      p:"名詞",  m:"きもち・かんじょう",                        ej:"かんじょうをおさえました。"},
+  {id:230,w:"happiness",  k:"ハピネス",          p:"名詞",  m:"しあわせ・よろこび",                        ej:"しあわせをかんじます。"},
+  {id:231,w:"sadness",    k:"サッドネス",        p:"名詞",  m:"かなしみ",                                  ej:"かなしみをのりこえました。"},
+  {id:232,w:"anger",      k:"アンガー",          p:"名詞",  m:"おこり・いかり",                            ej:"いかりをしずめましょう。"},
+  {id:233,w:"fear",       k:"フィアー",          p:"名詞",  m:"こわさ・おそれ",                            ej:"こわさをのりこえました。"},
+  {id:234,w:"surprise",   k:"サプライズ",        p:"名詞",  m:"おどろき",                                  ej:"おどろきのプレゼントです。"},
+  {id:235,w:"joy",        k:"ジョイ",            p:"名詞",  m:"よろこび",                                  ej:"よろこびがあふれています。"},
+  {id:236,w:"love",       k:"ラブ",              p:"名詞",  m:"あい・すき",                                ej:"かぞくへのあいがあります。"},
+  {id:237,w:"hope",       k:"ホープ",            p:"名詞",  m:"きぼう・のぞみ",                            ej:"きぼうをもちつづけましょう。"},
+  {id:238,w:"dream",      k:"ドリーム",          p:"名詞",  m:"ゆめ",                                      ej:"ゆめにむかってがんばります。"},
+  {id:239,w:"wish",       k:"ウィッシュ",        p:"名詞",  m:"ねがい",                                    ej:"ねがいがかないました。"},
+  {id:240,w:"thought",    k:"ソート",            p:"名詞",  m:"かんがえ・きもち",                          ej:"じぶんのかんがえをはなしました。"},
+  {id:241,w:"idea",       k:"アイデア",          p:"名詞",  m:"アイデア・かんがえ",                        ej:"よいアイデアがうかびました。"},
+  {id:242,w:"mind",       k:"マインド",          p:"名詞",  m:"こころ・きもち",                            ej:"こころをおちつけましょう。"},
+  {id:243,w:"spirit",     k:"スピリット",        p:"名詞",  m:"こころ・たましい",                          ej:"チームのこころがひとつになりました。"},
+  {id:244,w:"soul",       k:"ソウル",            p:"名詞",  m:"たましい",                                  ej:"うたにたましいをこめました。"},
+  {id:245,w:"trust",      k:"トラスト",          p:"名詞",  m:"しんらい・しんよう",                        ej:"しんらいがたいせつです。"},
+  {id:246,w:"respect",    k:"リスペクト",        p:"名詞",  m:"そんけい・けいい",                          ej:"ひとをそんけいしましょう。"},
+  {id:247,w:"friendship", k:"フレンドシップ",    p:"名詞",  m:"ゆうじょう・なかよし",                      ej:"ゆうじょうをたいせつにします。"},
+  {id:248,w:"relationship",k:"リレーションシップ",p:"名詞", m:"かんけい",                                  ej:"よいかんけいをきずきましょう。"},
+  {id:249,w:"road",       k:"ロード",            p:"名詞",  m:"みち・どうろ",                              ej:"みちをわたりました。"},
+  {id:250,w:"bridge",     k:"ブリッジ",          p:"名詞",  m:"はし",                                      ej:"はしをわたりました。"},
+  {id:251,w:"station",    k:"ステーション",      p:"名詞",  m:"えき",                                      ej:"えきでともだちとあいました。"},
+  {id:252,w:"airport",    k:"エアポート",        p:"名詞",  m:"くうこう",                                  ej:"くうこうからひこうきにのりました。"},
+  {id:253,w:"ticket",     k:"チケット",          p:"名詞",  m:"きっぷ・チケット",                          ej:"きっぷをかいました。"},
+  {id:254,w:"hotel",      k:"ホテル",            p:"名詞",  m:"ホテル",                                    ej:"ホテルにとまりました。"},
+  {id:255,w:"map",        k:"マップ",            p:"名詞",  m:"ちず",                                      ej:"ちずをみてみちをさがしました。"},
+  {id:256,w:"camera",     k:"カメラ",            p:"名詞",  m:"カメラ",                                    ej:"カメラでしゃしんをとりました。"},
+  {id:257,w:"music",      k:"ミュージック",      p:"名詞",  m:"おんがく",                                  ej:"おんがくをきくのがすきです。"},
+  {id:258,w:"song",       k:"ソング",            p:"名詞",  m:"うた",                                      ej:"うたをうたいました。"},
+  {id:259,w:"picture",    k:"ピクチャー",        p:"名詞",  m:"えや・しゃしん",                            ej:"えをかきました。"},
+  {id:260,w:"art",        k:"アート",            p:"名詞",  m:"げいじゅつ・アート",                        ej:"アートがすきです。"},
+  {id:261,w:"sport",      k:"スポーツ",          p:"名詞",  m:"スポーツ",                                  ej:"スポーツをするのがすきです。"},
+  {id:262,w:"game",       k:"ゲーム",            p:"名詞",  m:"ゲーム",                                    ej:"ゲームをしています。"},
+  {id:263,w:"prize",      k:"プライズ",          p:"名詞",  m:"しょうひん・ほうび",                        ej:"しょうひんをもらいました。"},
+  {id:264,w:"gift",       k:"ギフト",            p:"名詞",  m:"おくりもの・プレゼント",                    ej:"プレゼントをもらいました。"},
+  {id:265,w:"story",      k:"ストーリー",        p:"名詞",  m:"はなし・ものがたり",                        ej:"たのしいものがたりをよみました。"},
+  {id:266,w:"news",       k:"ニュース",          p:"名詞",  m:"ニュース・おしらせ",                        ej:"テレビでニュースをみました。"},
+  {id:267,w:"message",    k:"メッセージ",        p:"名詞",  m:"メッセージ・ことづて",                      ej:"メッセージをおくりました。"},
+  {id:268,w:"letter",     k:"レター",            p:"名詞",  m:"てがみ",                                    ej:"てがみをかきました。"},
+  {id:269,w:"event",      k:"イベント",          p:"名詞",  m:"イベント・ぎょうじ",                        ej:"たのしいイベントがありました。"},
+  {id:270,w:"party",      k:"パーティー",        p:"名詞",  m:"パーティー",                                ej:"パーティーをひらきました。"},
+  {id:271,w:"birthday",   k:"バースデー",        p:"名詞",  m:"たんじょうび",                              ej:"たんじょうびおめでとう！"},
+  {id:272,w:"holiday",    k:"ホリデー",          p:"名詞",  m:"きゅうじつ・やすみ",                        ej:"きゅうじつにどこかいきますか。"},
+  {id:273,w:"trip",       k:"トリップ",          p:"名詞",  m:"りょこう",                                  ej:"たのしいりょこうでした。"},
+  {id:274,w:"journey",    k:"ジャーニー",        p:"名詞",  m:"たびすること",                              ej:"なつにながいたびをします。"},
+  {id:275,w:"place",      k:"プレイス",          p:"名詞",  m:"ばしょ",                                    ej:"すきなばしょはどこですか。"},
+  {id:276,w:"space",      k:"スペース",          p:"名詞",  m:"うちゅう・すきま",                          ej:"うちゅうにはほしがたくさんあります。"},
+  {id:277,w:"shape",      k:"シェイプ",          p:"名詞",  m:"かたち",                                    ej:"かたちをかきました。"},
+  {id:278,w:"color",      k:"カラー",            p:"名詞",  m:"いろ",                                      ej:"すきないろはあおです。"},
+  {id:279,w:"size",       k:"サイズ",            p:"名詞",  m:"おおきさ・サイズ",                          ej:"サイズがあいません。"},
+  {id:280,w:"number",     k:"ナンバー",          p:"名詞",  m:"かず・ばんごう",                            ej:"かずをかぞえました。"},
+  {id:281,w:"age",        k:"エイジ",            p:"名詞",  m:"とし・ねんれい",                            ej:"ねんれいをおしえてください。"},
+  {id:282,w:"name",       k:"ネーム",            p:"名詞",  m:"なまえ",                                    ej:"なまえをおしえてください。"},
+  {id:283,w:"address",    k:"アドレス",          p:"名詞",  m:"じゅうしょ",                                ej:"じゅうしょをかいてください。"},
+  {id:284,w:"price",      k:"プライス",          p:"名詞",  m:"ねだん",                                    ej:"ねだんはいくらですか。"},
+  {id:285,w:"money",      k:"マネー",            p:"名詞",  m:"おかね",                                    ej:"おかねをためています。"},
+  {id:286,w:"coin",       k:"コイン",            p:"名詞",  m:"こうか・コイン",                            ej:"コインをいれてください。"},
+  {id:287,w:"wallet",     k:"ウォレット",        p:"名詞",  m:"さいふ",                                    ej:"さいふをわすれました。"},
+  {id:288,w:"key",        k:"キー",              p:"名詞",  m:"かぎ",                                      ej:"かぎをかけました。"},
+  {id:289,w:"door",       k:"ドアー",            p:"名詞",  m:"ドア",                                      ej:"ドアをあけてください。"},
+  {id:290,w:"window",     k:"ウィンドウ",        p:"名詞",  m:"まど",                                      ej:"まどをあけました。"},
+  {id:291,w:"wall",       k:"ウォール",          p:"名詞",  m:"かべ",                                      ej:"かべにえをかざりました。"},
+  {id:292,w:"floor",      k:"フロアー",          p:"名詞",  m:"ゆか",                                      ej:"ゆかをそうじしました。"},
+  {id:293,w:"roof",       k:"ルーフ",            p:"名詞",  m:"やね",                                      ej:"やねがあかいです。"},
+  {id:294,w:"garden",     k:"ガーデン",          p:"名詞",  m:"にわ",                                      ej:"にわにはなをうえました。"},
+  {id:295,w:"park",       k:"パーク",            p:"名詞",  m:"こうえん",                                  ej:"こうえんであそびました。"},
+  {id:296,w:"street",     k:"ストリート",        p:"名詞",  m:"とおり・みち",                              ej:"みちをまっすぐすすみます。"},
+  {id:297,w:"corner",     k:"コーナー",          p:"名詞",  m:"かど・コーナー",                            ej:"かどをまがってください。"},
+  {id:298,w:"neighbor",   k:"ネイバー",          p:"名詞",  m:"となりのひと・きんじょ",                    ej:"となりのひとはやさしいです。"},
+  {id:299,w:"family",     k:"ファミリー",        p:"名詞",  m:"かぞく",                                    ej:"かぞくとごはんをたべました。"},
+  {id:300,w:"parent",     k:"ペアレント",        p:"名詞",  m:"おやごさん",                                ej:"おやごさんをたいせつにします。"},
+  {id:301,w:"child",      k:"チャイルド",        p:"名詞",  m:"こども",                                    ej:"こどもたちがあそんでいます。"},
+  {id:302,w:"brother",    k:"ブラザー",          p:"名詞",  m:"おにいさん・おとうと",                      ej:"おとうとといっしょにあそびました。"},
+  {id:303,w:"sister",     k:"シスター",          p:"名詞",  m:"おねえさん・いもうと",                      ej:"おねえさんとかいものにいきました。"},
+  {id:304,w:"friend",     k:"フレンド",          p:"名詞",  m:"ともだち",                                  ej:"ともだちとあそびました。"},
+  {id:305,w:"boy",        k:"ボーイ",            p:"名詞",  m:"おとこのこ",                                ej:"おとこのこがあそんでいます。"},
+  {id:306,w:"girl",       k:"ガール",            p:"名詞",  m:"おんなのこ",                                ej:"おんなのこがうたっています。"},
+  {id:307,w:"man",        k:"マン",              p:"名詞",  m:"おとこのひと",                              ej:"おとこのひとがいます。"},
+  {id:308,w:"woman",      k:"ウーマン",          p:"名詞",  m:"おんなのひと",                              ej:"おんなのひとがはなしています。"},
+  {id:309,w:"baby",       k:"ベイビー",          p:"名詞",  m:"あかちゃん",                                ej:"あかちゃんがないています。"},
+  {id:310,w:"adult",      k:"アダルト",          p:"名詞",  m:"おとな",                                    ej:"おとなになったらはたらきます。"},
+  {id:311,w:"pet",        k:"ペット",            p:"名詞",  m:"ペット",                                    ej:"いぬをペットにしています。"},
+  {id:312,w:"dog",        k:"ドッグ",            p:"名詞",  m:"いぬ",                                      ej:"いぬをさんぽさせました。"},
+  {id:313,w:"cat",        k:"キャット",          p:"名詞",  m:"ねこ",                                      ej:"ねこがまどからそとをみています。"},
+  {id:314,w:"bird",       k:"バード",            p:"名詞",  m:"とり",                                      ej:"とりがうたっています。"},
+  {id:315,w:"horse",      k:"ホース",            p:"名詞",  m:"うま",                                      ej:"うまにのりました。"},
+  {id:316,w:"rabbit",     k:"ラビット",          p:"名詞",  m:"うさぎ",                                    ej:"うさぎがはねています。"},
+  {id:317,w:"turtle",     k:"タートル",          p:"名詞",  m:"かめ",                                      ej:"かめがゆっくりあるいています。"},
+  {id:318,w:"insect",     k:"インセクト",        p:"名詞",  m:"むし",                                      ej:"むしをつかまえました。"},
+  {id:319,w:"butterfly",  k:"バタフライ",        p:"名詞",  m:"ちょうちょ",                                ej:"ちょうちょがとんでいます。"},
+  {id:320,w:"bee",        k:"ビー",              p:"名詞",  m:"はち",                                      ej:"はちがはなにとまっています。"},
+  {id:321,w:"run",        k:"ラン",              p:"動詞",  m:"はしる",                                    ej:"はやくはしりました。"},
+  {id:322,w:"walk",       k:"ウォーク",          p:"動詞",  m:"あるく",                                    ej:"こうえんをあるきました。"},
+  {id:323,w:"jump",       k:"ジャンプ",          p:"動詞",  m:"とぶ・ジャンプする",                        ej:"たかくジャンプしました。"},
+  {id:324,w:"swim",       k:"スイム",            p:"動詞",  m:"およぐ",                                    ej:"プールでおよぎました。"},
+  {id:325,w:"fly",        k:"フライ",            p:"動詞",  m:"とぶ",                                      ej:"とりがそらをとんでいます。"},
+  {id:326,w:"drive",      k:"ドライブ",          p:"動詞",  m:"うんてんする",                              ej:"くるまをうんてんしました。"},
+  {id:327,w:"ride",       k:"ライド",            p:"動詞",  m:"のる・のりこなす",                          ej:"じてんしゃにのりました。"},
+  {id:328,w:"climb",      k:"クライム",          p:"動詞",  m:"のぼる",                                    ej:"きにのぼりました。"},
+  {id:329,w:"fall",       k:"フォール",          p:"動詞",  m:"おちる・ころぶ",                            ej:"かいだんでころびました。"},
+  {id:330,w:"push",       k:"プッシュ",          p:"動詞",  m:"おす",                                      ej:"ドアをおしてください。"},
+  {id:331,w:"pull",       k:"プル",              p:"動詞",  m:"ひく",                                      ej:"ドアをひいてください。"},
+  {id:332,w:"throw",      k:"スロー",            p:"動詞",  m:"なげる",                                    ej:"ボールをなげました。"},
+  {id:333,w:"catch",      k:"キャッチ",          p:"動詞",  m:"つかまえる・とる",                          ej:"ボールをキャッチしました。"},
+  {id:334,w:"hit",        k:"ヒット",            p:"動詞",  m:"たたく・うつ",                              ej:"ボールをバットでうちました。"},
+  {id:335,w:"kick",       k:"キック",            p:"動詞",  m:"ける",                                      ej:"ボールをけりました。"},
+  {id:336,w:"dance",      k:"ダンス",            p:"動詞",  m:"おどる",                                    ej:"たのしくおどりました。"},
+  {id:337,w:"sing",       k:"シング",            p:"動詞",  m:"うたう",                                    ej:"うたをうたいました。"},
+  {id:338,w:"play",       k:"プレイ",            p:"動詞",  m:"あそぶ・えんそうする",                      ej:"ともだちとあそびました。"},
+  {id:339,w:"draw",       k:"ドロー",            p:"動詞",  m:"えをかく",                                  ej:"えをかきました。"},
+  {id:340,w:"write",      k:"ライト",            p:"動詞",  m:"かく・かきこむ",                            ej:"てがみをかきました。"},
+  {id:341,w:"read",       k:"リード",            p:"動詞",  m:"よむ",                                      ej:"ほんをよみました。"},
+  {id:342,w:"count",      k:"カウント",          p:"動詞",  m:"かぞえる",                                  ej:"かずをかぞえました。"},
+  {id:343,w:"study",      k:"スタディ",          p:"動詞",  m:"べんきょうする",                            ej:"まいにちべんきょうしています。"},
+  {id:344,w:"learn",      k:"ラーン",            p:"動詞",  m:"まなぶ・おぼえる",                          ej:"えいごをまなんでいます。"},
+  {id:345,w:"teach",      k:"ティーチ",          p:"動詞",  m:"おしえる",                                  ej:"せんせいがえいごをおしえます。"},
+  {id:346,w:"practice",   k:"プラクティス",      p:"動詞",  m:"れんしゅうする",                            ej:"まいにちれんしゅうしています。"},
+  {id:347,w:"work",       k:"ワーク",            p:"動詞",  m:"はたらく・しごとをする",                    ej:"まじめにはたらきます。"},
+  {id:348,w:"cook",       k:"クック",            p:"動詞",  m:"りょうりする",                              ej:"おかあさんがりょうりをしています。"},
+  {id:349,w:"clean",      k:"クリーン",          p:"動詞",  m:"そうじする・きれいにする",                  ej:"へやをそうじしました。"},
+  {id:350,w:"wash",       k:"ウォッシュ",        p:"動詞",  m:"あらう",                                    ej:"てをあらいましょう。"},
+  {id:351,w:"fix",        k:"フィックス",        p:"動詞",  m:"なおす・しゅうりする",                      ej:"こわれたいすをなおしました。"},
+  {id:352,w:"build",      k:"ビルド",            p:"動詞",  m:"たてる・つくる",                            ej:"いえをたてました。"},
+  {id:353,w:"create",     k:"クリエイト",        p:"動詞",  m:"つくる・そうぞうする",                      ej:"あたらしいものをつくりました。"},
+  {id:354,w:"design",     k:"デザイン",          p:"動詞",  m:"デザインする・せっけいする",                ej:"ポスターをデザインしました。"},
+  {id:355,w:"make",       k:"メイク",            p:"動詞",  m:"つくる・する",                              ej:"おにぎりをつくりました。"},
+  {id:356,w:"produce",    k:"プロデュース",      p:"動詞",  m:"せいさんする・つくりだす",                  ej:"たくさんのせいひんをつくります。"},
+  {id:357,w:"talk",       k:"トーク",            p:"動詞",  m:"はなす・おしゃべりする",                    ej:"ともだちとはなしました。"},
+  {id:358,w:"speak",      k:"スピーク",          p:"動詞",  m:"はなす・しゃべる",                          ej:"えいごではなしました。"},
+  {id:359,w:"say",        k:"セイ",              p:"動詞",  m:"いう",                                      ej:"こんにちはといいました。"},
+  {id:360,w:"tell",       k:"テル",              p:"動詞",  m:"つたえる・おしえる",                        ej:"ほんとうのことをつたえました。"},
+  {id:361,w:"ask",        k:"アスク",            p:"動詞",  m:"きく・たずねる",                            ej:"せんせいにしつもんしました。"},
+  {id:362,w:"reply",      k:"リプライ",          p:"動詞",  m:"へんじする・こたえる",                      ej:"メールにへんじしました。"},
+  {id:363,w:"discuss",    k:"ディスカス",        p:"動詞",  m:"ぎろんする・はなしあう",                    ej:"グループではなしあいました。"},
+  {id:364,w:"argue",      k:"アーギュー",        p:"動詞",  m:"いいあう・けんかする",                      ej:"けんかしないようにしましょう。"},
+  {id:365,w:"disagree",   k:"ディスアグリー",    p:"動詞",  m:"さんせいしない・はんたいする",              ej:"はんたいいけんをいいました。"},
+  {id:366,w:"communicate",k:"コミュニケイト",    p:"動詞",  m:"つたえあう・やりとりする",                  ej:"じょうずにつたえましょう。"},
+  {id:367,w:"listen",     k:"リスン",            p:"動詞",  m:"きく・ちゃんときく",                        ej:"せんせいのはなしをききました。"},
+  {id:368,w:"hear",       k:"ヒアー",            p:"動詞",  m:"きこえる",                                  ej:"おとがきこえます。"},
+  {id:369,w:"understand", k:"アンダースタンド",  p:"動詞",  m:"わかる・りかいする",                        ej:"わかりましたか。"},
+  {id:370,w:"know",       k:"ノー",              p:"動詞",  m:"しっている・わかる",                        ej:"こたえをしっています。"},
+  {id:371,w:"think",      k:"シンク",            p:"動詞",  m:"かんがえる・おもう",                        ej:"よくかんがえました。"},
+  {id:372,w:"wonder",     k:"ワンダー",          p:"動詞",  m:"ふしぎにおもう・かんがえる",                ej:"なぜかなとかんがえました。"},
+  {id:373,w:"imagine",    k:"イマジン",          p:"動詞",  m:"そうぞうする",                              ej:"みらいをそうぞうしました。"},
+  {id:374,w:"plan",       k:"プラン",            p:"動詞",  m:"けいかくする",                              ej:"りょこうをけいかくしました。"},
+  {id:375,w:"choose",     k:"チューズ",          p:"動詞",  m:"えらぶ",                                    ej:"すきないろをえらびました。"},
+  {id:376,w:"try",        k:"トライ",            p:"動詞",  m:"やってみる・ためす",                        ej:"あきらめずにやってみました。"},
+  {id:377,w:"want",       k:"ウォント",          p:"動詞",  m:"ほしい・したい",                            ej:"あたらしいくつがほしいです。"},
+  {id:378,w:"need",       k:"ニード",            p:"動詞",  m:"ひつようとする",                            ej:"たすけがひつようです。"},
+  {id:379,w:"like",       k:"ライク",            p:"動詞",  m:"すき・このむ",                              ej:"えいごがすきです。"},
+  {id:380,w:"hate",       k:"ヘイト",            p:"動詞",  m:"きらい・にくむ",                            ej:"けんかはきらいです。"},
+  {id:381,w:"move",       k:"ムーブ",            p:"動詞",  m:"うごく・ひっこす",                          ej:"あたらしいまちにひっこしました。"},
+  {id:382,w:"travel",     k:"トラベル",          p:"動詞",  m:"たびをする",                                ej:"がいこくをたびしました。"},
+  {id:383,w:"visit",      k:"ビジット",          p:"動詞",  m:"おとずれる・ほうもんする",                  ej:"ともだちのいえをおとずれました。"},
+  {id:384,w:"arrive",     k:"アライブ",          p:"動詞",  m:"つく・とうちゃくする",                      ej:"えきにとうちゃくしました。"},
+  {id:385,w:"leave",      k:"リーブ",            p:"動詞",  m:"でる・はなれる",                            ej:"いえをでました。"},
+  {id:386,w:"return",     k:"リターン",          p:"動詞",  m:"かえる・もどる",                            ej:"いえにかえりました。"},
+  {id:387,w:"enter",      k:"エンター",          p:"動詞",  m:"はいる",                                    ej:"へやにはいりました。"},
+  {id:388,w:"exit",       k:"エグジット",        p:"動詞",  m:"でる・でぐちにむかう",                      ej:"ビルをでました。"},
+  {id:389,w:"pass",       k:"パス",              p:"動詞",  m:"とおる・とおりすぎる",                      ej:"こうえんのまえをとおりました。"},
+  {id:390,w:"cross",      k:"クロス",            p:"動詞",  m:"わたる",                                    ej:"みちをわたりました。"},
+  {id:391,w:"turn",       k:"ターン",            p:"動詞",  m:"まがる・まわる",                            ej:"みぎにまがってください。"},
+  {id:392,w:"stop",       k:"ストップ",          p:"動詞",  m:"とまる・やめる",                            ej:"しんごうでとまりました。"},
+  {id:393,w:"start",      k:"スタート",          p:"動詞",  m:"はじめる・スタートする",                    ej:"レースをスタートしました。"},
+  {id:394,w:"begin",      k:"ビギン",            p:"動詞",  m:"はじまる・はじめる",                        ej:"じゅぎょうがはじまりました。"},
+  {id:395,w:"end",        k:"エンド",            p:"動詞",  m:"おわる・おえる",                            ej:"しあいがおわりました。"},
+  {id:396,w:"finish",     k:"フィニッシュ",      p:"動詞",  m:"おえる・すませる",                          ej:"しゅくだいをすませました。"},
+  {id:397,w:"change",     k:"チェンジ",          p:"動詞",  m:"かわる・かえる",                            ej:"せかいをよりよくかえましょう。"},
+  {id:398,w:"grow",       k:"グロー",            p:"動詞",  m:"そだつ・おおきくなる",                      ej:"はながおおきくそだちました。"},
+  {id:399,w:"increase",   k:"インクリース",      p:"動詞",  m:"ふえる・ふやす",                            ej:"にんずうがふえました。"},
+  {id:400,w:"decrease",   k:"ディクリース",      p:"動詞",  m:"へる・へらす",                              ej:"ごみのりょうをへらしましょう。"},
+  {id:401,w:"rise",       k:"ライズ",            p:"動詞",  m:"あがる・のぼる",                            ej:"たいようがのぼります。"},
+  {id:402,w:"open",       k:"オープン",          p:"動詞",  m:"あける・ひらく",                            ej:"まどをあけました。"},
+  {id:403,w:"close",      k:"クローズ",          p:"動詞",  m:"しめる・とじる",                            ej:"ドアをしめてください。"},
+  {id:404,w:"stand",      k:"スタンド",          p:"動詞",  m:"たつ",                                      ej:"きをつけてたってください。"},
+  {id:405,w:"sit",        k:"シット",            p:"動詞",  m:"すわる",                                    ej:"いすにすわってください。"},
+  {id:406,w:"lie",        k:"ライ",              p:"動詞",  m:"よこになる",                                ej:"ベッドによこになりました。"},
+  {id:407,w:"sleep",      k:"スリープ",          p:"動詞",  m:"ねる",                                      ej:"はやくねましょう。"},
+  {id:408,w:"wake",       k:"ウェイク",          p:"動詞",  m:"おきる",                                    ej:"あさはやくおきました。"},
+  {id:409,w:"eat",        k:"イート",            p:"動詞",  m:"たべる",                                    ej:"やさいをたべましょう。"},
+  {id:410,w:"drink",      k:"ドリンク",          p:"動詞",  m:"のむ",                                      ej:"みずをのみましょう。"},
+  {id:411,w:"buy",        k:"バイ",              p:"動詞",  m:"かう",                                      ej:"パンをかいました。"},
+  {id:412,w:"sell",       k:"セル",              p:"動詞",  m:"うる",                                      ej:"やさいをうっています。"},
+  {id:413,w:"give",       k:"ギブ",              p:"動詞",  m:"あげる・わたす",                            ej:"プレゼントをあげました。"},
+  {id:414,w:"take",       k:"テイク",            p:"動詞",  m:"とる・もっていく",                          ej:"しゃしんをとりました。"},
+  {id:415,w:"bring",      k:"ブリング",          p:"動詞",  m:"もってくる",                                ej:"おべんとうをもってきました。"},
+  {id:416,w:"send",       k:"センド",            p:"動詞",  m:"おくる",                                    ej:"てがみをおくりました。"},
+  {id:417,w:"show",       k:"ショー",            p:"動詞",  m:"みせる",                                    ej:"えをみせてください。"},
+  {id:418,w:"find",       k:"ファインド",        p:"動詞",  m:"みつける",                                  ej:"なくしたものをみつけました。"},
+  {id:419,w:"lose",       k:"ルーズ",            p:"動詞",  m:"なくす・まける",                            ej:"さいふをなくしました。"},
+  {id:420,w:"win",        k:"ウィン",            p:"動詞",  m:"かつ",                                      ej:"しあいにかちました。"},
+  {id:421,w:"wait",       k:"ウェイト",          p:"動詞",  m:"まつ",                                      ej:"ともだちをまちました。"},
+  {id:422,w:"help",       k:"ヘルプ",            p:"動詞",  m:"たすける・てつだう",                        ej:"こまっているひとをたすけました。"},
+  {id:423,w:"hurt",       k:"ハート",            p:"動詞",  m:"いためる・きずつける",                      ej:"ひとをきずつけないようにしましょう。"},
+  {id:424,w:"feel",       k:"フィール",          p:"動詞",  m:"かんじる",                                  ej:"しあわせをかんじます。"},
+  {id:425,w:"see",        k:"シー",              p:"動詞",  m:"みる・みえる",                              ej:"うみがみえます。"},
+  {id:426,w:"look",       k:"ルック",            p:"動詞",  m:"みる・みえる",                              ej:"そらをみてください。"},
+  {id:427,w:"watch",      k:"ウォッチ",          p:"動詞",  m:"みる・かんさつする",                        ej:"えいがをみました。"},
+  {id:428,w:"use",        k:"ユース",            p:"動詞",  m:"つかう",                                    ej:"えんぴつをつかいました。"},
+  {id:429,w:"share",      k:"シェアー",          p:"動詞",  m:"わけあう・きょうゆうする",                  ej:"おかしをわけあいました。"},
+  {id:430,w:"miss",       k:"ミス",              p:"動詞",  m:"こいしく思う・のりおくれる",                ej:"かぞくがこいしいです。"},
+  {id:431,w:"follow",     k:"フォロー",          p:"動詞",  m:"ついていく・したがう",                      ej:"ルールにしたがいましょう。"},
+  {id:432,w:"lead",       k:"リード",            p:"動詞",  m:"みちびく・リードする",                      ej:"チームをリードしました。"},
+  {id:433,w:"check",      k:"チェック",          p:"動詞",  m:"かくにんする",                              ej:"こたえをかくにんしました。"},
+  {id:434,w:"wrap",       k:"ラップ",            p:"動詞",  m:"つつむ",                                    ej:"プレゼントをつつみました。"},
+  {id:435,w:"prepare",    k:"プリペアー",        p:"動詞",  m:"じゅんびする",                              ej:"りょこうのじゅんびをしました。"},
+  {id:436,w:"preserve",   k:"プリザーブ",        p:"動詞",  m:"まもる・たもつ",                            ej:"かんきょうをたもちましょう。"},
+  {id:437,w:"save",       k:"セイブ",            p:"動詞",  m:"すくう・ためる",                            ej:"おかねをためました。"},
+  {id:438,w:"spend",      k:"スペンド",          p:"動詞",  m:"つかう・すごす",                            ej:"たのしくじかんをすごしました。"},
+  {id:439,w:"stretch",    k:"ストレッチ",        p:"動詞",  m:"のばす・ストレッチする",                    ej:"からだをのばしました。"},
+  {id:440,w:"attend",     k:"アテンド",          p:"動詞",  m:"しゅっせきする",                            ej:"かいぎにしゅっせきしました。"},
+  {id:441,w:"new",        k:"ニュー",            p:"形容詞",m:"あたらしい",                                ej:"あたらしいくつをかいました。"},
+  {id:442,w:"old",        k:"オールド",          p:"形容詞",m:"ふるい・としとった",                        ej:"ふるいほんをみつけました。"},
+  {id:443,w:"young",      k:"ヤング",            p:"形容詞",m:"わかい",                                    ej:"かれはまだわかいです。"},
+  {id:444,w:"big",        k:"ビッグ",            p:"形容詞",m:"おおきい",                                  ej:"おおきないぬがいます。"},
+  {id:445,w:"small",      k:"スモール",          p:"形容詞",m:"ちいさい",                                  ej:"ちいさなはなをみつけました。"},
+  {id:446,w:"long",       k:"ロング",            p:"形容詞",m:"ながい",                                    ej:"ながいかわがあります。"},
+  {id:447,w:"short",      k:"ショート",          p:"形容詞",m:"みじかい・ひくい",                          ej:"みじかいえんぴつです。"},
+  {id:448,w:"high",       k:"ハイ",              p:"形容詞",m:"たかい",                                    ej:"たかいやまにのぼりました。"},
+  {id:449,w:"low",        k:"ロー",              p:"形容詞",m:"ひくい・すくない",                          ej:"おんがくのおとをひくくしました。"},
+  {id:450,w:"fast",       k:"ファスト",          p:"形容詞",m:"はやい",                                    ej:"はやいでんしゃにのりました。"},
+  {id:451,w:"slow",       k:"スロー",            p:"形容詞",m:"おそい",                                    ej:"カメはあるくのがおそいです。"},
+  {id:452,w:"heavy",      k:"ヘビー",            p:"形容詞",m:"おもい",                                    ej:"このにもつはおもいです。"},
+  {id:453,w:"light",      k:"ライト",            p:"形容詞",m:"かるい・あかるい",                          ej:"このバッグはかるいです。"},
+  {id:454,w:"hard",       k:"ハード",            p:"形容詞",m:"かたい・むずかしい",                        ej:"かたいいわがあります。"},
+  {id:455,w:"soft",       k:"ソフト",            p:"形容詞",m:"やわらかい",                                ej:"やわらかいパンです。"},
+  {id:456,w:"hot",        k:"ホット",            p:"形容詞",m:"あつい",                                    ej:"あつい日がつづいています。"},
+  {id:457,w:"cold",       k:"コールド",          p:"形容詞",m:"さむい・つめたい",                          ej:"きょうはさむいです。"},
+  {id:458,w:"warm",       k:"ウォーム",          p:"形容詞",m:"あたたかい",                                ej:"あたたかいスープをのみました。"},
+  {id:459,w:"cool",       k:"クール",            p:"形容詞",m:"すずしい・かっこいい",                      ej:"すずしいかぜがふいています。"},
+  {id:460,w:"clean",      k:"クリーン",          p:"形容詞",m:"きれい・きれいな",                          ej:"きれいなみずがあります。"},
+  {id:461,w:"dirty",      k:"ダーティー",        p:"形容詞",m:"きたない",                                  ej:"てがきたないですよ。"},
+  {id:462,w:"bright",     k:"ブライト",          p:"形容詞",m:"あかるい・かがやいている",                  ej:"あかるいへやです。"},
+  {id:463,w:"dark",       k:"ダーク",            p:"形容詞",m:"くらい",                                    ej:"くらいよるをあるきました。"},
+  {id:464,w:"loud",       k:"ラウド",            p:"形容詞",m:"うるさい・おおきなこえの",                  ej:"うるさいおとがしています。"},
+  {id:465,w:"quiet",      k:"クワイエット",      p:"形容詞",m:"しずか",                                    ej:"としょかんはしずかです。"},
+  {id:466,w:"busy",       k:"ビジー",            p:"形容詞",m:"いそがしい",                                ej:"きょうはいそがしいです。"},
+  {id:467,w:"free",       k:"フリー",            p:"形容詞",m:"ひまな・むりょうの",                        ej:"きょうはひまです。"},
+  {id:468,w:"ready",      k:"レディー",          p:"形容詞",m:"じゅんびができた",                          ej:"じゅんびができました。"},
+  {id:469,w:"late",       k:"レイト",            p:"形容詞",m:"おそい・おくれた",                          ej:"がっこうにおくれました。"},
+  {id:470,w:"early",      k:"アーリー",          p:"形容詞",m:"はやい・はやめの",                          ej:"はやおきしました。"},
+  {id:471,w:"right",      k:"ライト",            p:"形容詞",m:"ただしい・みぎの",                          ej:"ただしいこたえです。"},
+  {id:472,w:"wrong",      k:"ロング",            p:"形容詞",m:"まちがっている",                            ej:"まちがえてしまいました。"},
+  {id:473,w:"true",       k:"トゥルー",          p:"形容詞",m:"ほんとうの",                                ej:"これはほんとうのはなしです。"},
+  {id:474,w:"false",      k:"フォルス",          p:"形容詞",m:"うそ・まちがい",                            ej:"それはうそです。"},
+  {id:475,w:"good",       k:"グッド",            p:"形容詞",m:"よい・じょうず",                            ej:"よいてんきです。"},
+  {id:476,w:"bad",        k:"バッド",            p:"形容詞",m:"わるい",                                    ej:"わるいことはしません。"},
+  {id:477,w:"great",      k:"グレート",          p:"形容詞",m:"すごい・すばらしい",                        ej:"すばらしいえんそうでした。"},
+  {id:478,w:"poor",       k:"プアー",            p:"形容詞",m:"まずしい・かわいそうな",                    ej:"かわいそうなねこです。"},
+  {id:479,w:"nice",       k:"ナイス",            p:"形容詞",m:"すてき・よい",                              ej:"すてきなプレゼントです。"},
+  {id:480,w:"kind",       k:"カインド",          p:"形容詞",m:"やさしい・しんせつな",                      ej:"やさしいひとがすきです。"},
+  {id:481,w:"rude",       k:"ルード",            p:"形容詞",m:"しつれいな・ぶっきらぼう",                  ej:"しつれいなことはいわないでください。"},
+  {id:482,w:"smart",      k:"スマート",          p:"形容詞",m:"かしこい・あたまがいい",                    ej:"かしこいこたえです。"},
+  {id:483,w:"clever",     k:"クレバー",          p:"形容詞",m:"りこうな・かしこい",                        ej:"りこうなこどもです。"},
+  {id:484,w:"wise",       k:"ワイズ",            p:"形容詞",m:"かしこい・けんめいな",                      ej:"けんめいなはんだんです。"},
+  {id:485,w:"funny",      k:"ファニー",          p:"形容詞",m:"おもしろい・おかしい",                      ej:"おもしろいはなしです。"},
+  {id:486,w:"happy",      k:"ハッピー",          p:"形容詞",m:"うれしい・しあわせ",                        ej:"うれしいきもちです。"},
+  {id:487,w:"sad",        k:"サッド",            p:"形容詞",m:"かなしい",                                  ej:"かなしいはなしです。"},
+  {id:488,w:"angry",      k:"アングリー",        p:"形容詞",m:"おこっている",                              ej:"おこらないでください。"},
+  {id:489,w:"tired",      k:"タイアード",        p:"形容詞",m:"つかれた",                                  ej:"つかれました。"},
+  {id:490,w:"sick",       k:"シック",            p:"形容詞",m:"びょうきの・きもちわるい",                  ej:"きょうはびょうきです。"},
+  {id:491,w:"healthy",    k:"ヘルシー",          p:"形容詞",m:"けんこうな",                                ej:"けんこうなからだをたもちましょう。"},
+  {id:492,w:"safe",       k:"セイフ",            p:"形容詞",m:"あんぜんな",                                ej:"あんぜんなばしょにいてください。"},
+  {id:493,w:"shy",        k:"シャイ",            p:"形容詞",m:"はずかしがりの・シャイな",                  ej:"かれはすこしはずかしがりです。"},
+  {id:494,w:"lazy",       k:"レイジー",          p:"形容詞",m:"なまけている",                              ej:"なまけないでがんばりましょう。"},
+  {id:495,w:"honest",     k:"オネスト",          p:"形容詞",m:"しょうじきな",                              ej:"しょうじきにはなしました。"},
+  {id:496,w:"polite",     k:"ポライト",          p:"形容詞",m:"ていねいな・れいぎただしい",                ej:"ていねいにあいさつしました。"},
+  {id:497,w:"gentle",     k:"ジェントル",        p:"形容詞",m:"おだやかな・やさしい",                      ej:"おだやかなひとです。"},
+  {id:498,w:"strict",     k:"ストリクト",        p:"形容詞",m:"きびしい",                                  ej:"せんせいはきびしいです。"},
+  {id:499,w:"fair",       k:"フェアー",          p:"形容詞",m:"こうへいな・フェアな",                      ej:"こうへいなルールです。"},
+  {id:500,w:"lucky",      k:"ラッキー",          p:"形容詞",m:"うんがいい・ラッキーな",                    ej:"きょうはうんがいいです。"},
+  {id:501,w:"special",    k:"スペシャル",        p:"形容詞",m:"とくべつな",                                ej:"とくべつなひです。"},
+  {id:502,w:"also",       k:"オールソー",        p:"副詞",  m:"また・さらに",                              ej:"かれもまたえいごがはなせます。"},
+  {id:503,w:"already",    k:"オールレディ",      p:"副詞",  m:"もう・すでに",                              ej:"もうしゅくだいをやりました。"},
+  {id:504,w:"always",     k:"オールウェイズ",    p:"副詞",  m:"いつも",                                    ej:"いつもがんばっています。"},
+  {id:505,w:"never",      k:"ネバー",            p:"副詞",  m:"けっして〜ない",                            ej:"けっしてあきらめません。"},
+  {id:506,w:"often",      k:"オフン",            p:"副詞",  m:"よく・しばしば",                            ej:"よくとしょかんにいきます。"},
+  {id:507,w:"sometimes",  k:"サムタイムズ",      p:"副詞",  m:"ときどき",                                  ej:"ときどきえいがをみます。"},
+  {id:508,w:"usually",    k:"ユージュアリー",    p:"副詞",  m:"たいてい・ふだんは",                        ej:"たいていはやくおきます。"},
+  {id:509,w:"still",      k:"スティル",          p:"副詞",  m:"まだ・まだも",                              ej:"まだべんきょうしています。"},
+  {id:510,w:"again",      k:"アゲイン",          p:"副詞",  m:"もういちど",                                ej:"もういちどやってみましょう。"},
+  {id:511,w:"really",     k:"リアリー",          p:"副詞",  m:"ほんとうに・とても",                        ej:"ほんとうにすごいです。"},
+  {id:512,w:"very",       k:"ベリー",            p:"副詞",  m:"とても",                                    ej:"とてもうれしいです。"},
+  {id:513,w:"quite",      k:"クワイト",          p:"副詞",  m:"かなり・とても",                            ej:"かなりむずかしいです。"},
+  {id:514,w:"almost",     k:"オールモスト",      p:"副詞",  m:"ほとんど・もうすこしで",                    ej:"ほとんどできました。"},
+  {id:515,w:"finally",    k:"ファイナリー",      p:"副詞",  m:"とうとう・ついに",                          ej:"ついにゴールにとうちゃくしました。"},
+  {id:516,w:"suddenly",   k:"サデンリー",        p:"副詞",  m:"とつぜん",                                  ej:"とつぜんあめがふってきました。"},
+  {id:517,w:"quickly",    k:"クイックリー",      p:"副詞",  m:"はやく",                                    ej:"はやくそうじしました。"},
+  {id:518,w:"slowly",     k:"スロウリー",        p:"副詞",  m:"ゆっくり",                                  ej:"ゆっくりあるきましょう。"},
+  {id:519,w:"carefully",  k:"ケアフリー",        p:"副詞",  m:"ていねいに・きをつけて",                    ej:"ていねいにかきましょう。"},
+  {id:520,w:"clearly",    k:"クリアリー",        p:"副詞",  m:"はっきりと",                                ej:"はっきりとはなしてください。"},
+  {id:521,w:"easily",     k:"イージリー",        p:"副詞",  m:"かんたんに",                                ej:"かんたんにといてしまいました。"},
+  {id:522,w:"especially", k:"エスペシャリー",    p:"副詞",  m:"とくに",                                    ej:"とくにすきなものはいちごです。"},
+  {id:523,w:"exactly",    k:"イグザクトリー",    p:"副詞",  m:"ちょうど・まさに",                          ej:"ちょうどさんじにきました。"},
+  {id:524,w:"immediately",k:"イミーディエトリー",p:"副詞",  m:"すぐに",                                    ej:"すぐにへんじしました。"},
+  {id:525,w:"probably",   k:"プロバブリー",      p:"副詞",  m:"たぶん",                                    ej:"たぶんあしたはれるでしょう。"},
+  {id:526,w:"simply",     k:"シンプリー",        p:"副詞",  m:"かんたんに・ただ",                          ej:"かんたんにいうとこういうことです。"},
+  {id:527,w:"together",   k:"トゥゲザー",        p:"副詞",  m:"いっしょに",                                ej:"いっしょにがんばりましょう。"},
+  {id:528,w:"alone",      k:"アローン",          p:"副詞",  m:"ひとりで",                                  ej:"ひとりでかんがえました。"},
+  {id:529,w:"away",       k:"アウェイ",          p:"副詞",  m:"はなれて・むこうへ",                        ej:"むこうにはしっていきました。"},
+  {id:530,w:"abroad",     k:"アブロード",        p:"副詞",  m:"がいこくに",                                ej:"がいこくにいきたいです。"},
+  {id:531,w:"capacity",   k:"キャパシティ",      p:"名詞",  m:"のうりょく・よゆう",                        ej:"のうりょくをのばしましょう。"},
+  {id:532,w:"result",     k:"リザルト",          p:"名詞",  m:"けっか",                                    ej:"けっかをまっています。"},
+  {id:533,w:"reason",     k:"リーズン",          p:"名詞",  m:"りゆう",                                    ej:"りゆうをおしえてください。"},
+  {id:534,w:"purpose",    k:"パーパス",          p:"名詞",  m:"もくてき・目的",                            ej:"もくてきをもってべんきょうします。"},
+  {id:535,w:"goal",       k:"ゴール",            p:"名詞",  m:"もくひょう・ゴール",                        ej:"もくひょうにむかってがんばります。"},
+  {id:536,w:"effort",     k:"エフォート",        p:"名詞",  m:"どりょく",                                  ej:"どりょくがみのりました。"},
+  {id:537,w:"progress",   k:"プログレス",        p:"名詞",  m:"しんぽ・せいちょう",                        ej:"たくさんしんぽしました。"},
+  {id:538,w:"success",    k:"サクセス",          p:"名詞",  m:"せいこう",                                  ej:"せいこうをおめでとう！"},
+  {id:539,w:"failure",    k:"フェイリャー",      p:"名詞",  m:"しっぱい",                                  ej:"しっぱいからまなびましょう。"},
+  {id:540,w:"problem",    k:"プロブレム",        p:"名詞",  m:"もんだい",                                  ej:"もんだいをといてください。"},
+  {id:541,w:"answer",     k:"アンサー",          p:"名詞",  m:"こたえ",                                    ej:"ただしいこたえです。"},
+  {id:542,w:"question",   k:"クエスチョン",      p:"名詞",  m:"しつもん",                                  ej:"しつもんがあります。"},
+  {id:543,w:"choice",     k:"チョイス",          p:"名詞",  m:"えらぶこと・えらびかた",                    ej:"よいえらびかたです。"},
+  {id:544,w:"chance",     k:"チャンス",          p:"名詞",  m:"チャンス・きかい",                          ej:"チャンスをつかみましょう。"},
+  {id:545,w:"skill",      k:"スキル",            p:"名詞",  m:"ぎじゅつ・うでまえ",                        ej:"えいごのスキルをみがきましょう。"},
+  {id:546,w:"potential",  k:"ポテンシャル",      p:"名詞",  m:"かのうせい・さいのう",                      ej:"じぶんのさいのうをしんじて。"},
+  {id:547,w:"talent",     k:"タレント",          p:"名詞",  m:"さいのう・とくぎ",                          ej:"さいのうをいかしましょう。"},
+  {id:548,w:"habit",      k:"ハビット",          p:"名詞",  m:"しゅうかん",                                ej:"よいしゅうかんをみにつけましょう。"},
+  {id:549,w:"attitude",   k:"アティテュード",    p:"名詞",  m:"たいど・きもちのもちかた",                  ej:"たいどをよくしましょう。"},
+  {id:550,w:"opinion",    k:"オピニオン",        p:"名詞",  m:"いけん",                                    ej:"じぶんのいけんをはなしましょう。"},
+  {id:551,w:"fact",       k:"ファクト",          p:"名詞",  m:"じじつ",                                    ej:"これはじじつです。"},
+  {id:552,w:"truth",      k:"トゥルース",        p:"名詞",  m:"しんじつ・ほんとう",                        ej:"しんじつをはなしてください。"},
+  {id:553,w:"lie",        k:"ライ",              p:"名詞",  m:"うそ",                                      ej:"うそはいけません。"},
+  {id:554,w:"promise",    k:"プロミス",          p:"名詞",  m:"やくそく",                                  ej:"やくそくをまもりました。"},
+  {id:555,w:"regulation", k:"レギュレーション",  p:"名詞",  m:"きそく・きまり",                            ej:"きそくをまもりましょう。"},
+  {id:556,w:"reward",     k:"リワード",          p:"名詞",  m:"ほうび・むくい",                            ej:"がんばったのでほうびをもらいました。"},
+  {id:557,w:"training",   k:"トレーニング",      p:"名詞",  m:"くんれん・れんしゅう",                      ej:"れんしゅうをかさねましょう。"},
+  {id:558,w:"method",     k:"メソッド",          p:"名詞",  m:"ほうほう",                                  ej:"よいほうほうをみつけました。"},
+  {id:559,w:"step",       k:"ステップ",          p:"名詞",  m:"いっぽ・てじゅん",                          ej:"いっぽずつすすみましょう。"},
+  {id:560,w:"level",      k:"レベル",            p:"名詞",  m:"レベル・だんかい",                          ej:"レベルがあがりました。"},
+  {id:561,w:"point",      k:"ポイント",          p:"名詞",  m:"ポイント・てん",                            ej:"ポイントをためました。"},
+  {id:562,w:"example",    k:"イグザンプル",      p:"名詞",  m:"れい",                                      ej:"れいをしめしてください。"},
+  {id:563,w:"list",       k:"リスト",            p:"名詞",  m:"リスト・めいぼ",                            ej:"リストをつくりました。"},
+  {id:564,w:"plan",       k:"プラン",            p:"名詞",  m:"けいかく",                                  ej:"りょこうのけいかくをたてました。"},
+  {id:565,w:"project",    k:"プロジェクト",      p:"名詞",  m:"プロジェクト",                              ej:"プロジェクトにさんかしました。"},
+  {id:566,w:"activity",   k:"アクティビティ",    p:"名詞",  m:"かつどう",                                  ej:"クラスのかつどうにさんかしました。"},
+  {id:567,w:"role",       k:"ロール",            p:"名詞",  m:"やくわり",                                  ej:"じぶんのやくわりをはたしました。"},
+  {id:568,w:"position",   k:"ポジション",        p:"名詞",  m:"いち・たちば",                              ej:"いちをかくにんしてください。"},
+  {id:569,w:"part",       k:"パート",            p:"名詞",  m:"ぶぶん・やく",                              ej:"だいじなぶぶんです。"},
+  {id:570,w:"side",       k:"サイド",            p:"名詞",  m:"がわ",                                      ej:"みぎがわにすわってください。"},
+  {id:571,w:"front",      k:"フロント",          p:"名詞",  m:"まえ",                                      ej:"まえにすすみましょう。"},
+  {id:572,w:"center",     k:"センター",          p:"名詞",  m:"まんなか・センター",                        ej:"まんなかにたってください。"},
+  {id:573,w:"area",       k:"エリア",            p:"名詞",  m:"ちいき・エリア",                            ej:"このちいきはしずかです。"},
+  {id:574,w:"region",     k:"リージョン",        p:"名詞",  m:"ちほう・ちいき",                            ej:"このちほうはゆうめいです。"},
+  {id:575,w:"border",     k:"ボーダー",          p:"名詞",  m:"さかい・こっきょう",                        ej:"くにのさかいをこえました。"},
+  {id:576,w:"location",   k:"ロケーション",      p:"名詞",  m:"ばしょ・いち",                              ej:"ばしょをかくにんしました。"},
+  {id:577,w:"gap",        k:"ギャップ",          p:"名詞",  m:"すきま・ひらき",                            ej:"もんのすきまからのぞきました。"},
+  {id:578,w:"weight",     k:"ウェイト",          p:"名詞",  m:"おもさ",                                    ej:"おもさをはかりました。"},
+  {id:579,w:"speed",      k:"スピード",          p:"名詞",  m:"はやさ・スピード",                          ej:"スピードをおとしてください。"},
+  {id:580,w:"power",      k:"パワー",            p:"名詞",  m:"ちから・パワー",                            ej:"もっとパワーがひつようです。"},
+  {id:581,w:"force",      k:"フォース",          p:"名詞",  m:"ちから・いきおい",                          ej:"つよいちからです。"},
+  {id:582,w:"battery",    k:"バッテリー",        p:"名詞",  m:"でんち",                                    ej:"でんちがなくなりました。"},
+  {id:583,w:"light",      k:"ライト",            p:"名詞",  m:"ひかり・あかり",                            ej:"あかりをつけてください。"},
+  {id:584,w:"sound",      k:"サウンド",          p:"名詞",  m:"おと",                                      ej:"おとをきいてみてください。"},
+  {id:585,w:"voice",      k:"ボイス",            p:"名詞",  m:"こえ",                                      ej:"おおきなこえでよんでください。"},
+  {id:586,w:"word",       k:"ワード",            p:"名詞",  m:"ことば・たんご",                            ej:"あたらしいたんごをおぼえました。"},
+  {id:587,w:"sentence",   k:"センテンス",        p:"名詞",  m:"ぶんしょう",                                ej:"えいごのぶんをかきました。"},
+  {id:588,w:"paragraph",  k:"パラグラフ",        p:"名詞",  m:"だんらく",                                  ej:"だんらくをまとめました。"},
+  {id:589,w:"page",       k:"ページ",            p:"名詞",  m:"ページ",                                    ej:"10ページをひらいてください。"},
+  {id:590,w:"chapter",    k:"チャプター",        p:"名詞",  m:"しょう・チャプター",                        ej:"だいさんしょうをよみました。"},
+  {id:591,w:"title",      k:"タイトル",          p:"名詞",  m:"だいめい・タイトル",                        ej:"ほんのだいめいをおしえてください。"},
+  {id:592,w:"topic",      k:"トピック",          p:"名詞",  m:"だいもく・トピック",                        ej:"きょうのトピックはなんですか。"},
+  {id:593,w:"content",    k:"コンテント",        p:"名詞",  m:"ないよう",                                  ej:"ないようをたしかめました。"},
+  {id:594,w:"meaning",    k:"ミーニング",        p:"名詞",  m:"いみ",                                      ej:"このたんごのいみはなんですか。"},
+  {id:595,w:"translation",k:"トランスレーション",p:"名詞",  m:"ほんやく",                                  ej:"ほんやくをしました。"},
+  {id:596,w:"grammar",    k:"グラマー",          p:"名詞",  m:"ぶんぽう",                                  ej:"ぶんぽうをべんきょうしました。"},
+  {id:597,w:"vocabulary", k:"ボキャブラリー",    p:"名詞",  m:"ごい・たんごのちから",                      ej:"ごいをふやしましょう。"},
+  {id:598,w:"accent",     k:"アクセント",        p:"名詞",  m:"アクセント・なまり",                        ej:"えいごのアクセントをれんしゅうしました。"},
+  {id:599,w:"pronunciation",k:"プロナンシエーション",p:"名詞",m:"はつおん",                               ej:"はつおんをれんしゅうしました。"},
+  {id:600,w:"heritage",   k:"ヘリテッジ",        p:"名詞",  m:"ぶんかいさん・でんとう",                    ej:"ぶんかいさんをまもりましょう。"},
+  {id:601,w:"custom",     k:"カスタム",          p:"名詞",  m:"しゅうかん・ならわし",                      ej:"このくにのならわしをまなびました。"},
+  {id:602,w:"festival",   k:"フェスティバル",    p:"名詞",  m:"まつり・フェスティバル",                    ej:"まつりにいきました。"},
+  {id:603,w:"ceremony",   k:"セレモニー",        p:"名詞",  m:"ぎしき・セレモニー",                        ej:"そつぎょうのぎしきがありました。"},
+  {id:604,w:"symbol",     k:"シンボル",          p:"名詞",  m:"シンボル・しるし",                          ej:"このしるしはへいわをあらわします。"},
+  {id:605,w:"flag",       k:"フラッグ",          p:"名詞",  m:"はた・こっき",                              ej:"にほんのはたがあります。"},
+  {id:606,w:"dialect",    k:"ダイアレクト",      p:"名詞",  m:"ほうげん",                                  ej:"ちいきのほうげんがあります。"},
+  {id:607,w:"war",        k:"ウォー",            p:"名詞",  m:"せんそう",                                  ej:"せんそうはよくないです。"},
+  {id:608,w:"peace",      k:"ピース",            p:"名詞",  m:"へいわ",                                    ej:"へいわなせかいをつくりましょう。"},
+  {id:609,w:"law",        k:"ロー",              p:"名詞",  m:"ほうりつ",                                  ej:"ほうりつをまもりましょう。"},
+  {id:610,w:"right",      k:"ライト",            p:"名詞",  m:"けんり",                                    ej:"こどものけんりをまもりましょう。"},
+  {id:611,w:"freedom",    k:"フリーダム",        p:"名詞",  m:"じゆう",                                    ej:"じゆうがたいせつです。"},
+  {id:612,w:"democracy",  k:"デモクラシー",      p:"名詞",  m:"みんしゅしゅぎ",                            ej:"みんしゅしゅぎはたいせつです。"},
+  {id:613,w:"election",   k:"エレクション",      p:"名詞",  m:"せんきょ",                                  ej:"せんきょでとうひょうしました。"},
+  {id:614,w:"leader",     k:"リーダー",          p:"名詞",  m:"リーダー・しどうしゃ",                      ej:"よいリーダーになりたいです。"},
+  {id:615,w:"authority",  k:"オーソリティ",      p:"名詞",  m:"けんりょく・けんい",                        ej:"けんりょくをもっています。"},
+  {id:616,w:"citizen",    k:"シチズン",          p:"名詞",  m:"しみん",                                    ej:"よいしみんになりましょう。"},
+  {id:617,w:"community",  k:"コミュニティ",      p:"名詞",  m:"ちいきのひとびと",                          ej:"ちいきのかつどうにさんかしました。"},
+  {id:618,w:"charity",    k:"チャリティー",      p:"名詞",  m:"チャリティー・じぜん",                      ej:"チャリティーにきふしました。"},
+  {id:619,w:"donation",   k:"ドネーション",      p:"名詞",  m:"きふ",                                      ej:"きふをありがとうございます。"},
+  {id:620,w:"poverty",    k:"ポバティー",        p:"名詞",  m:"びんこん",                                  ej:"びんこんをなくしましょう。"},
+  {id:621,w:"pollution",  k:"ポリューション",    p:"名詞",  m:"おせん・よごれ",                            ej:"みずをよごさないでください。"},
+  {id:622,w:"waste",      k:"ウェイスト",        p:"名詞",  m:"むだ・ごみ",                                ej:"むだをなくしましょう。"},
+  {id:623,w:"recycle",    k:"リサイクル",        p:"動詞",  m:"リサイクルする",                            ej:"びんをリサイクルしました。"},
+  {id:624,w:"reduce",     k:"リデュース",        p:"動詞",  m:"へらす",                                    ej:"ごみをへらしましょう。"},
+  {id:625,w:"reuse",      k:"リユース",          p:"動詞",  m:"つかいなおす",                              ej:"ふくろをつかいなおしました。"},
+  {id:626,w:"climate",    k:"クライメイト",      p:"名詞",  m:"きこう・てんこう",                          ej:"きこうがかわってきています。"},
+  {id:627,w:"temperature",k:"テンパラチャー",    p:"名詞",  m:"きおん・おんど",                            ej:"きょうのきおんはなんどですか。"},
+  {id:628,w:"flood",      k:"フラッド",          p:"名詞",  m:"こうずい",                                  ej:"こうずいがおきました。"},
+  {id:629,w:"drought",    k:"ドラウト",          p:"名詞",  m:"かんばつ",                                  ej:"かんばつでみずがたりません。"},
+  {id:630,w:"storm",      k:"ストーム",          p:"名詞",  m:"あらし",                                    ej:"おおあらしがきました。"},
+  {id:631,w:"thunder",    k:"サンダー",          p:"名詞",  m:"かみなり",                                  ej:"かみなりがなっています。"},
+  {id:632,w:"lightning",  k:"ライトニング",      p:"名詞",  m:"いなずま",                                  ej:"いなずまがひかりました。"},
+  {id:633,w:"rainbow",    k:"レインボー",        p:"名詞",  m:"にじ",                                      ej:"あめのあとににじがでました。"},
+  {id:634,w:"fog",        k:"フォッグ",          p:"名詞",  m:"きり",                                      ej:"きりがかかっています。"},
+  {id:635,w:"ice",        k:"アイス",            p:"名詞",  m:"こおり",                                    ej:"こおりがはりました。"},
+  {id:636,w:"wave",       k:"ウェイブ",          p:"名詞",  m:"なみ",                                      ej:"おおきいなみがきました。"},
+  {id:637,w:"sand",       k:"サンド",            p:"名詞",  m:"すな",                                      ej:"すなはまであそびました。"},
+  {id:638,w:"rock",       k:"ロック",            p:"名詞",  m:"いわ",                                      ej:"おおきないわがあります。"},
+  {id:639,w:"soil",       k:"ソイル",            p:"名詞",  m:"つち",                                      ej:"つちをほりました。"},
+  {id:640,w:"wood",       k:"ウッド",            p:"名詞",  m:"もくざい・き",                              ej:"もくざいでいすをつくりました。"},
+  {id:641,w:"metal",      k:"メタル",            p:"名詞",  m:"きんぞく",                                  ej:"きんぞくのコップです。"},
+  {id:642,w:"plastic",    k:"プラスチック",      p:"名詞",  m:"プラスチック",                              ej:"プラスチックをへらしましょう。"},
+  {id:643,w:"glass",      k:"グラス",            p:"名詞",  m:"ガラス・コップ",                            ej:"ガラスのコップです。"},
+  {id:644,w:"paper",      k:"ペーパー",          p:"名詞",  m:"かみ",                                      ej:"かみにかきました。"},
+  {id:645,w:"cloth",      k:"クロス",            p:"名詞",  m:"ぬの",                                      ej:"ぬのをつかってぞうきんをつくりました。"},
+  {id:646,w:"cotton",     k:"コットン",          p:"名詞",  m:"めんもくせん",                              ej:"めんのシャツをきています。"},
+  {id:647,w:"oil",        k:"オイル",            p:"名詞",  m:"あぶら",                                    ej:"サラダにあぶらをかけました。"},
+  {id:648,w:"fuel",       k:"フュエル",          p:"名詞",  m:"ねんりょう",                                ej:"ねんりょうがなくなりました。"},
+  {id:649,w:"electricity",k:"エレクトリシティ",  p:"名詞",  m:"でんき",                                    ej:"でんきをせつやくしましょう。"},
+  {id:650,w:"gas",        k:"ガス",              p:"名詞",  m:"ガス",                                      ej:"ガスをとめてください。"},
+  {id:651,w:"machine",    k:"マシーン",          p:"名詞",  m:"きかい",                                    ej:"きかいがうごいています。"},
+  {id:652,w:"engine",     k:"エンジン",          p:"名詞",  m:"エンジン",                                  ej:"エンジンをかけました。"},
+  {id:653,w:"robot",      k:"ロボット",          p:"名詞",  m:"ロボット",                                  ej:"ロボットがはたらいています。"},
+  {id:654,w:"program",    k:"プログラム",        p:"名詞",  m:"プログラム",                                ej:"コンピューターのプログラムです。"},
+  {id:655,w:"system",     k:"システム",          p:"名詞",  m:"システム",                                  ej:"あたらしいシステムをつかいます。"},
+  {id:656,w:"network",    k:"ネットワーク",      p:"名詞",  m:"ネットワーク",                              ej:"ネットワークにつながりました。"},
+  {id:657,w:"data",       k:"データ",            p:"名詞",  m:"データ",                                    ej:"データをかいせきしました。"},
+  {id:658,w:"information",k:"インフォメーション",p:"名詞",  m:"じょうほう",                                ej:"じょうほうをあつめました。"},
+  {id:659,w:"screen",     k:"スクリーン",        p:"名詞",  m:"がめん・スクリーン",                        ej:"がめんをみてください。"},
+  {id:660,w:"keyboard",   k:"キーボード",        p:"名詞",  m:"キーボード",                                ej:"キーボードをたたいています。"},
+  {id:661,w:"button",     k:"ボタン",            p:"名詞",  m:"ボタン",                                    ej:"ボタンをおしてください。"},
+  {id:662,w:"device",     k:"デバイス",          p:"名詞",  m:"きき・デバイス",                            ej:"デバイスをつかっています。"},
+  {id:663,w:"tool",       k:"ツール",            p:"名詞",  m:"どうぐ",                                    ej:"どうぐをつかいました。"},
+  {id:664,w:"equipment",  k:"イクイップメント",  p:"名詞",  m:"どうぐ・そうび",                            ej:"そうびをととのえました。"},
+  {id:665,w:"material",   k:"マテリアル",        p:"名詞",  m:"ざいりょう",                                ej:"ざいりょうをじゅんびしました。"},
+  {id:666,w:"product",    k:"プロダクト",        p:"名詞",  m:"せいひん",                                  ej:"あたらしいせいひんができました。"},
+  {id:667,w:"item",       k:"アイテム",          p:"名詞",  m:"もの・アイテム",                            ej:"このアイテムがほしいです。"},
+  {id:668,w:"package",    k:"パッケージ",        p:"名詞",  m:"にもつ・パッケージ",                        ej:"にもつがとどきました。"},
+  {id:669,w:"box",        k:"ボックス",          p:"名詞",  m:"はこ",                                      ej:"はこにしまいました。"},
+  {id:670,w:"bag",        k:"バッグ",            p:"名詞",  m:"ふくろ・バッグ",                            ej:"バッグにいれました。"},
+  {id:671,w:"bottle",     k:"ボトル",            p:"名詞",  m:"びん・ボトル",                              ej:"みずのボトルをかいました。"},
+  {id:672,w:"cup",        k:"カップ",            p:"名詞",  m:"カップ・コップ",                            ej:"カップにおちゃをいれました。"},
+  {id:673,w:"plate",      k:"プレート",          p:"名詞",  m:"おさら",                                    ej:"おさらをあらいました。"},
+  {id:674,w:"fork",       k:"フォーク",          p:"名詞",  m:"フォーク",                                  ej:"フォークをつかいました。"},
+  {id:675,w:"spoon",      k:"スプーン",          p:"名詞",  m:"スプーン",                                  ej:"スプーンでたべました。"},
+  {id:676,w:"knife",      k:"ナイフ",            p:"名詞",  m:"ナイフ",                                    ej:"ナイフできりました。"},
+  {id:677,w:"chair",      k:"チェアー",          p:"名詞",  m:"いす",                                      ej:"いすにすわってください。"},
+  {id:678,w:"table",      k:"テーブル",          p:"名詞",  m:"テーブル",                                  ej:"テーブルのうえにあります。"},
+  {id:679,w:"bed",        k:"ベッド",            p:"名詞",  m:"ベッド",                                    ej:"ベッドでねました。"},
+  {id:680,w:"shelf",      k:"シェルフ",          p:"名詞",  m:"たな",                                      ej:"たなにほんをならべました。"},
+  {id:681,w:"lamp",       k:"ランプ",            p:"名詞",  m:"ランプ・でんき",                            ej:"ランプをつけました。"},
+  {id:682,w:"mirror",     k:"ミラー",            p:"名詞",  m:"かがみ",                                    ej:"かがみをみました。"},
+  {id:683,w:"clock",      k:"クロック",          p:"名詞",  m:"とけい",                                    ej:"とけいをみました。"},
+  {id:684,w:"calendar",   k:"カレンダー",        p:"名詞",  m:"カレンダー",                                ej:"カレンダーをみました。"},
+  {id:685,w:"towel",      k:"タオル",            p:"名詞",  m:"タオル",                                    ej:"タオルでてをふきました。"},
+  {id:686,w:"soap",       k:"ソープ",            p:"名詞",  m:"せっけん",                                  ej:"せっけんでてをあらいました。"},
+  {id:687,w:"toothbrush", k:"トゥースブラシ",    p:"名詞",  m:"はぶらし",                                  ej:"はぶらしではをみがきます。"},
+  {id:688,w:"umbrella",   k:"アンブレラ",        p:"名詞",  m:"かさ",                                      ej:"かさをもってきました。"},
+  {id:689,w:"hat",        k:"ハット",            p:"名詞",  m:"ぼうし",                                    ej:"ぼうしをかぶりました。"},
+  {id:690,w:"coat",       k:"コート",            p:"名詞",  m:"コート・うわぎ",                            ej:"コートをきました。"},
+  {id:691,w:"shirt",      k:"シャツ",            p:"名詞",  m:"シャツ",                                    ej:"しろいシャツをきています。"},
+  {id:692,w:"shoe",       k:"シュー",            p:"名詞",  m:"くつ",                                      ej:"くつをはきました。"},
+  {id:693,w:"sock",       k:"ソック",            p:"名詞",  m:"くつした",                                  ej:"くつしたをはきました。"},
+  {id:694,w:"glasses",    k:"グラシーズ",        p:"名詞",  m:"めがね",                                    ej:"めがねをかけています。"},
+  {id:695,w:"watch",      k:"ウォッチ",          p:"名詞",  m:"うでどけい",                                ej:"うでどけいをしています。"},
+  {id:696,w:"ring",       k:"リング",            p:"名詞",  m:"ゆびわ",                                    ej:"ゆびわをしています。"},
+  {id:697,w:"necklace",   k:"ネックレス",        p:"名詞",  m:"ネックレス",                                ej:"ネックレスをしています。"},
+  {id:698,w:"pocket",     k:"ポケット",          p:"名詞",  m:"ポケット",                                  ej:"ポケットにいれました。"},
+  {id:699,w:"cloth",      k:"クロース",          p:"名詞",  m:"ふく・いしょう",                            ej:"あたたかいふくをきました。"},
+  {id:700,w:"fashion",    k:"ファッション",      p:"名詞",  m:"ファッション",                              ej:"ファッションがすきです。"},
+  {id:701,w:"style",      k:"スタイル",          p:"名詞",  m:"スタイル・ようしき",                        ej:"このスタイルがすきです。"},
+  {id:702,w:"design",     k:"デザイン",          p:"名詞",  m:"デザイン",                                  ej:"きれいなデザインです。"},
+  {id:703,w:"pattern",    k:"パターン",          p:"名詞",  m:"がら・パターン",                            ej:"きれいながらのぬのです。"},
+  {id:704,w:"model",      k:"モデル",            p:"名詞",  m:"モデル・けいしき",                          ej:"あたらしいモデルがでました。"},
+  {id:705,w:"type",       k:"タイプ",            p:"名詞",  m:"しゅるい・タイプ",                          ej:"どんなタイプがすきですか。"},
+  {id:706,w:"kind",       k:"カインド",          p:"名詞",  m:"しゅるい",                                  ej:"いろいろなしゅるいがあります。"},
+  {id:707,w:"group",      k:"グループ",          p:"名詞",  m:"グループ",                                  ej:"グループにわかれました。"},
+  {id:708,w:"class",      k:"クラス",            p:"名詞",  m:"クラス・くみ",                              ej:"クラスのみんなとあそびました。"},
+  {id:709,w:"team",       k:"チーム",            p:"名詞",  m:"チーム",                                    ej:"チームでがんばりました。"},
+  {id:710,w:"partner",    k:"パートナー",        p:"名詞",  m:"パートナー・なかま",                        ej:"パートナーといっしょにします。"},
+  {id:711,w:"audience",   k:"オーディエンス",    p:"名詞",  m:"かんきゃく",                                ej:"かんきゃくがたくさんいます。"},
+  {id:712,w:"crowd",      k:"クラウド",          p:"名詞",  m:"ひとごみ",                                  ej:"ひとごみのなかをあるきました。"},
+  {id:713,w:"public",     k:"パブリック",        p:"名詞",  m:"こうきょう・みんな",                        ej:"こうきょうのばしょをつかいます。"},
+  {id:714,w:"census",     k:"センサス",          p:"名詞",  m:"こくせいちょうさ",                          ej:"じんこうをちょうさしました。"},
+  {id:715,w:"generation", k:"ジェネレーション",  p:"名詞",  m:"せだい",                                    ej:"つぎのせだいにつなげましょう。"},
+  {id:716,w:"age",        k:"エイジ",            p:"名詞",  m:"じだい",                                    ej:"AIのじだいです。"},
+  {id:717,w:"century",    k:"センチュリー",      p:"名詞",  m:"せいき",                                    ej:"21せいきです。"},
+  {id:718,w:"decade",     k:"ディケイド",        p:"名詞",  m:"じゅうねんかん",                            ej:"10ねんかんでかわりました。"},
+  {id:719,w:"moment",     k:"モーメント",        p:"名詞",  m:"しゅんかん・いっとき",                      ej:"このしゅんかんをたいせつに。"},
+  {id:720,w:"period",     k:"ピリオド",          p:"名詞",  m:"きかん・じき",                              ej:"なつのきかんにたびをします。"},
+  {id:721,w:"future",     k:"フューチャー",      p:"名詞",  m:"みらい",                                    ej:"みらいはあかるいです。"},
+  {id:722,w:"past",       k:"パスト",            p:"名詞",  m:"かこ",                                      ej:"かこからまなびましょう。"},
+  {id:723,w:"present",    k:"プレゼント",        p:"名詞",  m:"げんざい",                                  ej:"げんざいをたいせつにしましょう。"},
+  {id:724,w:"today",      k:"トゥデイ",          p:"名詞",  m:"きょう",                                    ej:"きょうはいいてんきです。"},
+  {id:725,w:"tomorrow",   k:"トゥモロー",        p:"名詞",  m:"あした",                                    ej:"あしたがたのしみです。"},
+  {id:726,w:"yesterday",  k:"イェスタデイ",      p:"名詞",  m:"きのう",                                    ej:"きのうはたのしかったです。"},
+  {id:727,w:"morning",    k:"モーニング",        p:"名詞",  m:"あさ",                                      ej:"あさはやくおきます。"},
+  {id:728,w:"afternoon",  k:"アフタヌーン",      p:"名詞",  m:"ごご",                                      ej:"ごごからべんきょうします。"},
+  {id:729,w:"evening",    k:"イブニング",        p:"名詞",  m:"ゆうがた",                                  ej:"ゆうがたにさんぽしました。"},
+  {id:730,w:"night",      k:"ナイト",            p:"名詞",  m:"よる",                                      ej:"よるははやくねましょう。"},
+  {id:731,w:"week",       k:"ウィーク",          p:"名詞",  m:"しゅう・いっしゅうかん",                    ej:"らいしゅうもがんばります。"},
+  {id:732,w:"month",      k:"マンス",            p:"名詞",  m:"つき",                                      ej:"らいつきがたのしみです。"},
+  {id:733,w:"year",       k:"イヤー",            p:"名詞",  m:"ねん・いちねん",                            ej:"らいねんもよろしくおねがいします。"},
+  {id:734,w:"minute",     k:"ミニット",          p:"名詞",  m:"ふん・ぷん",                                ej:"5ふんまってください。"},
+  {id:735,w:"hour",       k:"アワー",            p:"名詞",  m:"じかん・じ",                                ej:"1じかんかかりました。"},
+  {id:736,w:"second",     k:"セカンド",          p:"名詞",  m:"びょう・2ばんめ",                           ej:"10びょうまってください。"},
+  {id:737,w:"half",       k:"ハーフ",            p:"名詞",  m:"はんぶん",                                  ej:"はんぶんにわけました。"},
+  {id:738,w:"whole",      k:"ホール",            p:"名詞",  m:"ぜんぶ・まるごと",                          ej:"ぜんぶたべました。"},
+  {id:739,w:"piece",      k:"ピース",            p:"名詞",  m:"かけら・ひとつ",                            ej:"ケーキをひとつたべました。"},
+  {id:740,w:"pair",       k:"ペアー",            p:"名詞",  m:"ペア・ふたつひとくみ",                      ej:"ペアでかつどうしました。"},
+  {id:741,w:"set",        k:"セット",            p:"名詞",  m:"セット・くみあわせ",                        ej:"セットでかいました。"},
+  {id:742,w:"total",      k:"トータル",          p:"名詞",  m:"ごうけい",                                  ej:"ごうけいはいくらですか。"},
+  {id:743,w:"average",    k:"アベレージ",        p:"名詞",  m:"へいきん",                                  ej:"へいきんてんすうはなんてんですか。"},
+  {id:744,w:"rate",       k:"レイト",            p:"名詞",  m:"わりあい・りつ",                            ej:"せいこうりつがたかいです。"},
+  {id:745,w:"percent",    k:"パーセント",        p:"名詞",  m:"パーセント",                                ej:"80パーセントがせいかいでした。"},
+  {id:746,w:"amount",     k:"アマウント",        p:"名詞",  m:"りょう・かず",                              ej:"たべるりょうをへらしました。"},
+  {id:747,w:"quantity",   k:"クォンティティ",    p:"名詞",  m:"りょう・かず",                              ej:"じゅうぶんなりょうがあります。"},
+  {id:748,w:"quality",    k:"クォリティ",        p:"名詞",  m:"しつ・クオリティ",                          ej:"クオリティがたかいです。"},
+  {id:749,w:"value",      k:"バリュー",          p:"名詞",  m:"かち",                                      ej:"このものはかちがあります。"},
+  {id:750,w:"standard",   k:"スタンダード",      p:"名詞",  m:"きじゅん・スタンダード",                    ej:"きじゅんをたかくもちましょう。"},
+  {id:751,w:"measure",    k:"メジャー",          p:"動詞",  m:"はかる",                                    ej:"ながさをはかりました。"},
+  {id:752,w:"compare",    k:"コンペアー",        p:"動詞",  m:"くらべる",                                  ej:"ふたつをくらべました。"},
+  {id:753,w:"select",     k:"セレクト",          p:"動詞",  m:"えらぶ",                                    ej:"すきなものをえらびました。"},
+  {id:754,w:"collect",    k:"コレクト",          p:"動詞",  m:"あつめる",                                  ej:"スタンプをあつめました。"},
+  {id:755,w:"organize",   k:"オーガナイズ",      p:"動詞",  m:"せいりする",                                ej:"きょうしつをせいりしました。"},
+  {id:756,w:"manage",     k:"マネジ",            p:"動詞",  m:"かんりする・うまくやる",                    ej:"じかんをかんりしましょう。"},
+  {id:757,w:"control",    k:"コントロール",      p:"動詞",  m:"コントロールする",                          ej:"じぶんをコントロールします。"},
+  {id:758,w:"handle",     k:"ハンドル",          p:"動詞",  m:"あつかう・たいしょする",                    ej:"もんだいにたいしょしました。"},
+  {id:759,w:"operate",    k:"オペレイト",        p:"動詞",  m:"そうさする",                                ej:"きかいをそうさしました。"},
+  {id:760,w:"perform",    k:"パフォーム",        p:"動詞",  m:"えんじる・おこなう",                        ej:"ステージでえんじました。"},
+  {id:761,w:"complete",   k:"コンプリート",      p:"動詞",  m:"かんせいする・おえる",                      ej:"しゅくだいをかんせいしました。"},
+  {id:762,w:"connect",    k:"コネクト",          p:"動詞",  m:"つなぐ・つながる",                          ej:"インターネットにつながりました。"},
+  {id:763,w:"combine",    k:"コンバイン",        p:"動詞",  m:"あわせる・くみあわせる",                    ej:"いろをあわせました。"},
+  {id:764,w:"separate",   k:"セパレイト",        p:"動詞",  m:"わける・はなれる",                          ej:"チームをふたつにわけました。"},
+  {id:765,w:"divide",     k:"ディバイド",        p:"動詞",  m:"わる・わける",                              ej:"6をさんでわりました。"},
+  {id:766,w:"add",        k:"アッド",            p:"動詞",  m:"たす・くわえる",                            ej:"1たす1は2です。"},
+  {id:767,w:"remove",     k:"リムーブ",          p:"動詞",  m:"とりのぞく・はずす",                        ej:"ふようなものをとりのぞきました。"},
+  {id:768,w:"replace",    k:"リプレイス",        p:"動詞",  m:"とりかえる",                                ej:"ふるいものをとりかえました。"},
+  {id:769,w:"exchange",   k:"エクスチェンジ",    p:"動詞",  m:"こうかんする",                              ej:"カードをこうかんしました。"},
+  {id:770,w:"borrow",     k:"ボロー",            p:"動詞",  m:"かりる",                                    ej:"ほんをかりました。"},
+  {id:771,w:"lend",       k:"レンド",            p:"動詞",  m:"かす",                                      ej:"えんぴつをかしました。"},
+  {id:772,w:"pay",        k:"ペイ",              p:"動詞",  m:"はらう",                                    ej:"おかねをはらいました。"},
+  {id:773,w:"earn",       k:"アーン",            p:"動詞",  m:"かせぐ",                                    ej:"アルバイトでかせぎました。"},
+  {id:774,w:"cost",       k:"コスト",            p:"動詞",  m:"かかる",                                    ej:"いくらかかりますか。"},
+  {id:775,w:"order",      k:"オーダー",          p:"動詞",  m:"ちゅうもんする",                            ej:"ピザをちゅうもんしました。"},
+  {id:776,w:"offer",      k:"オファー",          p:"動詞",  m:"もうしでる",                                ej:"てつだいをもうしでました。"},
+  {id:777,w:"request",    k:"リクエスト",        p:"動詞",  m:"おねがいする",                              ej:"おねがいをきいてください。"},
+  {id:778,w:"require",    k:"リクワイアー",      p:"動詞",  m:"ひつようとする",                            ej:"じゅんびがひつようです。"},
+  {id:779,w:"grant",      k:"グラント",          p:"動詞",  m:"みとめる・あたえる",                        ej:"きょかをあたえました。"},
+  {id:780,w:"permit",     k:"パーミット",        p:"動詞",  m:"きょかする",                                ej:"ここではきんしです。"},
+  {id:781,w:"prevent",    k:"プリベント",        p:"動詞",  m:"ふせぐ",                                    ej:"じこをふせぎましょう。"},
+  {id:782,w:"escape",     k:"エスケイプ",        p:"動詞",  m:"にげる",                                    ej:"きけんからにげました。"},
+  {id:783,w:"settle",     k:"セトル",            p:"動詞",  m:"かいけつする・おちつく",                    ej:"もんだいをかいけつしました。"},
+  {id:784,w:"achieve",    k:"アチーブ",          p:"動詞",  m:"たっせいする",                              ej:"もくひょうをたっせいしました。"},
+  {id:785,w:"progress",   k:"プログレス",        p:"動詞",  m:"しんぽする",                                ej:"まいにちしんぽしています。"},
+  {id:786,w:"improve",    k:"インプルーブ",      p:"動詞",  m:"よくする・じょうたつする",                  ej:"えいごがじょうたつしました。"},
+  {id:787,w:"develop",    k:"ディベロップ",      p:"動詞",  m:"はってんする・かいはつする",                ej:"あたらしいアプリをかいはつしました。"},
+  {id:788,w:"expand",     k:"エクスパンド",      p:"動詞",  m:"ひろげる・ふやす",                          ej:"ちしきをひろげましょう。"},
+  {id:789,w:"extend",     k:"エクステンド",      p:"動詞",  m:"のばす・えんちょうする",                    ej:"きかんをのばしました。"},
+  {id:790,w:"reduce",     k:"リデュース",        p:"動詞",  m:"へらす・すくなくする",                      ej:"むだをへらしましょう。"},
+  {id:791,w:"limit",      k:"リミット",          p:"動詞",  m:"かぎる",                                    ej:"じかんをかぎります。"},
+  {id:792,w:"reach",      k:"リーチ",            p:"動詞",  m:"とどく・たどりつく",                        ej:"もくひょうにたどりつきました。"},
+  {id:793,w:"gain",       k:"ゲイン",            p:"動詞",  m:"える・みにつける",                          ej:"けいけんをえました。"},
+  {id:794,w:"forfeit",    k:"フォーフィット",    p:"動詞",  m:"うしなう",                                  ej:"けんりをうしないました。"},
+  {id:795,w:"maintain",   k:"メインテン",        p:"動詞",  m:"たもつ・いじする",                          ej:"けんこうをたもちましょう。"},
+  {id:796,w:"hold",       k:"ホールド",          p:"動詞",  m:"もつ・もちつづける",                        ej:"てをもってください。"},
+  {id:797,w:"break",      k:"ブレイク",          p:"動詞",  m:"こわす・わる",                              ej:"コップをわってしまいました。"},
+  {id:798,w:"cut",        k:"カット",            p:"動詞",  m:"きる",                                      ej:"かみをきりました。"},
+  {id:799,w:"tie",        k:"タイ",              p:"動詞",  m:"むすぶ",                                    ej:"くつひもをむすびました。"},
+  {id:800,w:"press",      k:"プレス",            p:"動詞",  m:"おす",                                      ej:"ボタンをおしてください。"},
+  {id:801,w:"lift",       k:"リフト",            p:"動詞",  m:"もちあげる",                                ej:"おもいものをもちあげました。"},
+  {id:802,w:"drop",       k:"ドロップ",          p:"動詞",  m:"おとす",                                    ej:"ペンをおとしました。"},
+  {id:803,w:"pour",       k:"ポアー",            p:"動詞",  m:"そそぐ",                                    ej:"みずをコップにそそぎました。"},
+  {id:804,w:"mix",        k:"ミックス",          p:"動詞",  m:"まぜる",                                    ej:"ざいりょうをまぜました。"},
+  {id:805,w:"fill",       k:"フィル",            p:"動詞",  m:"みたす",                                    ej:"コップをみずでみたしました。"},
+  {id:806,w:"empty",      k:"エンプティ",        p:"動詞",  m:"からにする",                                ej:"からになりました。"},
+  {id:807,w:"cover",      k:"カバー",            p:"動詞",  m:"おおう",                                    ej:"ふとんでおおいました。"},
+  {id:808,w:"fold",       k:"フォールド",        p:"動詞",  m:"おる・おりたたむ",                          ej:"かみをおりました。"},
+  {id:809,w:"pack",       k:"パック",            p:"動詞",  m:"つめる・まとめる",                          ej:"にもつをつめました。"},
+  {id:810,w:"haul",       k:"ホール",            p:"動詞",  m:"ひっぱって はこぶ",                         ej:"おもいにもつをはこびました。"},
+  {id:811,w:"place",      k:"プレイス",          p:"動詞",  m:"おく",                                      ej:"テーブルのうえにおきました。"},
+  {id:812,w:"set",        k:"セット",            p:"動詞",  m:"セットする",                                ej:"めざましをセットしました。"},
+  {id:813,w:"arrange",    k:"アレンジ",          p:"動詞",  m:"はいちする・ととのえる",                    ej:"はなをアレンジしました。"},
+  {id:814,w:"sort",       k:"ソート",            p:"動詞",  m:"ならべる・わける",                          ej:"ごみをわけました。"},
+  {id:815,w:"search",     k:"サーチ",            p:"動詞",  m:"さがす",                                    ej:"インターネットでさがしました。"},
+  {id:816,w:"discover",   k:"ディスカバー",      p:"動詞",  m:"みつける・はっけんする",                    ej:"あたらしいばしょをはっけんしました。"},
+  {id:817,w:"explore",    k:"エクスプロアー",    p:"動詞",  m:"たんけんする",                              ej:"あたらしいばしょをたんけんしました。"},
+  {id:818,w:"investigate",k:"インベスティゲイト",p:"動詞",  m:"しらべる",                                  ej:"もんだいをしらべました。"},
+  {id:819,w:"analyze",    k:"アナライズ",        p:"動詞",  m:"ぶんせきする",                              ej:"データをぶんせきしました。"},
+  {id:820,w:"test",       k:"テスト",            p:"動詞",  m:"ためす",                                    ej:"あたらしいほうほうをためしました。"},
+  {id:821,w:"prove",      k:"プルーブ",          p:"動詞",  m:"しょうめいする",                            ej:"ただしさをしょうめいしました。"},
+  {id:822,w:"show",       k:"ショー",            p:"動詞",  m:"しめす",                                    ej:"えをみせてくれました。"},
+  {id:823,w:"present",    k:"プレゼント",        p:"動詞",  m:"はっぴょうする",                            ej:"けっかをはっぴょうしました。"},
+  {id:824,w:"display",    k:"ディスプレイ",      p:"動詞",  m:"ひょうじする",                              ej:"がめんにひょうじされています。"},
+  {id:825,w:"report",     k:"リポート",          p:"動詞",  m:"ほうこくする",                              ej:"けっかをほうこくしました。"},
+  {id:826,w:"announce",   k:"アナウンス",        p:"動詞",  m:"はっぴょうする・しらせる",                  ej:"けってをしらせました。"},
+  {id:827,w:"warn",       k:"ウォーン",          p:"動詞",  m:"けいこくする・ちゅういする",                ej:"きけんをけいこくしました。"},
+  {id:828,w:"advise",     k:"アドバイズ",        p:"動詞",  m:"アドバイスする",                            ej:"よいアドバイスをもらいました。"},
+  {id:829,w:"propose",    k:"プロポーズ",        p:"動詞",  m:"ていあんする",                              ej:"よいアイデアをていあんしました。"},
+  {id:830,w:"recommend",  k:"レコメンド",        p:"動詞",  m:"おすすめする",                              ej:"このほんをおすすめします。"},
+  {id:831,w:"approve",    k:"アプルーブ",        p:"動詞",  m:"しょうにんする・さんせいする",              ej:"けいかくをしょうにんしました。"},
+  {id:832,w:"reject",     k:"リジェクト",        p:"動詞",  m:"きょひする・ことわる",                      ej:"おさそいをことわりました。"},
+  {id:833,w:"consent",    k:"コンセント",        p:"動詞",  m:"どういする",                                ej:"さんせいしました。"},
+  {id:834,w:"assist",     k:"アシスト",          p:"動詞",  m:"てつだう",                                  ej:"ともだちをてつだいました。"},
+  {id:835,w:"trust",      k:"トラスト",          p:"動詞",  m:"しんらいする",                              ej:"ともだちをしんらいしています。"},
+  {id:836,w:"care",       k:"ケアー",            p:"動詞",  m:"きにかける・せわをする",                    ej:"ともだちのことをきにかけています。"},
+  {id:837,w:"worry",      k:"ウォーリー",        p:"動詞",  m:"しんぱいする",                              ej:"しんぱいしないでください。"},
+  {id:838,w:"relax",      k:"リラックス",        p:"動詞",  m:"リラックスする",                            ej:"リラックスしてください。"},
+  {id:839,w:"enjoy",      k:"エンジョイ",        p:"動詞",  m:"たのしむ",                                  ej:"パーティーをたのしみました。"},
+  {id:840,w:"appreciate", k:"アプリシエイト",    p:"動詞",  m:"かんしゃする",                              ej:"てつだってくれてかんしゃします。"},
+  {id:841,w:"additional", k:"アディショナル",    p:"形容詞",m:"ついかの・もうひとつの",                    ej:"ついかのしつもんがあります。"},
+  {id:842,w:"available",  k:"アベイラブル",      p:"形容詞",m:"つかえる・りようできる",                    ej:"このほんはかりられますか。"},
+  {id:843,w:"basic",      k:"ベイシック",        p:"形容詞",m:"きほんてきな",                              ej:"きほんてきなえいごです。"},
+  {id:844,w:"certain",    k:"サートン",          p:"形容詞",m:"たしかな",                                  ej:"たしかなじょうほうです。"},
+  {id:845,w:"common",     k:"コモン",            p:"形容詞",m:"ふつうの・よくある",                        ej:"ふつうのことばをつかいます。"},
+  {id:846,w:"complete",   k:"コンプリート",      p:"形容詞",m:"かんせいした",                              ej:"かんせいしました。"},
+  {id:847,w:"correct",    k:"コレクト",          p:"形容詞",m:"ただしい",                                  ej:"ただしいこたえをえらびました。"},
+  {id:848,w:"current",    k:"カレント",          p:"形容詞",m:"げんざいの",                                ej:"げんざいじょうきょうをかくにんします。"},
+  {id:849,w:"digital",    k:"デジタル",          p:"形容詞",m:"デジタルの",                                ej:"デジタルのどうぐをつかいます。"},
+  {id:850,w:"direct",     k:"ダイレクト",        p:"形容詞",m:"ちょくせつの",                              ej:"ちょくせつきいてみましょう。"},
+  {id:851,w:"entire",     k:"エンタイア",        p:"形容詞",m:"ぜんたいの",                                ej:"ぜんたいをかくにんしました。"},
+  {id:852,w:"equal",      k:"イコール",          p:"形容詞",m:"びょうどうな",                              ej:"みんなびょうどうです。"},
+  {id:853,w:"essential",  k:"エッセンシャル",    p:"形容詞",m:"かかせない・じゅうような",                  ej:"これはかかせないほんです。"},
+  {id:854,w:"extra",      k:"エクストラ",        p:"形容詞",m:"よぶんの・エクストラの",                    ej:"よぶんにかいました。"},
+  {id:855,w:"familiar",   k:"ファミリアー",      p:"形容詞",m:"なじみのある",                              ej:"なじみのある曲です。"},
+  {id:856,w:"formal",     k:"フォーマル",        p:"形容詞",m:"フォーマルな・こうしきな",                  ej:"フォーマルなふくをきました。"},
+  {id:857,w:"general",    k:"ジェネラル",        p:"形容詞",m:"いっぱんてきな",                            ej:"いっぱんてきなはなしをします。"},
+  {id:858,w:"ideal",      k:"アイデアル",        p:"形容詞",m:"りそうてきな",                              ej:"りそうてきなけっかです。"},
+  {id:859,w:"individual", k:"インディビジュアル",p:"形容詞",m:"こじんの・こべつの",                        ej:"こべつにたいおうします。"},
+  {id:860,w:"initial",    k:"イニシャル",        p:"形容詞",m:"さいしょの",                                ej:"さいしょのいっぽをふみだしました。"},
+  {id:861,w:"international",k:"インターナショナル",p:"形容詞",m:"こくさいてきな",                          ej:"こくさいてきなぎょうじです。"},
+  {id:862,w:"local",      k:"ローカル",          p:"形容詞",m:"ちいきの・ローカルな",                      ej:"ちいきのおまつりがあります。"},
+  {id:863,w:"main",       k:"メイン",            p:"形容詞",m:"おもな・メインの",                          ej:"おもなもんだいをといてください。"},
+  {id:864,w:"major",      k:"メジャー",          p:"形容詞",m:"おおきな・だいじな",                        ej:"だいじなけっていをしました。"},
+  {id:865,w:"modern",     k:"モダン",            p:"形容詞",m:"げんだいの・モダンな",                      ej:"げんだいのぎじゅつです。"},
+  {id:866,w:"national",   k:"ナショナル",        p:"形容詞",m:"こくないの・こっかの",                      ej:"こっかのぎょうじです。"},
+  {id:867,w:"natural",    k:"ナチュラル",        p:"形容詞",m:"しぜんの・ナチュラルな",                    ej:"しぜんのしくみをまなびます。"},
+  {id:868,w:"normal",     k:"ノーマル",          p:"形容詞",m:"ふつうの",                                  ej:"ふつうのいちにちです。"},
+  {id:869,w:"official",   k:"オフィシャル",      p:"形容詞",m:"こうしきの・オフィシャルな",                ej:"こうしきのはっぴょうがありました。"},
+  {id:870,w:"original",   k:"オリジナル",        p:"形容詞",m:"もとの・オリジナルの",                      ej:"オリジナルのさくひんです。"},
+  {id:871,w:"personal",   k:"パーソナル",        p:"形容詞",m:"こじんてきな",                              ej:"こじんてきなじょうほうです。"},
+  {id:872,w:"physical",   k:"フィジカル",        p:"形容詞",m:"からだの・フィジカルな",                    ej:"からだをきたえましょう。"},
+  {id:873,w:"political",  k:"ポリティカル",      p:"形容詞",m:"せいじてきな",                              ej:"せいじてきなはなしです。"},
+  {id:874,w:"practical",  k:"プラクティカル",    p:"形容詞",m:"じっさいてきな",                            ej:"じっさいてきなほうほうです。"},
+  {id:875,w:"previous",   k:"プリビアス",        p:"形容詞",m:"まえの",                                    ej:"まえのけっかをみましょう。"},
+  {id:876,w:"primary",    k:"プライマリー",      p:"形容詞",m:"だいいちの・いちばんの",                    ej:"もっともだいじなことです。"},
+  {id:877,w:"private",    k:"プライベート",      p:"形容詞",m:"こじんの・プライベートな",                  ej:"プライベートなじかんです。"},
+  {id:878,w:"public",     k:"パブリック",        p:"形容詞",m:"こうきょうの",                              ej:"こうきょうのばしょです。"},
+  {id:879,w:"recent",     k:"リーセント",        p:"形容詞",m:"さいきんの",                                ej:"さいきんたのしいことがありました。"},
+  {id:880,w:"regular",    k:"レギュラー",        p:"形容詞",m:"ていきてきな・レギュラーの",                ej:"ていきてきにれんしゅうします。"},
+  {id:881,w:"relative",   k:"リレイティブ",      p:"形容詞",m:"ちんせきの・かんれんした",                  ej:"かんれんしたはなしです。"},
+  {id:882,w:"similar",    k:"シミラー",          p:"形容詞",m:"にている",                                  ej:"にたようなもんだいです。"},
+  {id:883,w:"social",     k:"ソーシャル",        p:"形容詞",m:"しゃかいてきな",                            ej:"しゃかいてきなもんだいです。"},
+  {id:884,w:"specific",   k:"スペシフィック",    p:"形容詞",m:"とくていの",                                ej:"とくていのじょうけんがあります。"},
+  {id:885,w:"sudden",     k:"サドン",            p:"形容詞",m:"とつぜんの",                                ej:"とつぜんのあめがふりました。"},
+  {id:886,w:"technical",  k:"テクニカル",        p:"形容詞",m:"ぎじゅつてきな",                            ej:"ぎじゅつてきなもんだいです。"},
+  {id:887,w:"traditional",k:"トラディショナル",  p:"形容詞",m:"でんとうてきな",                            ej:"でんとうてきなおまつりです。"},
+  {id:888,w:"typical",    k:"ティピカル",        p:"形容詞",m:"てんけいてきな",                            ej:"てんけいてきなにほんのたべものです。"},
+  {id:889,w:"unique",     k:"ユニーク",          p:"形容詞",m:"どくじの・ユニークな",                      ej:"ユニークなアイデアです。"},
+  {id:890,w:"usual",      k:"ユージュアル",      p:"形容詞",m:"いつもの・ふつうの",                        ej:"いつものばしょでまちましょう。"},
+  {id:891,w:"whole",      k:"ホール",            p:"形容詞",m:"まるごとの・ぜんぶの",                      ej:"まるごとたべました。"},
+  {id:892,w:"wide",       k:"ワイド",            p:"形容詞",m:"ひろい",                                    ej:"ひろいこうえんです。"},
+  {id:893,w:"narrow",     k:"ナロー",            p:"形容詞",m:"せまい",                                    ej:"せまいみちです。"},
+  {id:894,w:"thick",      k:"シック",            p:"形容詞",m:"あつい・ふとい",                            ej:"あついほんです。"},
+  {id:895,w:"thin",       k:"シン",              p:"形容詞",m:"うすい・ほそい",                            ej:"うすいかみです。"},
+  {id:896,w:"deep",       k:"ディープ",          p:"形容詞",m:"ふかい",                                    ej:"ふかいうみです。"},
+  {id:897,w:"flat",       k:"フラット",          p:"形容詞",m:"たいらな",                                  ej:"たいらなばしょをみつけました。"},
+  {id:898,w:"round",      k:"ラウンド",          p:"形容詞",m:"まるい",                                    ej:"まるいボールです。"},
+  {id:899,w:"square",     k:"スクエア",          p:"形容詞",m:"しかくの",                                  ej:"しかくいはこです。"},
+  {id:900,w:"straight",   k:"ストレート",        p:"形容詞",m:"まっすぐな",                                ej:"まっすぐすすんでください。"},
+  {id:901,w:"sharp",      k:"シャープ",          p:"形容詞",m:"するどい",                                  ej:"するどいほうちょうです。"},
+  {id:902,w:"clear",      k:"クリアー",          p:"形容詞",m:"はっきりした",                              ej:"はっきりしたこたえをください。"},
+  {id:903,w:"fresh",      k:"フレッシュ",        p:"形容詞",m:"しんせんな",                                ej:"しんせんなやさいです。"},
+  {id:904,w:"dry",        k:"ドライ",            p:"形容詞",m:"かわいた",                                  ej:"タオルがかわいています。"},
+  {id:905,w:"wet",        k:"ウェット",          p:"形容詞",m:"ぬれた",                                    ej:"あめでぬれました。"},
+  {id:906,w:"sweet",      k:"スウィート",        p:"形容詞",m:"あまい",                                    ej:"あまいケーキです。"},
+  {id:907,w:"sour",       k:"サワー",            p:"形容詞",m:"すっぱい",                                  ej:"すっぱいレモンです。"},
+  {id:908,w:"bitter",     k:"ビター",            p:"形容詞",m:"にがい",                                    ej:"にがいコーヒーです。"},
+  {id:909,w:"salty",      k:"ソルティ",          p:"形容詞",m:"しょっぱい",                                ej:"しょっぱいスープです。"},
+  {id:910,w:"spicy",      k:"スパイシー",        p:"形容詞",m:"からい",                                    ej:"からいりょうりがすきです。"},
+  {id:911,w:"delicious",  k:"デリシャス",        p:"形容詞",m:"おいしい",                                  ej:"おいしいりょうりをたべました。"},
+  {id:912,w:"hungry",     k:"ハングリー",        p:"形容詞",m:"おなかがすいた",                            ej:"おなかがすきました。"},
+  {id:913,w:"thirsty",    k:"サースティ",        p:"形容詞",m:"のどがかわいた",                            ej:"のどがかわいています。"},
+  {id:914,w:"full",       k:"フル",              p:"形容詞",m:"おなかいっぱい",                            ej:"おなかいっぱいたべました。"},
+  {id:915,w:"empty",      k:"エンプティ",        p:"形容詞",m:"からの",                                    ej:"コップがからになりました。"},
+  {id:916,w:"open",       k:"オープン",          p:"形容詞",m:"あいている",                                ej:"みせはあいていますか。"},
+  {id:917,w:"closed",     k:"クローズド",        p:"形容詞",m:"しまっている",                              ej:"みせはしまっています。"},
+  {id:918,w:"crowded",    k:"クラウデッド",      p:"形容詞",m:"こんでいる",                                ej:"でんしゃがこんでいます。"},
+  {id:919,w:"enough",     k:"イナフ",            p:"形容詞",m:"じゅうぶんな",                              ej:"じゅうぶんにあります。"},
+  {id:920,w:"plain",      k:"プレイン",          p:"形容詞",m:"かんたんな・そのままの",                    ej:"かんたんにせつめいしました。"},
+  {id:921,w:"moreover",   k:"モアオーバー",      p:"副詞",  m:"そのうえ・さらに",                          ej:"さらにいいことがありました。"},
+  {id:922,w:"however",    k:"ハウエバー",        p:"副詞",  m:"しかし・だが",                              ej:"しかしもんだいがありました。"},
+  {id:923,w:"therefore",  k:"ゼアフォア",        p:"副詞",  m:"だから・そのため",                          ej:"だからがんばります。"},
+  {id:924,w:"otherwise",  k:"アザーワイズ",      p:"副詞",  m:"さもないと・そうでなければ",                ej:"さもないとまにあいません。"},
+  {id:925,w:"meanwhile",  k:"ミーンワイル",      p:"副詞",  m:"そのあいだ・いっぽうで",                    ej:"そのあいだにじゅんびしました。"},
+  {id:926,w:"instead",    k:"インステッド",      p:"副詞",  m:"かわりに",                                  ej:"かわりにこれをつかいましょう。"},
+  {id:927,w:"anyway",     k:"エニウェイ",        p:"副詞",  m:"とにかく",                                  ej:"とにかくやってみましょう。"},
+  {id:928,w:"altogether", k:"オールトゥゲザー",  p:"副詞",  m:"あわせて・ぜんぶで",                        ej:"ぜんぶでいくらですか。"},
+  {id:929,w:"nearly",     k:"ニアリー",          p:"副詞",  m:"ほとんど・もうすこしで",                    ej:"もうすこしでできます。"},
+  {id:930,w:"truly",      k:"トゥルーリー",      p:"副詞",  m:"ほんとうに",                                ej:"ほんとうにありがとう。"},
+  {id:931,w:"deeply",     k:"ディープリー",      p:"副詞",  m:"ふかく",                                    ej:"ふかくかんがえました。"},
+  {id:932,w:"highly",     k:"ハイリー",          p:"副詞",  m:"とても・たかく",                            ej:"とてもおすすめです。"},
+  {id:933,w:"mostly",     k:"モストリー",        p:"副詞",  m:"ほとんど",                                  ej:"ほとんどかんせいしました。"},
+  {id:934,w:"partly",     k:"パートリー",        p:"副詞",  m:"ぶぶんてきに",                              ej:"ぶぶんてきにただしいです。"},
+  {id:935,w:"rarely",     k:"レアリー",          p:"副詞",  m:"めったに〜ない",                            ej:"めったにおこらないことです。"},
+  {id:936,w:"recently",   k:"リーセントリー",    p:"副詞",  m:"さいきん",                                  ej:"さいきんえいごをはじめました。"},
+  {id:937,w:"previously", k:"プリビアスリー",    p:"副詞",  m:"まえに・いぜん",                            ej:"まえにあったことです。"},
+  {id:938,w:"currently",  k:"カレントリー",      p:"副詞",  m:"げんざい",                                  ej:"げんざいべんきょうちゅうです。"},
+  {id:939,w:"regularly",  k:"レギュラーリー",    p:"副詞",  m:"ていきてきに",                              ej:"ていきてきにれんしゅうしています。"},
+  {id:940,w:"normally",   k:"ノーマリー",        p:"副詞",  m:"ふつう",                                    ej:"ふつうはやくおきます。"},
+  {id:941,w:"basically",  k:"ベイシカリー",      p:"副詞",  m:"きほんてきに",                              ej:"きほんてきにわかりました。"},
+  {id:942,w:"generally",  k:"ジェネラリー",      p:"副詞",  m:"いっぱんてきに",                            ej:"いっぱんてきによいほうほうです。"},
+  {id:943,w:"mainly",     k:"メインリー",        p:"副詞",  m:"おもに",                                    ej:"おもにやさいをたべています。"},
+  {id:944,w:"actually",   k:"アクチュアリー",    p:"副詞",  m:"じつは",                                    ej:"じつはしっていました。"},
+  {id:945,w:"apparently", k:"アペアレントリー",  p:"副詞",  m:"みたところでは",                            ej:"みたところたのしそうです。"},
+  {id:946,w:"certainly",  k:"サートンリー",      p:"副詞",  m:"たしかに",                                  ej:"たしかにそうです。"},
+  {id:947,w:"definitely", k:"デフィニトリー",    p:"副詞",  m:"かならず・まちがいなく",                    ej:"かならずできます。"},
+  {id:948,w:"fortunately",k:"フォーチュネイトリー",p:"副詞",m:"さいわいにも",                              ej:"さいわいにもけがはありませんでした。"},
+  {id:949,w:"hopefully",  k:"ホープフリー",      p:"副詞",  m:"うまくいけば",                              ej:"うまくいけばぜんぶできます。"},
+  {id:950,w:"honestly",   k:"オネストリー",      p:"副詞",  m:"しょうじきに",                              ej:"しょうじきにこたえてください。"},
+  {id:951,w:"kindly",     k:"カインドリー",      p:"副詞",  m:"しんせつに",                                ej:"しんせつにおしえてくれました。"},
+  {id:952,w:"loudly",     k:"ラウドリー",        p:"副詞",  m:"おおきいこえで",                            ej:"おおきいこえでよんでください。"},
+  {id:953,w:"quietly",    k:"クワイエトリー",    p:"副詞",  m:"しずかに",                                  ej:"しずかにはいってください。"},
+  {id:954,w:"politely",   k:"ポライトリー",      p:"副詞",  m:"ていねいに",                                ej:"ていねいにおねがいしました。"},
+  {id:955,w:"strongly",   k:"ストロングリー",    p:"副詞",  m:"つよく",                                    ej:"つよくうったえました。"},
+  {id:956,w:"widely",     k:"ワイドリー",        p:"副詞",  m:"ひろく",                                    ej:"ひろくつたわりました。"},
+  {id:957,w:"briefly",    k:"ブリーフリー",      p:"副詞",  m:"みじかく",                                  ej:"みじかくせつめいしました。"},
+  {id:958,w:"heavily",    k:"ヘビリー",          p:"副詞",  m:"おもく・はげしく",                          ej:"はげしくあめがふりました。"},
+  {id:959,w:"lightly",    k:"ライトリー",        p:"副詞",  m:"かるく",                                    ej:"かるくたたいてください。"},
+  {id:960,w:"softly",     k:"ソフトリー",        p:"副詞",  m:"やわらかく",                                ej:"やわらかくはなしかけました。"},
+  {id:961,w:"interview",  k:"インタービュー",    p:"名詞",  m:"インタビュー",                              ej:"インタビューをうけました。"},
+  {id:962,w:"meeting",    k:"ミーティング",      p:"名詞",  m:"かいぎ・ミーティング",                      ej:"ミーティングがあります。"},
+  {id:963,w:"conference", k:"コンファレンス",    p:"名詞",  m:"かいぎ・たいかい",                          ej:"かいぎにしゅっせきしました。"},
+  {id:964,w:"speech",     k:"スピーチ",          p:"名詞",  m:"スピーチ・えんぜつ",                        ej:"スピーチをしました。"},
+  {id:965,w:"discussion", k:"ディスカッション",  p:"名詞",  m:"ぎろん・はなしあい",                        ej:"はなしあいをしました。"},
+  {id:966,w:"debate",     k:"ディベート",        p:"名詞",  m:"ぎろん・ディベート",                        ej:"クラスでディベートをしました。"},
+  {id:967,w:"presentation",k:"プレゼンテーション",p:"名詞", m:"はっぴょう",                                ej:"はっぴょうがうまくできました。"},
+  {id:968,w:"competition",k:"コンペティション",  p:"名詞",  m:"きょうそう・たいかい",                      ej:"きょうそうでかちました。"},
+  {id:969,w:"contest",    k:"コンテスト",        p:"名詞",  m:"コンテスト・たいかい",                      ej:"えのコンテストにさんかしました。"},
+  {id:970,w:"tournament", k:"トーナメント",      p:"名詞",  m:"トーナメント",                              ej:"トーナメントでかちました。"},
+  {id:971,w:"champion",   k:"チャンピオン",      p:"名詞",  m:"チャンピオン",                              ej:"チャンピオンになりました。"},
+  {id:972,w:"winner",     k:"ウィナー",          p:"名詞",  m:"ゆうしょうしゃ",                            ej:"ゆうしょうしゃはだれですか。"},
+  {id:973,w:"medal",      k:"メダル",            p:"名詞",  m:"メダル",                                    ej:"きんメダルをとりました。"},
+  {id:974,w:"trophy",     k:"トロフィー",        p:"名詞",  m:"トロフィー",                                ej:"トロフィーをもらいました。"},
+  {id:975,w:"record",     k:"レコード",          p:"名詞",  m:"きろく",                                    ej:"きろくをやぶりました。"},
+  {id:976,w:"performance",k:"パフォーマンス",    p:"名詞",  m:"えんぎ・ひょうか",                          ej:"すばらしいえんぎでした。"},
+  {id:977,w:"career",     k:"キャリアー",        p:"名詞",  m:"しごと・けいれき",                          ej:"しょうらいのしごとをかんがえています。"},
+  {id:978,w:"workout",    k:"ワークアウト",      p:"名詞",  m:"うんどう・ワークアウト",                    ej:"まいにちうんどうしています。"},
+  {id:979,w:"preparation",k:"プレパレーション",  p:"名詞",  m:"じゅんび",                                  ej:"じゅんびをととのえました。"},
+  {id:980,w:"encounter",  k:"エンカウンター",    p:"名詞",  m:"であい・けいけん",                          ej:"あたらしいであいがありました。"},
+  {id:981,w:"expertise",  k:"エキスパティーズ",  p:"名詞",  m:"せんもんちしき",                            ej:"せんもんちしきをもっています。"},
+  {id:982,w:"wisdom",     k:"ウィズダム",        p:"名詞",  m:"ちえ",                                      ej:"ちえをかして！"},
+  {id:983,w:"creativity", k:"クリエイティビティ",p:"名詞",  m:"そうぞうりょく",                            ej:"そうぞうりょくをいかしましょう。"},
+  {id:984,w:"imagination",k:"イマジネーション",  p:"名詞",  m:"そうぞう",                                  ej:"そうぞうをひろげましょう。"},
+  {id:985,w:"curiosity",  k:"キュリオシティ",    p:"名詞",  m:"こうきしん",                                ej:"こうきしんをもつことがたいせつです。"},
+  {id:986,w:"courage",    k:"カーリッジ",        p:"名詞",  m:"ゆうき",                                    ej:"ゆうきをもってやりましょう。"},
+  {id:987,w:"confidence", k:"コンフィデンス",    p:"名詞",  m:"じしん",                                    ej:"じしんをもってください。"},
+  {id:988,w:"patience",   k:"ペイシェンス",      p:"名詞",  m:"がまん・にんたい",                          ej:"がまんすることがたいせつです。"},
+  {id:989,w:"kindness",   k:"カインドネス",      p:"名詞",  m:"やさしさ",                                  ej:"やさしさはだいじです。"},
+  {id:990,w:"honesty",    k:"オネスティ",        p:"名詞",  m:"しょうじきさ",                              ej:"しょうじきさをたいせつにしましょう。"},
+  {id:991,w:"responsibility",k:"リスポンシビリティ",p:"名詞",m:"せきにん",                                 ej:"せきにんをもってやりましょう。"},
+  {id:992,w:"cooperation",k:"コオペレーション",  p:"名詞",  m:"きょうりょく",                              ej:"きょうりょくしてください。"},
+  {id:993,w:"teamwork",   k:"チームワーク",      p:"名詞",  m:"チームワーク",                              ej:"チームワークでかちました。"},
+  {id:994,w:"leadership", k:"リーダーシップ",    p:"名詞",  m:"リーダーシップ",                            ej:"リーダーシップをはっきしました。"},
+  {id:995,w:"communication",k:"コミュニケーション",p:"名詞",m:"コミュニケーション",                        ej:"コミュニケーションがたいせつです。"},
+  {id:996,w:"understanding",k:"アンダースタンディング",p:"名詞",m:"りかい",                               ej:"おたがいのりかいがひつようです。"},
+  {id:997,w:"agreement",  k:"アグリーメント",    p:"名詞",  m:"ごういー",                                  ej:"ごういができました。"},
+  {id:998,w:"solution",   k:"ソリューション",    p:"名詞",  m:"かいけつさく",                              ej:"かいけつさくをみつけました。"},
+  {id:999,w:"improvement",k:"インプルーブメント",p:"名詞",  m:"かいぜん・じょうたつ",                      ej:"じょうたつをかんじています。"},
+  {id:1000,w:"possibility",k:"ポシビリティ",     p:"名詞",  m:"かのうせい",                                ej:"かのうせいはひろいです。"},
+];
+
+// ────────────────────────────────────────────────────────────
+// APP STATE
+// ────────────────────────────────────────────────────────────
+const S = {
+  learned: new Set(),
+  stars: 0, streak: 0, lastDate: null,
+  qHist: [], tHist: [],
+  // flashcard
+  fc: { deck:[], idx:0, okCount:0, sessionStars:0, flipped:false },
+  // quiz
+  q: { mode:'en-ja', qs:[], idx:0, score:0, sessionStars:0, answered:false, correctIdx:0, choices:[] },
+  // typing
+  t: { qs:[], idx:0, score:0, sessionStars:0, hintUsed:false },
+};
+
+// ────────────────────────────────────────────────────────────
+// STORAGE
+// ────────────────────────────────────────────────────────────
+function save() {
+  localStorage.setItem('etm', JSON.stringify({
+    learned:[...S.learned], stars:S.stars, streak:S.streak,
+    lastDate:S.lastDate, qHist:S.qHist.slice(-10), tHist:S.tHist.slice(-10)
+  }));
+}
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem('etm'));
+    if (!d) return;
+    S.learned  = new Set(d.learned||[]);
+    S.stars    = d.stars||0;
+    S.streak   = d.streak||0;
+    S.lastDate = d.lastDate;
+    S.qHist    = d.qHist||[];
+    S.tHist    = d.tHist||[];
+  } catch(e){}
+}
+function checkStreak() {
+  const today = new Date().toDateString();
+  const yday  = new Date(Date.now()-86400000).toDateString();
+  if (S.lastDate === today) return;
+  if (S.lastDate === yday) S.streak++;
+  else if (S.lastDate && S.lastDate !== today) S.streak = 1;
+  else if (!S.lastDate) S.streak = 1;
+  S.lastDate = today;
+  save();
+}
+
+// ────────────────────────────────────────────────────────────
+// NAVIGATION
+// ────────────────────────────────────────────────────────────
+function go(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+  if (name==='home')     homeUpdate();
+  if (name==='progress') progUpdate();
+}
+
+// ────────────────────────────────────────────────────────────
+// HOME
+// ────────────────────────────────────────────────────────────
+function homeUpdate() {
+  const lc = S.learned.size, total = V.length;
+  const pct = Math.round(lc/total*100);
+  $('h-stars').textContent  = S.stars;
+  $('h-learned').textContent= lc;
+  $('h-total').textContent  = total;
+  $('h-streak').textContent = S.streak;
+  $('h-prog').style.width   = pct+'%';
+  const rem = 10-(lc%10);
+  $('h-goal').textContent   = lc>=total ? '全部おぼえた！🎉' : `あと ${rem} 語おぼえよう！`;
+}
+
+// ────────────────────────────────────────────────────────────
+// FLASHCARD
+// ────────────────────────────────────────────────────────────
+function fcInit() {
+  S.fc.deck    = shuffle([...V]);
+  S.fc.idx     = 0;
+  S.fc.okCount = 0;
+  S.fc.sessionStars = 0;
+  S.fc.flipped = false;
+  hide('fc-result'); show('fc-wrap'); show('fc-btns');
+  fcRender();
+}
+function fcRender() {
+  const word = S.fc.deck[S.fc.idx];
+  if (!word) { fcDone(); return; }
+  $('fc-word').textContent = word.w;
+  $('fc-kana').textContent = word.k;
+  $('fc-pos').textContent  = word.p;
+  $('fc-meaning').textContent = word.m;
+  $('fc-ex').textContent   = word.ej;
+  $('fc-counter').textContent = `${S.fc.idx+1} / ${S.fc.deck.length}`;
+  $('fc-prog').style.width = `${(S.fc.idx/S.fc.deck.length)*100}%`;
+  $('fc-stars').textContent= S.fc.sessionStars;
+  const card = $('fc-card');
+  card.classList.remove('flipped');
+  S.fc.flipped = false;
+}
+function fcFlip() {
+  const card = $('fc-card');
+  S.fc.flipped = !S.fc.flipped;
+  S.fc.flipped ? card.classList.add('flipped') : card.classList.remove('flipped');
+}
+function fcAns(ok) {
+  const word = S.fc.deck[S.fc.idx];
+  if (ok) {
+    S.learned.add(word.id);
+    S.fc.okCount++;
+    S.fc.sessionStars++;
+    S.stars++;
+    save();
+  }
+  S.fc.idx++;
+  if (S.fc.idx >= S.fc.deck.length) fcDone();
+  else fcRender();
+}
+function fcDone() {
+  hide('fc-wrap'); hide('fc-btns'); show('fc-result');
+  $('fc-r-learned').textContent = S.fc.okCount;
+  $('fc-r-total').textContent   = S.fc.deck.length;
+}
+function fcRestart() { fcInit(); }
+
+// ────────────────────────────────────────────────────────────
+// QUIZ
+// ────────────────────────────────────────────────────────────
+let qMode = 'en-ja';
+function setQMode(m) {
+  qMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  $('qm-'+m.replace('-','')).classList.add('active');
+}
+function qStart() {
+  S.q.qs    = shuffle([...V]).slice(0,10);
+  S.q.idx   = 0;
+  S.q.score = 0;
+  S.q.sessionStars = 0;
+  S.q.mode  = qMode;
+  hide('q-start'); hide('q-result'); show('q-game');
+  qRender();
+}
+function qRender() {
+  const q = S.q.qs[S.q.idx];
+  S.q.answered = false;
+  $('q-num').textContent   = S.q.idx+1;
+  $('q-prog').style.width  = `${((S.q.idx)/10)*100}%`;
+  $('q-stars').textContent = S.q.sessionStars;
+  hide('q-fb');
+
+  // Question text
+  $('q-question').textContent = S.q.mode==='en-ja' ? q.w : q.m;
+
+  // 3 decoys + correct
+  const decoys  = shuffle(V.filter(x=>x.id!==q.id)).slice(0,3);
+  S.q.choices   = shuffle([...decoys, q]);
+  S.q.correctIdx = S.q.choices.findIndex(c=>c.id===q.id);
+
+  for (let i=0;i<4;i++) {
+    const btn = $('qc'+i);
+    btn.textContent = S.q.mode==='en-ja' ? S.q.choices[i].m : S.q.choices[i].w;
+    btn.className = 'qc';
+    btn.disabled  = false;
+    btn.onclick   = () => qAns(i);
+  }
+}
+function qAns(idx) {
+  if (S.q.answered) return;
+  S.q.answered = true;
+  const ok = idx === S.q.correctIdx;
+  const q  = S.q.qs[S.q.idx];
+
+  for (let i=0;i<4;i++) $('qc'+i).disabled = true;
+
+  if (ok) {
+    $('qc'+idx).classList.add('correct');
+    S.q.score++;
+    S.q.sessionStars++;
+    S.stars++;
+    S.learned.add(q.id);
+    save();
+    $('q-fb-text').textContent  = '✅ せいかい！すごい！';
+    $('q-fb-text').style.color  = '#00b894';
+  } else {
+    $('qc'+idx).classList.add('wrong');
+    $('qc'+S.q.correctIdx).classList.add('reveal');
+    $('q-fb-text').textContent  = '❌ ざんねん…';
+    $('q-fb-text').style.color  = '#ff7675';
+  }
+  $('q-fb-detail').textContent = `${q.w} ＝ ${q.m}`;
+  $('q-stars').textContent = S.q.sessionStars;
+  show('q-fb');
+}
+function qNext() {
+  S.q.idx++;
+  if (S.q.idx >= S.q.qs.length) qDone();
+  else qRender();
+}
+function qDone() {
+  hide('q-game'); show('q-result');
+  const sc = S.q.score;
+  $('q-r-score').textContent  = sc;
+  const {em,cm} = scoreMsg(sc);
+  $('q-r-em').textContent      = em;
+  $('q-r-comment').textContent = cm;
+  S.qHist.push({score:sc,total:10,date:new Date().toLocaleDateString()});
+  save();
+}
+function qRestart() { hide('q-game'); hide('q-result'); show('q-start'); }
+
+// ────────────────────────────────────────────────────────────
+// TYPING
+// ────────────────────────────────────────────────────────────
+function tStart() {
+  S.t.qs    = shuffle([...V]).slice(0,10);
+  S.t.idx   = 0;
+  S.t.score = 0;
+  S.t.sessionStars = 0;
+  hide('t-start'); hide('t-result'); show('t-game');
+  tRender();
+}
+function tRender() {
+  const q = S.t.qs[S.t.idx];
+  $('t-num').textContent   = S.t.idx+1;
+  $('t-prog').style.width  = `${(S.t.idx/10)*100}%`;
+  $('t-stars').textContent = S.t.sessionStars;
+  $('t-meaning').textContent = q.m;
+  $('t-kana').textContent    = q.k;
+  $('t-len').textContent     = q.w.length;
+
+  const inp = $('t-input');
+  inp.value = ''; inp.className = 't-input'; inp.disabled = false;
+
+  hide('t-fb'); hide('t-hint-box'); show('t-submit');
+  $('t-hint-btn').disabled = false;
+  S.t.hintUsed = false;
+  setTimeout(()=>inp.focus(),100);
+}
+function tHint() {
+  if (S.t.hintUsed) return;
+  const q = S.t.qs[S.t.idx];
+  const hint = q.w[0] + '_'.repeat(q.w.length-1);
+  $('t-hint-box').textContent = `ヒント: ${hint}`;
+  show('t-hint-box');
+  S.t.hintUsed = true;
+  $('t-hint-btn').disabled = true;
+}
+function tCheck() {
+  const q   = S.t.qs[S.t.idx];
+  const val = $('t-input').value.toLowerCase().trim();
+  if (val === q.w.toLowerCase()) {
+    $('t-input').className = 't-input correct';
+    setTimeout(()=>tAns(true),300);
+  }
+}
+function tSubmit() {
+  const q   = S.t.qs[S.t.idx];
+  const val = $('t-input').value.toLowerCase().trim();
+  tAns(val === q.w.toLowerCase());
+}
+function tAns(ok) {
+  const q   = S.t.qs[S.t.idx];
+  const inp = $('t-input');
+  inp.disabled = true;
+  hide('t-submit');
+  if (ok) {
+    inp.className = 't-input correct';
+    S.t.score++;
+    S.t.sessionStars++;
+    S.stars++;
+    S.learned.add(q.id);
+    save();
+    $('t-fb-text').textContent  = '✅ せいかい！すごい！';
+    $('t-fb-text').style.color  = '#00b894';
+    $('t-fb-detail').textContent= `こたえ: ${q.w}`;
+  } else {
+    inp.className = 't-input wrong';
+    $('t-fb-text').textContent  = '❌ ざんねん…';
+    $('t-fb-text').style.color  = '#ff7675';
+    $('t-fb-detail').textContent= `せいかい: ${q.w}`;
+  }
+  $('t-stars').textContent = S.t.sessionStars;
+  show('t-fb');
+}
+function tNext() {
+  S.t.idx++;
+  if (S.t.idx >= S.t.qs.length) tDone();
+  else tRender();
+}
+function tDone() {
+  hide('t-game'); show('t-result');
+  const sc = S.t.score;
+  $('t-r-score').textContent = sc;
+  const {em,cm} = scoreMsg(sc);
+  $('t-r-em').textContent      = em;
+  $('t-r-comment').textContent = cm;
+  S.tHist.push({score:sc,total:10,date:new Date().toLocaleDateString()});
+  save();
+}
+function tRestart() { hide('t-game'); hide('t-result'); show('t-start'); }
+
+// ────────────────────────────────────────────────────────────
+// PROGRESS
+// ────────────────────────────────────────────────────────────
+function progUpdate() {
+  const lc = S.learned.size, total = V.length;
+  const pct = Math.round(lc/total*100);
+  $('p-stars').textContent  = S.stars;
+  $('p-learned').textContent= lc;
+  $('p-streak').textContent = S.streak;
+  $('p-lc').textContent     = lc;
+  $('p-tc').textContent     = total;
+  $('p-prog').style.width   = pct+'%';
+  $('p-level').textContent  = levelName(S.stars);
+
+  if (S.qHist.length) {
+    const s = S.qHist.reduce((a,b)=>a+b.score,0);
+    const t = S.qHist.reduce((a,b)=>a+b.total,0);
+    $('p-qacc').textContent = Math.round(s/t*100)+'%';
+  }
+  if (S.tHist.length) {
+    const s = S.tHist.reduce((a,b)=>a+b.score,0);
+    const t = S.tHist.reduce((a,b)=>a+b.total,0);
+    $('p-tacc').textContent = Math.round(s/t*100)+'%';
+  }
+
+  const el = $('p-wlist');
+  if (!lc) {
+    el.innerHTML = '<div style="text-align:center;color:#b2bec3;padding:20px;">まだおぼえた単語がありません</div>';
+  } else {
+    el.innerHTML = V.filter(w=>S.learned.has(w.id)).map(w=>`
+      <div class="wl-item">
+        <span class="wl-word">${w.w}</span>
+        <span class="wl-mean">${w.m}</span>
+        <span class="wl-star">⭐</span>
+      </div>`).join('');
+  }
+}
+function pReset() {
+  if (!confirm('きろくをぜんぶリセットしてもいいですか？')) return;
+  S.learned.clear(); S.stars=0; S.streak=0; S.lastDate=null; S.qHist=[]; S.tHist=[];
+  localStorage.removeItem('etm');
+  progUpdate(); alert('リセットしました！');
+}
+
+// ────────────────────────────────────────────────────────────
+// HELPERS
+// ────────────────────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+function show(id) { $( id).classList.remove('hidden'); }
+function hide(id) { $(id).classList.add('hidden');    }
+function shuffle(a) { return a.sort(()=>Math.random()-.5); }
+function scoreMsg(sc) {
+  if (sc===10) return {em:'🏆', cm:'パーフェクト！さいこう！！'};
+  if (sc>=8)   return {em:'🌟', cm:'とってもじょうず！'};
+  if (sc>=6)   return {em:'😄', cm:'よくできました！'};
+  if (sc>=4)   return {em:'😊', cm:'もうすこし！がんばれ！'};
+  return       {em:'💪', cm:'くりかえしてみよう！'};
+}
+function levelName(stars) {
+  if (stars>=200) return '🏆 えいたんごマスター';
+  if (stars>=100) return '🌟 スーパー学習者';
+  if (stars>=50)  return '🚀 チャレンジャー';
+  if (stars>=20)  return '😊 がんばりやさん';
+  return '🦊 ビギナー';
+}
+
+// ────────────────────────────────────────────────────────────
+// BOOT
+// ────────────────────────────────────────────────────────────
+window.addEventListener('load', ()=>{
+  load();
+  checkStreak();
+  fcInit();
+  homeUpdate();
+});
+</script>
+</body>
+</html>
