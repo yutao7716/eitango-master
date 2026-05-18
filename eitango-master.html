@@ -25,6 +25,7 @@
       background: linear-gradient(135deg, #f0f4ff 0%, #fce4f0 100%);
       min-height: 100vh;
       color: var(--text);
+      padding-top: 40px;
     }
 
     /* ── NAV BAR ── */
@@ -404,6 +405,21 @@
     .rank-num { font-size:16px; font-weight:bold; color:var(--text-sub); width:22px; text-align:center; flex-shrink:0; }
     .rank-word { font-size:14px; font-weight:bold; color:var(--primary); flex:1; }
     .rank-val  { font-size:12px; color:var(--text-sub); white-space:nowrap; }
+
+    /* ── EASY BAR ── */
+    .easy-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 150;
+      background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 7px 16px; box-shadow: 0 2px 8px rgba(108,92,231,.2);
+    }
+    .easy-bar-lbl { font-size: 12px; color: rgba(255,255,255,.9); font-weight: bold; }
+    .easy-bar-btn {
+      background: rgba(255,255,255,.25); border: 2px solid rgba(255,255,255,.5);
+      border-radius: 50px; padding: 3px 14px; font-size: 12px; font-weight: bold;
+      cursor: pointer; color: #fff; font-family: inherit; transition: all .2s;
+    }
+    .easy-bar-btn.on { background: #fff; color: var(--primary); border-color: #fff; }
   </style>
 </head>
 <body>
@@ -448,6 +464,12 @@
   <div class="lvup-text">🎉 レベルアップ！</div>
   <div class="lvup-sub" id="lvup-sub">Lv.2 がんばりや になった！</div>
   <div class="lvup-tap">👆 タップしてとじる</div>
+</div>
+
+<!-- EASY BAR -->
+<div id="easy-bar" class="easy-bar">
+  <span class="easy-bar-lbl">📖 かんたん訳</span>
+  <button id="easy-bar-btn" class="easy-bar-btn" onclick="toggleEasyMode()">OFF</button>
 </div>
 
 <!-- POINT TOAST -->
@@ -1558,6 +1580,7 @@ function setMode(mode) {
 const S = {
   learned: new Set(),
   stars: 0, streak: 0, lastDate: null,
+  easyMode: false,
   qHist: [], tHist: [],
   // flashcard
   fc: { deck:[], idx:0, okCount:0, sessionStars:0, flipped:false },
@@ -1668,7 +1691,7 @@ function fcRender() {
   $('fc-word').textContent = word.w;
   $('fc-kana').textContent = word.k || '';
   $('fc-pos').textContent  = word.p;
-  $('fc-meaning').textContent = word.m;
+  $('fc-meaning').textContent = getMeaning(word);
   $('fc-ex').textContent   = word.ej;
   $('fc-counter').textContent = `${S.fc.idx+1} / ${S.fc.deck.length}`;
   $('fc-prog').style.width = `${(S.fc.idx/S.fc.deck.length)*100}%`;
@@ -1736,7 +1759,7 @@ function qRender() {
   hide('q-fb');
 
   // Question text
-  $('q-question').textContent = S.q.mode==='en-ja' ? q.w : q.m;
+  $('q-question').textContent = S.q.mode==='en-ja' ? q.w : getMeaning(q);
 
   // 3 decoys + correct
   const decoys  = shuffle(getActiveVocab().filter(x=>x.id!==q.id)).slice(0,3);
@@ -1745,7 +1768,7 @@ function qRender() {
 
   for (let i=0;i<4;i++) {
     const btn = $('qc'+i);
-    btn.textContent = S.q.mode==='en-ja' ? S.q.choices[i].m : S.q.choices[i].w;
+    btn.textContent = S.q.mode==='en-ja' ? getMeaning(S.q.choices[i]) : S.q.choices[i].w;
     btn.className = 'qc';
     btn.disabled  = false;
     btn.onclick   = () => qAns(i);
@@ -1779,7 +1802,7 @@ function qAns(idx) {
   }
   addPoints(ok);
   recordDaily();
-  $('q-fb-detail').textContent = `${q.w} ＝ ${q.m}`;
+  $('q-fb-detail').textContent = `${q.w} ＝ ${getMeaning(q)}`;
   $('q-stars').textContent = S.q.sessionStars;
   show('q-fb');
 }
@@ -1816,7 +1839,7 @@ function tRender() {
   $('t-num').textContent   = S.t.idx+1;
   $('t-prog').style.width  = `${(S.t.idx/10)*100}%`;
   $('t-stars').textContent = S.t.sessionStars;
-  $('t-meaning').textContent = q.m;
+  $('t-meaning').textContent = getMeaning(q);
   $('t-kana').textContent    = q.k || q.w;
   $('t-len').textContent     = q.w.length;
 
@@ -2465,7 +2488,7 @@ function taRender() {
   TA.correctIdx = choices.findIndex(c=>c.id===q.id);
   for (let i=0;i<4;i++) {
     const btn = $('tac'+i);
-    btn.textContent = choices[i].m;
+    btn.textContent = getMeaning(choices[i]);
     btn.className = 'qc';
     btn.disabled  = false;
     btn.onclick   = ()=>taAns(i, choices);
@@ -2493,6 +2516,84 @@ function taDone() {
 }
 
 // ────────────────────────────────────────────────────────────
+// EASY MODE (かんたん訳)
+// ────────────────────────────────────────────────────────────
+const EASY_MEANINGS = {
+  1:"ゆるす",2:"さんかする・でかける",3:"おすすめする",
+  4:"あらわす・きもちをいう",5:"つくる・うみだす",6:"まもる・たすける",
+  7:"ふくむ・いれる",8:"ふえる・ふやす",9:"きめる",
+  10:"せつめいする・おしえる",11:"みつける・はっけんする",
+  12:"たっせいする・なしとげる",13:"かいけつする",
+  14:"ていあんする・もちかける",15:"よくする・うまくなる",
+  16:"もらう・うけとる",17:"じゅんびする",18:"おぼえている",
+  19:"つづける",20:"れんしゅうする",21:"さしだす・もうしでる",
+  22:"おこす・まねく",23:"おいわいする",24:"へらす",
+  25:"たすける・おうえんする",26:"そだてる・はったつさせる",
+  27:"あたえる・てわたす",28:"ひつようとする",
+  29:"せいこうする・うまくいく",30:"えいきょうをあたえる",
+  31:"あつめる",32:"きたいする・まつ",33:"しんじる",
+  34:"きづく・わかる",35:"しょうかいする",
+  36:"はっぴょうする・つたえる",37:"とどける・はこぶ",
+  38:"りょこうする・たびする",39:"つくる・せいさんする",
+  40:"しっぱいする",
+  41:"かんきょう（まわりのしぜん）",42:"せいふ（くにをうごかすひと）",
+  43:"ちいき（じぶんのまちのひと）",44:"きょういく（まなぶこと）",
+  45:"ぎじゅつ・テクノロジー",46:"けいけん（したこと）",
+  47:"じょうほう・しらせ",48:"きかい・チャンス",
+  49:"じんこう（ひとのかず）",50:"こうこく・CM",
+  51:"よやく",52:"くすり",53:"えんぎ・こうえん",
+  54:"ちしき（しっていること）",55:"じょうきょう（いまどんなふうか）",
+  56:"かつどう・イベント",57:"ふんいき・たいき",
+  58:"ちゅうい・ちゅうもく",59:"たいど（きもちのもちかた）",
+  60:"けっか",61:"けんこう（からだのよさ）",
+  62:"ぶんか（くにのならわし）",63:"しゃかい（みんながくらすせかい）",
+  64:"けんきゅう・しらべること",65:"エネルギー・ちから",
+  66:"もんだい",67:"もくてき・りゆう",68:"りゆう（なぜかということ）",
+  69:"かもく・はなしのテーマ",70:"サービス・おてつだい",
+  71:"せいひん・つくったもの",72:"イベント・できごと",
+  73:"れきし・むかしのこと",74:"せいき（100ねんのまとまり）",
+  75:"どりょく（がんばること）",76:"ちょうせん・むずかしいこと",
+  77:"えらぶこと・えらびかた",78:"こうか・えいきょう",
+  79:"しゅうかん・いつもすること",80:"きょうみ・かんしん",
+  81:"もんだい・こんなんなこと",82:"ざいりょう・そざい",
+  83:"やりかた・ほうほう",84:"しぜん",85:"けいかく・プラン",
+  86:"ほうこく・レポート",87:"やくわり",88:"できること・とくい",
+  89:"プロジェクト・グループしごと",90:"かがく",
+  91:"つかえる・てにはいる",92:"むかしからの・でんとうてきな",
+  93:"うまくいった・せいこうした",94:"べんりな",
+  95:"たいせつな・じゅうような",96:"きけんな",
+  97:"すばらしい・とてもいい",98:"きもちいい・すごしやすい",
+  99:"じしんがある",100:"にんきのある",
+  101:"よくある・ふつうの",102:"にている・よくにた",
+  103:"さいきんの",104:"いろいろな",105:"ひつような",
+  106:"できる・かのうな",107:"げんだいてきな・いまふうの",
+  108:"せかいてきな",109:"しんこくな・まじめな",
+  110:"じりつした・ひとりでできる",111:"とくに",
+  112:"じつは・じっさいに",113:"ついに・さいごに",
+  114:"さいきん",115:"たぶん",116:"でも・しかし",
+  117:"だから・そのため",118:"ざんねんながら",
+  119:"ちょうど・ぴったり",120:"かならず・たしかに",
+};
+
+function getMeaning(word) {
+  if (!S.easyMode) return word.m;
+  return EASY_MEANINGS[word.id] || word.m;
+}
+function toggleEasyMode() {
+  S.easyMode = !S.easyMode;
+  localStorage.setItem('easyMode', S.easyMode ? '1' : '0');
+  const btn = $('easy-bar-btn');
+  btn.textContent = S.easyMode ? 'ON' : 'OFF';
+  btn.classList.toggle('on', S.easyMode);
+}
+function initEasyMode() {
+  S.easyMode = localStorage.getItem('easyMode') === '1';
+  const btn = $('easy-bar-btn');
+  btn.textContent = S.easyMode ? 'ON' : 'OFF';
+  btn.classList.toggle('on', S.easyMode);
+}
+
+// ────────────────────────────────────────────────────────────
 // BOOT
 // ────────────────────────────────────────────────────────────
 window.addEventListener('load', ()=>{
@@ -2501,6 +2602,7 @@ window.addEventListener('load', ()=>{
   checkStreak();
   fcInit();
   homeUpdate();
+  initEasyMode();
   if (S.char.id) {
     $('charselect-overlay').classList.add('hidden');
     updateCharWidget();
