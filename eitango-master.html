@@ -345,10 +345,61 @@
     .ci-name { font-size: 10px; color: var(--text-sub); display: block; }
     .ci-cnt  { font-size: 11px; font-weight: bold; color: var(--primary); display: block; }
 
-    /* ── NAV BAR 6 items ── */
-    .nav-item { padding: 4px 6px; }
-    .nav-item .ni { font-size: 20px; }
+    /* ── NAV BAR 7 items ── */
+    .nav-item { padding: 4px 4px; }
+    .nav-item .ni { font-size: 19px; }
     .nav-item .nl { font-size: 9px; }
+
+    /* ── STREAK CALENDAR ── */
+    .streak-cal { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin: 8px 0; }
+    .streak-day { aspect-ratio:1; border-radius:5px; background:#e8eaed; display:flex; align-items:center; justify-content:center; font-size:10px; }
+    .streak-day.done  { background:var(--accent2); color:#fff; }
+    .streak-day.today { outline:2px solid var(--primary); }
+    .milestone-row { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+    .milestone { padding:3px 10px; border-radius:50px; font-size:11px; font-weight:bold; background:#e8eaed; color:var(--text-sub); }
+    .milestone.done { background:var(--accent1); color:#fff; }
+
+    /* ── WEAK WORDS ── */
+    .ww-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:#fff; border-radius:14px; margin-bottom:7px; box-shadow:0 2px 8px rgba(108,92,231,.07); }
+    .ww-word { font-size:15px; font-weight:bold; color:#ff7675; flex:0 0 100px; }
+    .ww-mean { font-size:12px; color:var(--text-sub); flex:1; }
+    .ww-cnt  { font-size:13px; font-weight:bold; color:#ff7675; white-space:nowrap; }
+
+    /* ── TIME ATTACK ── */
+    .ta-timer { font-size:72px; font-weight:bold; color:var(--primary); text-align:center; line-height:1; margin:8px 0; }
+    .ta-timer.warn { color:#ff7675; animation:tapulse .5s ease infinite; }
+    @keyframes tapulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    .ta-score-big { font-size:52px; font-weight:bold; color:var(--primary); text-align:center; }
+    .ta-best { text-align:center; font-size:13px; color:var(--text-sub); margin-bottom:4px; }
+
+    /* ── SPEAK BUTTON ── */
+    .speak-btn { background:none; border:2px solid var(--accent3); color:var(--accent3); border-radius:50px; padding:4px 12px; font-size:13px; cursor:pointer; font-family:inherit; transition:all .2s; }
+    .speak-btn:active { background:var(--accent3); color:#fff; }
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; }
+    .toggle-sw { width:38px; height:20px; background:#e8eaed; border-radius:50px; position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+    .toggle-sw.on { background:var(--accent2); }
+    .toggle-sw::after { content:''; position:absolute; width:16px; height:16px; background:#fff; border-radius:50%; top:2px; left:2px; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .toggle-sw.on::after { left:20px; }
+
+    /* ── DASHBOARD CHARTS ── */
+    .chart-wrap { display:flex; align-items:flex-end; gap:5px; height:80px; margin:10px 0 4px; }
+    .day-chart { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; height:100%; justify-content:flex-end; }
+    .day-chart-bar { width:100%; background:var(--primary-light); border-radius:3px 3px 0 0; min-height:2px; }
+    .day-chart-lbl { font-size:9px; color:var(--text-sub); }
+    .pos-chart-wrap { display:flex; align-items:flex-end; gap:5px; height:64px; margin:8px 0 4px; }
+    .pos-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; height:100%; justify-content:flex-end; }
+    .pos-bar { width:100%; border-radius:3px 3px 0 0; background:var(--accent3); min-height:2px; }
+    .pos-lbl { font-size:9px; color:var(--text-sub); text-align:center; }
+
+    /* ── SRS ── */
+    .srs-due-badge { display:inline-flex; align-items:center; gap:4px; background:#e8f0ff; color:var(--primary); padding:3px 10px; border-radius:50px; font-size:12px; font-weight:bold; }
+
+    /* ── TOP/WORST LIST ── */
+    .rank-item { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid #f0f0f0; }
+    .rank-item:last-child { border-bottom:none; }
+    .rank-num { font-size:16px; font-weight:bold; color:var(--text-sub); width:22px; text-align:center; flex-shrink:0; }
+    .rank-word { font-size:14px; font-weight:bold; color:var(--primary); flex:1; }
+    .rank-val  { font-size:12px; color:var(--text-sub); white-space:nowrap; }
   </style>
 </head>
 <body>
@@ -423,8 +474,11 @@
   <button class="nav-item" id="nav-typing"    onclick="go('typing')">
     <span class="ni">⌨️</span><span class="nl">タイピング</span>
   </button>
+  <button class="nav-item" id="nav-weakwords" onclick="go('weakwords')">
+    <span class="ni">📕</span><span class="nl">苦手</span>
+  </button>
   <button class="nav-item" id="nav-progress"  onclick="go('progress')">
-    <span class="ni">⭐</span><span class="nl">せいせき</span>
+    <span class="ni">📊</span><span class="nl">進捗</span>
   </button>
   <button class="nav-item" id="nav-gacha"     onclick="go('gacha')">
     <span class="ni">🎰</span><span class="nl">ガチャ</span>
@@ -466,6 +520,22 @@
     </div>
   </div>
 
+  <!-- Streak calendar -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-weight:bold;font-size:14px;">🔥 <ruby>連続学習<rt>れんぞくがくしゅう</rt></ruby>カレンダー</span>
+      <span id="h-streak-num" style="font-weight:bold;color:var(--primary);">0日</span>
+    </div>
+    <div class="streak-cal" id="h-streak-cal"></div>
+    <div class="milestone-row" id="h-milestones"></div>
+  </div>
+
+  <!-- SRS due notice -->
+  <div id="h-srs-notice" class="card hidden" style="text-align:center;padding:14px;">
+    <span class="srs-due-badge">📅 <span id="h-srs-due">0</span>語 復習の時間です！</span>
+    <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="startSrsReview()">復習スタート</button>
+  </div>
+
   <div class="menu-grid">
     <div class="menu-card mc-fc"   onclick="go('flashcard')">
       <div class="mc-em">🃏</div>
@@ -482,12 +552,17 @@
       <div class="mc-name">タイピング</div>
       <div class="mc-desc"><ruby>英語<rt>えいご</rt></ruby>をうちこんでみよう</div>
     </div>
-    <div class="menu-card mc-prog" onclick="go('progress')">
-      <div class="mc-em">📊</div>
-      <div class="mc-name">せいせき</div>
-      <div class="mc-desc"><ruby>記録<rt>きろく</rt></ruby>をたしかめよう</div>
+    <div class="menu-card" style="border-color:#ff7675;" onclick="go('weakwords')">
+      <div class="mc-em">📕</div>
+      <div class="mc-name">苦手リスト</div>
+      <div class="mc-desc">まちがえた<ruby>単語<rt>たんご</rt></ruby>を<ruby>復習<rt>ふくしゅう</rt></ruby></div>
     </div>
   </div>
+
+  <!-- Time Attack button -->
+  <button class="btn btn-block" style="background:linear-gradient(135deg,#fd79a8,#e17055);color:#fff;font-size:17px;padding:16px;border-radius:var(--radius);margin-bottom:14px;" onclick="go('timeatk')">
+    ⏱️ タイムアタック！ <span id="h-ta-best" style="font-size:12px;opacity:.8;"></span>
+  </button>
 
   <div class="card" style="text-align:center;">
     <div style="font-size:13px;margin-bottom:4px;">🎯 きょうの<ruby>目標<rt>もくひょう</rt></ruby></div>
@@ -514,7 +589,8 @@
         <div class="fc-pos"  id="fc-pos">名詞</div>
         <div class="fc-word" id="fc-word">ability</div>
         <div class="fc-kana" id="fc-kana">アビリティ</div>
-        <div class="tap-hint">👆 タップして<ruby>意味<rt>いみ</rt></ruby>をみる</div>
+        <button class="speak-btn" onclick="event.stopPropagation();speakWord()" style="margin-top:8px;">🔊 よむ</button>
+        <div class="tap-hint" style="margin-top:8px;">👆 タップして<ruby>意味<rt>いみ</rt></ruby>をみる</div>
       </div>
       <div class="fc-back">
         <div class="fc-meaning" id="fc-meaning">できること・とくいなこと</div>
@@ -667,50 +743,163 @@
 </div>
 
 <!-- ============================================================
-  PROGRESS
+  WEAK WORDS
+  ============================================================ -->
+<div class="screen" id="screen-weakwords">
+  <div class="screen-title">📕 苦手単語リスト</div>
+
+  <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;">
+    <div>
+      <div style="font-weight:bold;font-size:14px;">苦手優先モード</div>
+      <div style="font-size:11px;color:var(--text-sub);">クイズでまちがえた単語を優先出題</div>
+    </div>
+    <div class="toggle-sw" id="ww-mode-toggle" onclick="toggleWeakMode()"></div>
+  </div>
+
+  <div class="card" style="text-align:center;padding:14px;">
+    <button class="btn btn-danger btn-block" onclick="startWeakQuiz()">📕 苦手単語でクイズ！</button>
+  </div>
+
+  <div id="ww-empty" class="card hidden" style="text-align:center;padding:24px;color:var(--text-sub);">
+    まだ苦手な単語はありません！<br>クイズで間違えると登録されます 😊
+  </div>
+
+  <div id="ww-list"></div>
+</div>
+
+<!-- ============================================================
+  TIME ATTACK
+  ============================================================ -->
+<div class="screen" id="screen-timeatk" style="padding-bottom:24px;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+    <button class="btn btn-info" onclick="go('home')" style="padding:8px 14px;">← もどる</button>
+    <div style="font-size:20px;font-weight:bold;color:var(--primary);">⏱️ タイムアタック</div>
+  </div>
+
+  <!-- Start -->
+  <div id="ta-start">
+    <div class="card" style="text-align:center;padding:28px;">
+      <div style="font-size:56px;margin-bottom:10px;">⏱️</div>
+      <div style="font-size:18px;font-weight:bold;margin-bottom:4px;">60びょうで何問こたえられる？</div>
+      <div class="ta-best" id="ta-best-disp">ベストスコア: -</div>
+      <button class="btn btn-block" style="background:linear-gradient(135deg,#fd79a8,#e17055);color:#fff;font-size:18px;padding:16px;" onclick="taStart()">🚀 スタート！</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="ta-game" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="ta-timer" id="ta-timer">60</div>
+      <div style="text-align:center;">
+        <div style="font-size:32px;font-weight:bold;color:var(--primary);" id="ta-score">0</div>
+        <div style="font-size:11px;color:var(--text-sub);">正解</div>
+      </div>
+    </div>
+    <div class="quiz-q" id="ta-question" style="font-size:26px;margin-bottom:12px;"></div>
+    <div class="quiz-choices" id="ta-choices">
+      <button class="qc" id="tac0"></button>
+      <button class="qc" id="tac1"></button>
+      <button class="qc" id="tac2"></button>
+      <button class="qc" id="tac3"></button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="ta-result" class="hidden result-box fade-up">
+    <div style="font-size:48px;margin-bottom:8px;">⏱️</div>
+    <div class="ta-score-big" id="ta-r-score">0</div>
+    <div style="font-size:14px;color:var(--text-sub);margin-bottom:4px;">問正解！</div>
+    <div id="ta-r-best" style="font-size:13px;color:var(--accent2);font-weight:bold;margin-bottom:18px;"></div>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="taStart()">もう一度！</button>
+      <button class="btn btn-info" onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  PROGRESS / DASHBOARD
   ============================================================ -->
 <div class="screen" id="screen-progress">
-  <div class="screen-title">📊 せいせき</div>
+  <div class="screen-title">📊 学習ダッシュボード</div>
 
   <div class="level-banner">
-    <div class="level-em">🦊</div>
+    <div class="level-em" id="p-char-em">🦊</div>
     <div class="level-name" id="p-level">ビギナー</div>
-    <div class="level-sub">⭐ <span id="p-stars">0</span><ruby>個<rt>こ</rt></ruby>のスター</div>
+    <div class="level-sub">⭐ <span id="p-stars">0</span>個のスター　🔥 <span id="p-streak">0</span>日連続</div>
   </div>
 
   <div class="stat-grid">
     <div class="stat-card">
       <div class="stat-icon">📚</div>
       <div class="stat-val" id="p-learned">0</div>
-      <div class="stat-lbl"><ruby>覚<rt>おぼ</rt></ruby>えた<ruby>単語<rt>たんご</rt></ruby></div>
+      <div class="stat-lbl">覚えた単語</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">🔥</div>
-      <div class="stat-val" id="p-streak">0</div>
-      <div class="stat-lbl"><ruby>連続学習<rt>れんぞくがくしゅう</rt></ruby><ruby>日<rt>にち</rt></ruby></div>
+      <div class="stat-icon">📕</div>
+      <div class="stat-val" id="p-weak-cnt">0</div>
+      <div class="stat-lbl">苦手単語数</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">❓</div>
       <div class="stat-val" id="p-qacc">-</div>
-      <div class="stat-lbl">クイズ<ruby>正解率<rt>せいかいりつ</rt></ruby></div>
+      <div class="stat-lbl">クイズ正解率</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">⌨️</div>
-      <div class="stat-val" id="p-tacc">-</div>
-      <div class="stat-lbl">タイピング<ruby>正解率<rt>せいかいりつ</rt></ruby></div>
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-val" id="p-ta-best">-</div>
+      <div class="stat-lbl">タイムアタック最高</div>
     </div>
   </div>
 
+  <!-- 7-day chart -->
   <div class="card">
-    <div style="font-weight:bold;margin-bottom:10px;">
-      <ruby>覚<rt>おぼ</rt></ruby>えた<ruby>単語<rt>たんご</rt></ruby>（<span id="p-lc">0</span>/<span id="p-tc">100</span>）
+    <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">📅 7日間の学習グラフ</div>
+    <div class="chart-wrap" id="p-day-chart"></div>
+    <div style="display:flex;justify-content:space-around;" id="p-day-labels"></div>
+  </div>
+
+  <!-- Part-of-speech chart -->
+  <div class="card">
+    <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">📖 品詞別 習得率</div>
+    <div class="pos-chart-wrap" id="p-pos-chart"></div>
+    <div style="display:flex;justify-content:space-around;" id="p-pos-labels"></div>
+  </div>
+
+  <!-- Overall progress -->
+  <div class="card">
+    <div style="font-weight:bold;margin-bottom:8px;">
+      覚えた単語（<span id="p-lc">0</span>/<span id="p-tc">400</span>）
     </div>
     <div class="prog-wrap"><div class="prog-fill" id="p-prog" style="width:0%"></div></div>
-    <div id="p-wlist" style="max-height:280px;overflow-y:auto;"></div>
+  </div>
+
+  <!-- TOP5 / WORST5 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div class="card" style="padding:14px;">
+      <div style="font-weight:bold;font-size:13px;margin-bottom:8px;">🏆 よく覚えてる TOP5</div>
+      <div id="p-top5"></div>
+    </div>
+    <div class="card" style="padding:14px;">
+      <div style="font-weight:bold;font-size:13px;margin-bottom:8px;">📕 苦手 WORST5</div>
+      <div id="p-worst5"></div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="card">
+    <div style="font-weight:bold;font-size:14px;margin-bottom:8px;">⚙️ 設定</div>
+    <div class="toggle-row">
+      <div>
+        <div style="font-size:13px;font-weight:bold;">🔊 自動読み上げ</div>
+        <div style="font-size:11px;color:var(--text-sub);">カードめくり時に英語を読む</div>
+      </div>
+      <div class="toggle-sw" id="p-autospeak-toggle" onclick="toggleAutoSpeak()"></div>
+    </div>
   </div>
 
   <button class="btn btn-danger btn-block" onclick="pReset()" style="margin-top:6px;">
-    🔄 <ruby>記録<rt>きろく</rt></ruby>をリセット
+    🔄 記録をリセット
   </button>
 </div>
 
@@ -1231,11 +1420,13 @@ function go(name) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  document.getElementById('nav-'+name).classList.add('active');
-  if (name==='home')     { homeUpdate(); updateCharWidget(); }
-  if (name==='progress') progUpdate();
-  if (name==='gacha')    gachaUpdate();
-  // show floating badge only during learning screens
+  const navEl = document.getElementById('nav-'+name);
+  if (navEl) navEl.classList.add('active');
+  if (name==='home')      { homeUpdate(); updateCharWidget(); }
+  if (name==='progress')  progUpdate();
+  if (name==='gacha')     gachaUpdate();
+  if (name==='weakwords') wwUpdate();
+  if (name==='timeatk')   taInit();
   const badge = $('char-badge');
   if (S.char.id && ['flashcard','quiz','typing'].includes(name)) {
     badge.classList.remove('hidden');
@@ -1257,6 +1448,18 @@ function homeUpdate() {
   $('h-prog').style.width   = pct+'%';
   const rem = 10-(lc%10);
   $('h-goal').textContent   = lc>=total ? '全部おぼえた！🎉' : `あと ${rem} 語おぼえよう！`;
+  renderStreakCal();
+  // SRS due notice
+  const due = getSrsDue().length;
+  if (due > 0) {
+    $('h-srs-due').textContent = due;
+    show('h-srs-notice');
+  } else {
+    hide('h-srs-notice');
+  }
+  // Time attack best
+  const best = getTaBest();
+  $('h-ta-best').textContent = best > 0 ? `ベスト: ${best}問` : '';
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1285,6 +1488,7 @@ function fcRender() {
   const card = $('fc-card');
   card.classList.remove('flipped');
   S.fc.flipped = false;
+  if (getSettings().autoSpeak) speakWord();
 }
 function fcFlip() {
   const card = $('fc-card');
@@ -1298,9 +1502,14 @@ function fcAns(ok) {
     S.fc.okCount++;
     S.fc.sessionStars++;
     S.stars++;
+    srsUpdate(word.id, true);
     save();
+  } else {
+    trackMistake(word.id);
+    srsUpdate(word.id, false);
   }
   addPoints(ok);
+  recordDaily();
   S.fc.idx++;
   if (S.fc.idx >= S.fc.deck.length) fcDone();
   else fcRender();
@@ -1368,16 +1577,20 @@ function qAns(idx) {
     S.q.sessionStars++;
     S.stars++;
     S.learned.add(q.id);
+    srsUpdate(q.id, true);
     save();
     $('q-fb-text').textContent  = '✅ せいかい！すごい！';
     $('q-fb-text').style.color  = '#00b894';
   } else {
     $('qc'+idx).classList.add('wrong');
     $('qc'+S.q.correctIdx).classList.add('reveal');
+    trackMistake(q.id);
+    srsUpdate(q.id, false);
     $('q-fb-text').textContent  = '❌ ざんねん…';
     $('q-fb-text').style.color  = '#ff7675';
   }
   addPoints(ok);
+  recordDaily();
   $('q-fb-detail').textContent = `${q.w} ＝ ${q.m}`;
   $('q-stars').textContent = S.q.sessionStars;
   show('q-fb');
@@ -1460,17 +1673,21 @@ function tAns(ok) {
     S.t.sessionStars++;
     S.stars++;
     S.learned.add(q.id);
+    srsUpdate(q.id, true);
     save();
     $('t-fb-text').textContent  = '✅ せいかい！すごい！';
     $('t-fb-text').style.color  = '#00b894';
     $('t-fb-detail').textContent= `こたえ: ${q.w}`;
   } else {
     inp.className = 't-input wrong';
+    trackMistake(q.id);
+    srsUpdate(q.id, false);
     $('t-fb-text').textContent  = '❌ ざんねん…';
     $('t-fb-text').style.color  = '#ff7675';
     $('t-fb-detail').textContent= `せいかい: ${q.w}`;
   }
   addPoints(ok);
+  recordDaily();
   $('t-stars').textContent = S.t.sessionStars;
   show('t-fb');
 }
@@ -1497,41 +1714,83 @@ function tRestart() { hide('t-game'); hide('t-result'); show('t-start'); }
 function progUpdate() {
   const lc = S.learned.size, total = V.length;
   const pct = Math.round(lc/total*100);
-  $('p-stars').textContent  = S.stars;
-  $('p-learned').textContent= lc;
-  $('p-streak').textContent = S.streak;
-  $('p-lc').textContent     = lc;
-  $('p-tc').textContent     = total;
-  $('p-prog').style.width   = pct+'%';
-  $('p-level').textContent  = levelName(S.stars);
+  $('p-stars').textContent   = S.stars;
+  $('p-learned').textContent = lc;
+  $('p-streak').textContent  = S.streak;
+  $('p-lc').textContent      = lc;
+  $('p-tc').textContent      = total;
+  $('p-prog').style.width    = pct+'%';
+  $('p-level').textContent   = levelName(S.stars);
+  if (S.char.id) $('p-char-em').textContent = getCharDisplay();
+
+  const mistakes = getMistakes();
+  $('p-weak-cnt').textContent = Object.keys(mistakes).length;
+
+  const best = getTaBest();
+  $('p-ta-best').textContent = best > 0 ? best+'問' : '-';
 
   if (S.qHist.length) {
     const s = S.qHist.reduce((a,b)=>a+b.score,0);
     const t = S.qHist.reduce((a,b)=>a+b.total,0);
     $('p-qacc').textContent = Math.round(s/t*100)+'%';
   }
-  if (S.tHist.length) {
-    const s = S.tHist.reduce((a,b)=>a+b.score,0);
-    const t = S.tHist.reduce((a,b)=>a+b.total,0);
-    $('p-tacc').textContent = Math.round(s/t*100)+'%';
-  }
 
-  const el = $('p-wlist');
-  if (!lc) {
-    el.innerHTML = '<div style="text-align:center;color:#b2bec3;padding:20px;">まだおぼえた単語がありません</div>';
-  } else {
-    el.innerHTML = V.filter(w=>S.learned.has(w.id)).map(w=>`
-      <div class="wl-item">
-        <span class="wl-word">${w.w}</span>
-        <span class="wl-mean">${w.m}</span>
-        <span class="wl-star">⭐</span>
-      </div>`).join('');
+  // 7-day chart
+  const daily = getDaily();
+  const chartEl = $('p-day-chart');
+  const lblEl   = $('p-day-labels');
+  const days7 = [];
+  for (let i=6; i>=0; i--) {
+    const d = new Date(Date.now()-i*86400000);
+    const key = d.toDateString();
+    days7.push({ key, cnt: daily[key]||0, lbl: (d.getMonth()+1)+'/'+(d.getDate()) });
   }
+  const maxCnt = Math.max(1, ...days7.map(d=>d.cnt));
+  chartEl.innerHTML = days7.map(d=>{
+    const h = Math.round((d.cnt/maxCnt)*70);
+    return `<div class="day-chart"><div class="day-chart-bar" style="height:${h}px;"></div></div>`;
+  }).join('');
+  lblEl.innerHTML = days7.map(d=>`<div style="flex:1;text-align:center;font-size:9px;color:var(--text-sub);">${d.lbl}</div>`).join('');
+
+  // Part-of-speech chart
+  const posMap = {};
+  V.forEach(w=>{ if (!posMap[w.p]) posMap[w.p]={total:0,learned:0}; posMap[w.p].total++; if(S.learned.has(w.id)) posMap[w.p].learned++; });
+  const posList = Object.entries(posMap).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
+  const posChartEl = $('p-pos-chart');
+  posChartEl.innerHTML = posList.map(([pos,d])=>{
+    const h = Math.round((d.learned/d.total)*56);
+    return `<div class="pos-bar-col"><div class="pos-bar" style="height:${h}px;"></div></div>`;
+  }).join('');
+  $('p-pos-labels').innerHTML = posList.map(([pos])=>`<div style="flex:1;text-align:center;font-size:9px;color:var(--text-sub);">${pos.replace('詞','')}</div>`).join('');
+
+  // TOP5 (most seen/learned words by wordstats)
+  const ws = getWordStats();
+  const topWords = Object.entries(ws).sort((a,b)=>b[1].correct-a[1].correct).slice(0,5);
+  $('p-top5').innerHTML = topWords.length ? topWords.map(([id,s],i)=>{
+    const w = V.find(x=>x.id===+id);
+    return w ? `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-word">${w.w}</span><span class="rank-val">${s.correct}回</span></div>` : '';
+  }).join('') : '<div style="font-size:12px;color:#b2bec3;padding:8px 0;">まだデータなし</div>';
+
+  // WORST5 (most mistaken)
+  const worstWords = Object.entries(mistakes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  $('p-worst5').innerHTML = worstWords.length ? worstWords.map(([id,cnt],i)=>{
+    const w = V.find(x=>x.id===+id);
+    return w ? `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-word">${w.w}</span><span class="rank-val">×${cnt}</span></div>` : '';
+  }).join('') : '<div style="font-size:12px;color:#b2bec3;padding:8px 0;">まだデータなし</div>';
+
+  // Auto-speak toggle
+  const ts = $('p-autospeak-toggle');
+  ts.className = 'toggle-sw' + (getSettings().autoSpeak ? ' on' : '');
 }
 function pReset() {
   if (!confirm('きろくをぜんぶリセットしてもいいですか？')) return;
   S.learned.clear(); S.stars=0; S.streak=0; S.lastDate=null; S.qHist=[]; S.tHist=[];
   localStorage.removeItem('etm');
+  localStorage.removeItem('etm-mistakes');
+  localStorage.removeItem('etm-timeatk');
+  localStorage.removeItem('etm-srs');
+  localStorage.removeItem('etm-wordstats');
+  localStorage.removeItem('etm-daily');
   progUpdate(); alert('リセットしました！');
 }
 
@@ -1798,6 +2057,247 @@ function loadChar() {
     S.char.items        = d.items        || [];
     S.char.gachaTickets = d.gachaTickets || 0;
   } catch(e) {}
+}
+
+// ────────────────────────────────────────────────────────────
+// MISTAKES TRACKING  (etm-mistakes: {wordId: count})
+// ────────────────────────────────────────────────────────────
+function getMistakes() {
+  try { return JSON.parse(localStorage.getItem('etm-mistakes')) || {}; } catch(e){ return {}; }
+}
+function saveMistakes(m) { localStorage.setItem('etm-mistakes', JSON.stringify(m)); }
+function trackMistake(id) {
+  const m = getMistakes();
+  m[id] = (m[id]||0) + 1;
+  saveMistakes(m);
+}
+
+// ────────────────────────────────────────────────────────────
+// WORD STATS  (etm-wordstats: {wordId: {correct,seen}})
+// ────────────────────────────────────────────────────────────
+function getWordStats() {
+  try { return JSON.parse(localStorage.getItem('etm-wordstats')) || {}; } catch(e){ return {}; }
+}
+function saveWordStats(ws) { localStorage.setItem('etm-wordstats', JSON.stringify(ws)); }
+
+// ────────────────────────────────────────────────────────────
+// DAILY LOG  (etm-daily: {dateString: count})
+// ────────────────────────────────────────────────────────────
+function getDaily() {
+  try { return JSON.parse(localStorage.getItem('etm-daily')) || {}; } catch(e){ return {}; }
+}
+function recordDaily() {
+  const d = getDaily();
+  const key = new Date().toDateString();
+  d[key] = (d[key]||0) + 1;
+  localStorage.setItem('etm-daily', JSON.stringify(d));
+}
+
+// ────────────────────────────────────────────────────────────
+// SETTINGS  (etm-settings: {autoSpeak})
+// ────────────────────────────────────────────────────────────
+function getSettings() {
+  try { return JSON.parse(localStorage.getItem('etm-settings')) || {autoSpeak:false}; } catch(e){ return {autoSpeak:false}; }
+}
+function saveSettings(s) { localStorage.setItem('etm-settings', JSON.stringify(s)); }
+function toggleAutoSpeak() {
+  const s = getSettings();
+  s.autoSpeak = !s.autoSpeak;
+  saveSettings(s);
+  const ts = $('p-autospeak-toggle');
+  ts.className = 'toggle-sw' + (s.autoSpeak ? ' on' : '');
+}
+
+// ────────────────────────────────────────────────────────────
+// SPEECH SYNTHESIS
+// ────────────────────────────────────────────────────────────
+function speakWord() {
+  const word = S.fc.deck && S.fc.deck[S.fc.idx] ? S.fc.deck[S.fc.idx].w : null;
+  if (!word || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+function speakText(text) {
+  if (!text || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+// ────────────────────────────────────────────────────────────
+// STREAK CALENDAR
+// ────────────────────────────────────────────────────────────
+function renderStreakCal() {
+  const daily = getDaily();
+  const cal   = $('h-streak-cal');
+  const ms    = $('h-milestones');
+  if (!cal) return;
+  $('h-streak-num').textContent = S.streak + '日';
+  const days = [];
+  for (let i=29; i>=0; i--) {
+    const d   = new Date(Date.now()-i*86400000);
+    const key = d.toDateString();
+    days.push({ key, done: !!daily[key], today: i===0 });
+  }
+  cal.innerHTML = days.map(d=>`<div class="streak-day${d.done?' done':''}${d.today?' today':''}"></div>`).join('');
+  const milestones = [
+    { days:7,   label:'7日' },
+    { days:30,  label:'30日' },
+    { days:100, label:'100日' },
+  ];
+  ms.innerHTML = milestones.map(m=>`<span class="milestone${S.streak>=m.days?' done':''}">${m.label} ${S.streak>=m.days?'✓':''}</span>`).join('');
+}
+
+// ────────────────────────────────────────────────────────────
+// SRS  SM-2  (etm-srs: {wordId: {interval,ef,due}})
+// ────────────────────────────────────────────────────────────
+function getSrs() {
+  try { return JSON.parse(localStorage.getItem('etm-srs')) || {}; } catch(e){ return {}; }
+}
+function saveSrs(s) { localStorage.setItem('etm-srs', JSON.stringify(s)); }
+function srsUpdate(id, correct) {
+  const srs = getSrs();
+  const now  = Date.now();
+  const card = srs[id] || { interval:1, ef:2.5, due:now };
+  if (correct) {
+    card.interval = card.interval === 1 ? 1 : card.interval === 2 ? 6 : Math.round(card.interval * card.ef);
+    card.ef = Math.max(1.3, card.ef + 0.1);
+  } else {
+    card.interval = 1;
+    card.ef = Math.max(1.3, card.ef - 0.2);
+  }
+  card.due = now + card.interval * 86400000;
+  srs[id] = card;
+  saveSrs(srs);
+}
+function getSrsDue() {
+  const srs  = getSrs();
+  const now  = Date.now();
+  return Object.entries(srs).filter(([,c])=> c.due <= now).map(([id])=>+id);
+}
+function startSrsReview() {
+  const due = getSrsDue();
+  if (!due.length) return;
+  S.q.qs    = shuffle(V.filter(w=>due.includes(w.id))).slice(0,10);
+  S.q.idx   = 0; S.q.score = 0; S.q.sessionStars = 0; S.q.mode = 'en-ja';
+  hide('q-start'); hide('q-result'); show('q-game');
+  qRender();
+  go('quiz');
+}
+
+// ────────────────────────────────────────────────────────────
+// WEAK WORDS SCREEN
+// ────────────────────────────────────────────────────────────
+let weakModeOn = false;
+function wwUpdate() {
+  const mistakes = getMistakes();
+  const ids = Object.keys(mistakes).map(Number);
+  const toggle = $('ww-mode-toggle');
+  toggle.className = 'toggle-sw' + (weakModeOn ? ' on' : '');
+  if (!ids.length) {
+    show('ww-empty');
+    $('ww-list').innerHTML = '';
+    return;
+  }
+  hide('ww-empty');
+  const sorted = ids.sort((a,b)=>mistakes[b]-mistakes[a]);
+  $('ww-list').innerHTML = sorted.map(id=>{
+    const w = V.find(x=>x.id===id);
+    if (!w) return '';
+    return `<div class="ww-item">
+      <span class="ww-word">${w.w}</span>
+      <span class="ww-mean">${w.m}</span>
+      <span class="ww-cnt">×${mistakes[id]}</span>
+    </div>`;
+  }).join('');
+}
+function toggleWeakMode() {
+  weakModeOn = !weakModeOn;
+  $('ww-mode-toggle').className = 'toggle-sw' + (weakModeOn ? ' on' : '');
+}
+function startWeakQuiz() {
+  const mistakes = getMistakes();
+  const ids = Object.keys(mistakes).map(Number);
+  if (!ids.length) { alert('まだ苦手な単語がありません！'); return; }
+  S.q.qs    = shuffle(V.filter(w=>ids.includes(w.id))).slice(0,10);
+  S.q.idx   = 0; S.q.score = 0; S.q.sessionStars = 0; S.q.mode = 'en-ja';
+  hide('q-start'); hide('q-result'); show('q-game');
+  qRender();
+  go('quiz');
+}
+
+// ────────────────────────────────────────────────────────────
+// TIME ATTACK
+// ────────────────────────────────────────────────────────────
+let taTimer = null;
+const TA = { timeLeft:60, score:0, answered:false, qs:[], idx:0, correctIdx:0 };
+
+function getTaBest() {
+  try { return parseInt(localStorage.getItem('etm-timeatk'))||0; } catch(e){ return 0; }
+}
+function saveTaBest(n) {
+  if (n > getTaBest()) localStorage.setItem('etm-timeatk', n);
+}
+function taInit() {
+  clearInterval(taTimer);
+  const best = getTaBest();
+  $('ta-best-disp').textContent = best > 0 ? 'ベストスコア: ' + best + '問' : 'まだ記録なし';
+  show('ta-start'); hide('ta-game'); hide('ta-result');
+}
+function taStart() {
+  clearInterval(taTimer);
+  TA.timeLeft = 60; TA.score = 0; TA.answered = false;
+  TA.qs = shuffle([...V]);
+  TA.idx = 0;
+  hide('ta-start'); hide('ta-result'); show('ta-game');
+  $('ta-score').textContent = 0;
+  taRender();
+  taTimer = setInterval(taTick, 1000);
+}
+function taTick() {
+  TA.timeLeft--;
+  const el = $('ta-timer');
+  el.textContent = TA.timeLeft;
+  el.className = 'ta-timer' + (TA.timeLeft <= 10 ? ' warn' : '');
+  if (TA.timeLeft <= 0) { clearInterval(taTimer); taDone(); }
+}
+function taRender() {
+  const q = TA.qs[TA.idx % TA.qs.length];
+  TA.answered = false;
+  $('ta-question').textContent = q.w;
+  const decoys = shuffle(V.filter(x=>x.id!==q.id)).slice(0,3);
+  const choices = shuffle([...decoys, q]);
+  TA.correctIdx = choices.findIndex(c=>c.id===q.id);
+  for (let i=0;i<4;i++) {
+    const btn = $('tac'+i);
+    btn.textContent = choices[i].m;
+    btn.className = 'qc';
+    btn.disabled  = false;
+    btn.onclick   = ()=>taAns(i, choices);
+  }
+}
+function taAns(idx, choices) {
+  if (TA.answered) return;
+  TA.answered = true;
+  const ok = idx === TA.correctIdx;
+  for (let i=0;i<4;i++) $('tac'+i).disabled = true;
+  $('tac'+idx).classList.add(ok ? 'correct' : 'wrong');
+  if (!ok) $('tac'+TA.correctIdx).classList.add('reveal');
+  if (ok) { TA.score++; $('ta-score').textContent = TA.score; }
+  TA.idx++;
+  setTimeout(()=>{ if (TA.timeLeft > 0) taRender(); }, ok ? 300 : 700);
+}
+function taDone() {
+  hide('ta-game');
+  const prev = getTaBest();
+  saveTaBest(TA.score);
+  show('ta-result');
+  $('ta-r-score').textContent = TA.score;
+  $('ta-r-best').textContent  = TA.score > prev ? '🎉 新記録！' : `ベスト: ${getTaBest()}問`;
+  homeUpdate();
 }
 
 // ────────────────────────────────────────────────────────────
