@@ -394,6 +394,10 @@
     /* ── SRS ── */
     .srs-due-badge { display:inline-flex; align-items:center; gap:4px; background:#e8f0ff; color:var(--primary); padding:3px 10px; border-radius:50px; font-size:12px; font-weight:bold; }
 
+    /* ── MODE TOGGLE (home) ── */
+    .fc-mode-btn { flex:1; padding:10px 8px; border-radius:14px; border:2px solid #e8eaed; background:#fff; font-size:14px; font-weight:bold; cursor:pointer; text-align:center; transition:all .2s; font-family:inherit; }
+    .fc-mode-btn.active { border-color:var(--primary); background:var(--primary); color:#fff; }
+
     /* ── TOP/WORST LIST ── */
     .rank-item { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid #f0f0f0; }
     .rank-item:last-child { border-bottom:none; }
@@ -534,6 +538,12 @@
   <div id="h-srs-notice" class="card hidden" style="text-align:center;padding:14px;">
     <span class="srs-due-badge">📅 <span id="h-srs-due">0</span>語 復習の時間です！</span>
     <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="startSrsReview()">復習スタート</button>
+  </div>
+
+  <!-- Mode toggle -->
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <button id="mode-words"   class="fc-mode-btn active" onclick="setMode('words')">📚 単語</button>
+    <button id="mode-phrases" class="fc-mode-btn"        onclick="setMode('phrases')">📖 熟語</button>
   </div>
 
   <div class="menu-grid">
@@ -1365,6 +1375,184 @@ const V = [
 ];
 
 // ────────────────────────────────────────────────────────────
+// PHRASES  (英検準2級 頻出英熟語 150語・level=1最頻出〜3標準)
+// ────────────────────────────────────────────────────────────
+const PHRASES = [
+  // ── Level 1: 最頻出 (50) ──
+  {id:1001, w:"look forward to", p:"熟語", m:"〜を楽しみにする", k:"", ej:"", level:1},
+  {id:1002, w:"get along with", p:"熟語", m:"〜とうまくやっていく", k:"", ej:"", level:1},
+  {id:1003, w:"take care of", p:"熟語", m:"〜の世話をする", k:"", ej:"", level:1},
+  {id:1004, w:"be good at", p:"熟語", m:"〜が得意だ", k:"", ej:"", level:1},
+  {id:1005, w:"be interested in", p:"熟語", m:"〜に興味がある", k:"", ej:"", level:1},
+  {id:1006, w:"look for", p:"熟語", m:"〜を探す", k:"", ej:"", level:1},
+  {id:1007, w:"find out", p:"熟語", m:"〜を調べる・知る", k:"", ej:"", level:1},
+  {id:1008, w:"give up", p:"熟語", m:"あきらめる", k:"", ej:"", level:1},
+  {id:1009, w:"go on", p:"熟語", m:"続ける・続く", k:"", ej:"", level:1},
+  {id:1010, w:"be proud of", p:"熟語", m:"〜を誇りに思う", k:"", ej:"", level:1},
+  {id:1011, w:"take part in", p:"熟語", m:"〜に参加する", k:"", ej:"", level:1},
+  {id:1012, w:"at first", p:"熟語", m:"最初は", k:"", ej:"", level:1},
+  {id:1013, w:"for example", p:"熟語", m:"例えば", k:"", ej:"", level:1},
+  {id:1014, w:"in fact", p:"熟語", m:"実際は・実は", k:"", ej:"", level:1},
+  {id:1015, w:"on the other hand", p:"熟語", m:"一方では", k:"", ej:"", level:1},
+  {id:1016, w:"as a result", p:"熟語", m:"その結果", k:"", ej:"", level:1},
+  {id:1017, w:"by the way", p:"熟語", m:"ところで", k:"", ej:"", level:1},
+  {id:1018, w:"in order to", p:"熟語", m:"〜するために", k:"", ej:"", level:1},
+  {id:1019, w:"be used to", p:"熟語", m:"〜に慣れている", k:"", ej:"", level:1},
+  {id:1020, w:"be able to", p:"熟語", m:"〜できる", k:"", ej:"", level:1},
+  {id:1021, w:"as soon as", p:"熟語", m:"〜するとすぐに", k:"", ej:"", level:1},
+  {id:1022, w:"at least", p:"熟語", m:"少なくとも", k:"", ej:"", level:1},
+  {id:1023, w:"make up one's mind", p:"熟語", m:"決心する", k:"", ej:"", level:1},
+  {id:1024, w:"come true", p:"熟語", m:"実現する", k:"", ej:"", level:1},
+  {id:1025, w:"make sure", p:"熟語", m:"確認する", k:"", ej:"", level:1},
+  {id:1026, w:"look up", p:"熟語", m:"〜を調べる", k:"", ej:"", level:1},
+  {id:1027, w:"put on", p:"熟語", m:"〜を着る・つける", k:"", ej:"", level:1},
+  {id:1028, w:"turn off", p:"熟語", m:"〜を消す", k:"", ej:"", level:1},
+  {id:1029, w:"turn on", p:"熟語", m:"〜をつける", k:"", ej:"", level:1},
+  {id:1030, w:"throw away", p:"熟語", m:"〜を捨てる", k:"", ej:"", level:1},
+  {id:1031, w:"run out of", p:"熟語", m:"〜を使い果たす", k:"", ej:"", level:1},
+  {id:1032, w:"depend on", p:"熟語", m:"〜に頼る・次第だ", k:"", ej:"", level:1},
+  {id:1033, w:"be afraid of", p:"熟語", m:"〜を恐れる", k:"", ej:"", level:1},
+  {id:1034, w:"be different from", p:"熟語", m:"〜と異なる", k:"", ej:"", level:1},
+  {id:1035, w:"be known as", p:"熟語", m:"〜として知られている", k:"", ej:"", level:1},
+  {id:1036, w:"be known for", p:"熟語", m:"〜で有名だ", k:"", ej:"", level:1},
+  {id:1037, w:"be ready for", p:"熟語", m:"〜の準備ができている", k:"", ej:"", level:1},
+  {id:1038, w:"be similar to", p:"熟語", m:"〜に似ている", k:"", ej:"", level:1},
+  {id:1039, w:"be tired of", p:"熟語", m:"〜に飽きている", k:"", ej:"", level:1},
+  {id:1040, w:"be worried about", p:"熟語", m:"〜を心配している", k:"", ej:"", level:1},
+  {id:1041, w:"break down", p:"熟語", m:"故障する・分解する", k:"", ej:"", level:1},
+  {id:1042, w:"come from", p:"熟語", m:"〜の出身だ・〜から来る", k:"", ej:"", level:1},
+  {id:1043, w:"deal with", p:"熟語", m:"〜に対処する", k:"", ej:"", level:1},
+  {id:1044, w:"feel like", p:"熟語", m:"〜したい気分だ", k:"", ej:"", level:1},
+  {id:1045, w:"get off", p:"熟語", m:"〜を降りる", k:"", ej:"", level:1},
+  {id:1046, w:"get on", p:"熟語", m:"〜に乗る", k:"", ej:"", level:1},
+  {id:1047, w:"go back", p:"熟語", m:"戻る", k:"", ej:"", level:1},
+  {id:1048, w:"grow up", p:"熟語", m:"成長する", k:"", ej:"", level:1},
+  {id:1049, w:"hand in", p:"熟語", m:"〜を提出する", k:"", ej:"", level:1},
+  {id:1050, w:"hear from", p:"熟語", m:"〜から連絡をもらう", k:"", ej:"", level:1},
+  // ── Level 2: 頻出 (50) ──
+  {id:1051, w:"help out", p:"熟語", m:"〜を手伝う", k:"", ej:"", level:2},
+  {id:1052, w:"keep up with", p:"熟語", m:"〜についていく", k:"", ej:"", level:2},
+  {id:1053, w:"lead to", p:"熟語", m:"〜につながる", k:"", ej:"", level:2},
+  {id:1054, w:"look after", p:"熟語", m:"〜の世話をする", k:"", ej:"", level:2},
+  {id:1055, w:"look into", p:"熟語", m:"〜を調査する", k:"", ej:"", level:2},
+  {id:1056, w:"make fun of", p:"熟語", m:"〜をからかう", k:"", ej:"", level:2},
+  {id:1057, w:"pay attention to", p:"熟語", m:"〜に注意を払う", k:"", ej:"", level:2},
+  {id:1058, w:"pick up", p:"熟語", m:"〜を拾う・迎えに行く", k:"", ej:"", level:2},
+  {id:1059, w:"point out", p:"熟語", m:"〜を指摘する", k:"", ej:"", level:2},
+  {id:1060, w:"put away", p:"熟語", m:"〜を片付ける", k:"", ej:"", level:2},
+  {id:1061, w:"refer to", p:"熟語", m:"〜を参照する・〜を指す", k:"", ej:"", level:2},
+  {id:1062, w:"result in", p:"熟語", m:"〜という結果になる", k:"", ej:"", level:2},
+  {id:1063, w:"run into", p:"熟語", m:"〜に偶然出会う", k:"", ej:"", level:2},
+  {id:1064, w:"set up", p:"熟語", m:"〜を設置する・準備する", k:"", ej:"", level:2},
+  {id:1065, w:"show up", p:"熟語", m:"現れる", k:"", ej:"", level:2},
+  {id:1066, w:"spend time", p:"熟語", m:"時間を過ごす", k:"", ej:"", level:2},
+  {id:1067, w:"stay up", p:"熟語", m:"夜更かしする", k:"", ej:"", level:2},
+  {id:1068, w:"take off", p:"熟語", m:"〜を脱ぐ・離陸する", k:"", ej:"", level:2},
+  {id:1069, w:"take place", p:"熟語", m:"起こる・行われる", k:"", ej:"", level:2},
+  {id:1070, w:"talk about", p:"熟語", m:"〜について話す", k:"", ej:"", level:2},
+  {id:1071, w:"think about", p:"熟語", m:"〜について考える", k:"", ej:"", level:2},
+  {id:1072, w:"go through", p:"熟語", m:"〜を経験する・通り抜ける", k:"", ej:"", level:2},
+  {id:1073, w:"be based on", p:"熟語", m:"〜に基づく", k:"", ej:"", level:2},
+  {id:1074, w:"carry out", p:"熟語", m:"〜を実行する", k:"", ej:"", level:2},
+  {id:1075, w:"catch up with", p:"熟語", m:"〜に追いつく", k:"", ej:"", level:2},
+  {id:1076, w:"check in", p:"熟語", m:"チェックインする", k:"", ej:"", level:2},
+  {id:1077, w:"come across", p:"熟語", m:"〜に偶然出会う", k:"", ej:"", level:2},
+  {id:1078, w:"come up with", p:"熟語", m:"〜を思いつく", k:"", ej:"", level:2},
+  {id:1079, w:"cut down on", p:"熟語", m:"〜を減らす", k:"", ej:"", level:2},
+  {id:1080, w:"drop by", p:"熟語", m:"〜に立ち寄る", k:"", ej:"", level:2},
+  {id:1081, w:"end up", p:"熟語", m:"結局〜になる", k:"", ej:"", level:2},
+  {id:1082, w:"figure out", p:"熟語", m:"〜を理解する・解決する", k:"", ej:"", level:2},
+  {id:1083, w:"get used to", p:"熟語", m:"〜に慣れる", k:"", ej:"", level:2},
+  {id:1084, w:"give away", p:"熟語", m:"〜を無料で配る", k:"", ej:"", level:2},
+  {id:1085, w:"go ahead", p:"熟語", m:"進む・どうぞ", k:"", ej:"", level:2},
+  {id:1086, w:"hold on", p:"熟語", m:"待つ・しっかりつかむ", k:"", ej:"", level:2},
+  {id:1087, w:"keep in mind", p:"熟語", m:"〜を心に留める", k:"", ej:"", level:2},
+  {id:1088, w:"leave out", p:"熟語", m:"〜を省く・除外する", k:"", ej:"", level:2},
+  {id:1089, w:"look out", p:"熟語", m:"気をつける", k:"", ej:"", level:2},
+  {id:1090, w:"make it", p:"熟語", m:"うまくいく・間に合う", k:"", ej:"", level:2},
+  {id:1091, w:"put off", p:"熟語", m:"〜を延期する", k:"", ej:"", level:2},
+  {id:1092, w:"rely on", p:"熟語", m:"〜に頼る", k:"", ej:"", level:2},
+  {id:1093, w:"set out", p:"熟語", m:"出発する・始める", k:"", ej:"", level:2},
+  {id:1094, w:"sort out", p:"熟語", m:"〜を整理する", k:"", ej:"", level:2},
+  {id:1095, w:"stay in touch", p:"熟語", m:"連絡を取り合う", k:"", ej:"", level:2},
+  {id:1096, w:"stick to", p:"熟語", m:"〜に固執する・続ける", k:"", ej:"", level:2},
+  {id:1097, w:"take advantage of", p:"熟語", m:"〜を利用する", k:"", ej:"", level:2},
+  {id:1098, w:"take turns", p:"熟語", m:"交代でする", k:"", ej:"", level:2},
+  {id:1099, w:"turn into", p:"熟語", m:"〜に変わる", k:"", ej:"", level:2},
+  {id:1100, w:"work out", p:"熟語", m:"運動する・うまくいく", k:"", ej:"", level:2},
+  // ── Level 3: 標準 (50) ──
+  {id:1101, w:"add up to", p:"熟語", m:"合計〜になる", k:"", ej:"", level:3},
+  {id:1102, w:"agree with", p:"熟語", m:"〜に同意する", k:"", ej:"", level:3},
+  {id:1103, w:"apply for", p:"熟語", m:"〜に応募する・申し込む", k:"", ej:"", level:3},
+  {id:1104, w:"ask for", p:"熟語", m:"〜を求める", k:"", ej:"", level:3},
+  {id:1105, w:"be aware of", p:"熟語", m:"〜に気づいている", k:"", ej:"", level:3},
+  {id:1106, w:"be full of", p:"熟語", m:"〜でいっぱいだ", k:"", ej:"", level:3},
+  {id:1107, w:"be made of", p:"熟語", m:"〜でできている", k:"", ej:"", level:3},
+  {id:1108, w:"be satisfied with", p:"熟語", m:"〜に満足している", k:"", ej:"", level:3},
+  {id:1109, w:"bring about", p:"熟語", m:"〜をもたらす", k:"", ej:"", level:3},
+  {id:1110, w:"call off", p:"熟語", m:"〜を中止する", k:"", ej:"", level:3},
+  {id:1111, w:"care for", p:"熟語", m:"〜の世話をする・好む", k:"", ej:"", level:3},
+  {id:1112, w:"check out", p:"熟語", m:"〜を確認する・チェックアウト", k:"", ej:"", level:3},
+  {id:1113, w:"clean up", p:"熟語", m:"〜を片付ける・掃除する", k:"", ej:"", level:3},
+  {id:1114, w:"cope with", p:"熟語", m:"〜に対処する", k:"", ej:"", level:3},
+  {id:1115, w:"cut off", p:"熟語", m:"〜を切り離す", k:"", ej:"", level:3},
+  {id:1116, w:"fall behind", p:"熟語", m:"遅れをとる", k:"", ej:"", level:3},
+  {id:1117, w:"get rid of", p:"熟語", m:"〜を取り除く", k:"", ej:"", level:3},
+  {id:1118, w:"give back", p:"熟語", m:"〜を返す", k:"", ej:"", level:3},
+  {id:1119, w:"go over", p:"熟語", m:"〜を見直す・繰り返す", k:"", ej:"", level:3},
+  {id:1120, w:"hand out", p:"熟語", m:"〜を配る", k:"", ej:"", level:3},
+  {id:1121, w:"have trouble", p:"熟語", m:"困難を経験する", k:"", ej:"", level:3},
+  {id:1122, w:"keep away from", p:"熟語", m:"〜から遠ざける", k:"", ej:"", level:3},
+  {id:1123, w:"learn from", p:"熟語", m:"〜から学ぶ", k:"", ej:"", level:3},
+  {id:1124, w:"leave for", p:"熟語", m:"〜へ向けて出発する", k:"", ej:"", level:3},
+  {id:1125, w:"live up to", p:"熟語", m:"〜に応える・期待に沿う", k:"", ej:"", level:3},
+  {id:1126, w:"make a difference", p:"熟語", m:"違いを生む", k:"", ej:"", level:3},
+  {id:1127, w:"make an effort", p:"熟語", m:"努力する", k:"", ej:"", level:3},
+  {id:1128, w:"make sense", p:"熟語", m:"意味をなす・なるほどと思う", k:"", ej:"", level:3},
+  {id:1129, w:"miss out on", p:"熟語", m:"〜を逃す", k:"", ej:"", level:3},
+  {id:1130, w:"object to", p:"熟語", m:"〜に反対する", k:"", ej:"", level:3},
+  {id:1131, w:"pass by", p:"熟語", m:"〜を通り過ぎる", k:"", ej:"", level:3},
+  {id:1132, w:"pick out", p:"熟語", m:"〜を選ぶ", k:"", ej:"", level:3},
+  {id:1133, w:"put together", p:"熟語", m:"〜を組み立てる・まとめる", k:"", ej:"", level:3},
+  {id:1134, w:"reach out to", p:"熟語", m:"〜に連絡する・手を差し伸べる", k:"", ej:"", level:3},
+  {id:1135, w:"run away", p:"熟語", m:"逃げる", k:"", ej:"", level:3},
+  {id:1136, w:"say hello to", p:"熟語", m:"〜によろしくと言う", k:"", ej:"", level:3},
+  {id:1137, w:"speak out", p:"熟語", m:"意見を述べる", k:"", ej:"", level:3},
+  {id:1138, w:"start over", p:"熟語", m:"やり直す", k:"", ej:"", level:3},
+  {id:1139, w:"take a break", p:"熟語", m:"休憩する", k:"", ej:"", level:3},
+  {id:1140, w:"take notes", p:"熟語", m:"ノートを取る", k:"", ej:"", level:3},
+  {id:1141, w:"think of", p:"熟語", m:"〜を思いつく・〜と考える", k:"", ej:"", level:3},
+  {id:1142, w:"try out", p:"熟語", m:"〜を試してみる", k:"", ej:"", level:3},
+  {id:1143, w:"use up", p:"熟語", m:"〜を使い果たす", k:"", ej:"", level:3},
+  {id:1144, w:"wait for", p:"熟語", m:"〜を待つ", k:"", ej:"", level:3},
+  {id:1145, w:"watch out for", p:"熟語", m:"〜に気をつける", k:"", ej:"", level:3},
+  {id:1146, w:"belong to", p:"熟語", m:"〜に属する", k:"", ej:"", level:3},
+  {id:1147, w:"care about", p:"熟語", m:"〜を気にかける", k:"", ej:"", level:3},
+  {id:1148, w:"count on", p:"熟語", m:"〜を頼りにする", k:"", ej:"", level:3},
+  {id:1149, w:"divide into", p:"熟語", m:"〜に分ける", k:"", ej:"", level:3},
+  {id:1150, w:"wind up", p:"熟語", m:"結局〜になる", k:"", ej:"", level:3},
+];
+
+// ────────────────────────────────────────────────────────────
+// MODE  ('words' | 'phrases')
+// ────────────────────────────────────────────────────────────
+let currentMode = 'words';
+function getActiveVocab() { return currentMode === 'phrases' ? PHRASES : V; }
+function getModePrefix()  { return currentMode === 'phrases' ? 'etmp' : 'etm'; }
+
+function setMode(mode) {
+  if (currentMode === mode) return;
+  save(); // persist current mode state first
+  currentMode = mode;
+  load(); // load new mode state
+  document.querySelectorAll('.fc-mode-btn').forEach(b => b.classList.remove('active'));
+  const btn = $('mode-' + mode);
+  if (btn) btn.classList.add('active');
+  fcInit();
+  homeUpdate();
+}
+
+// ────────────────────────────────────────────────────────────
 // APP STATE
 // ────────────────────────────────────────────────────────────
 const S = {
@@ -1385,14 +1573,14 @@ const S = {
 // STORAGE
 // ────────────────────────────────────────────────────────────
 function save() {
-  localStorage.setItem('etm', JSON.stringify({
+  localStorage.setItem(getModePrefix(), JSON.stringify({
     learned:[...S.learned], stars:S.stars, streak:S.streak,
     lastDate:S.lastDate, qHist:S.qHist.slice(-10), tHist:S.tHist.slice(-10)
   }));
 }
 function load() {
   try {
-    const d = JSON.parse(localStorage.getItem('etm'));
+    const d = JSON.parse(localStorage.getItem(getModePrefix()));
     if (!d) return;
     S.learned  = new Set(d.learned||[]);
     S.stars    = d.stars||0;
@@ -1439,7 +1627,7 @@ function go(name) {
 // HOME
 // ────────────────────────────────────────────────────────────
 function homeUpdate() {
-  const lc = S.learned.size, total = V.length;
+  const lc = S.learned.size, total = getActiveVocab().length;
   const pct = Math.round(lc/total*100);
   $('h-stars').textContent  = S.stars;
   $('h-learned').textContent= lc;
@@ -1466,7 +1654,7 @@ function homeUpdate() {
 // FLASHCARD
 // ────────────────────────────────────────────────────────────
 function fcInit() {
-  S.fc.deck    = [1, 2, 3].flatMap(lv => shuffle(V.filter(w => w.level === lv)));
+  S.fc.deck    = [1, 2, 3].flatMap(lv => shuffle(getActiveVocab().filter(w => w.level === lv)));
   S.fc.idx     = 0;
   S.fc.okCount = 0;
   S.fc.sessionStars = 0;
@@ -1478,7 +1666,7 @@ function fcRender() {
   const word = S.fc.deck[S.fc.idx];
   if (!word) { fcDone(); return; }
   $('fc-word').textContent = word.w;
-  $('fc-kana').textContent = word.k;
+  $('fc-kana').textContent = word.k || '';
   $('fc-pos').textContent  = word.p;
   $('fc-meaning').textContent = word.m;
   $('fc-ex').textContent   = word.ej;
@@ -1531,7 +1719,7 @@ function setQMode(m) {
   $('qm-'+m.replace('-','')).classList.add('active');
 }
 function qStart() {
-  S.q.qs    = shuffle([...V]).slice(0,10);
+  S.q.qs    = shuffle([...getActiveVocab()]).slice(0,10);
   S.q.idx   = 0;
   S.q.score = 0;
   S.q.sessionStars = 0;
@@ -1551,7 +1739,7 @@ function qRender() {
   $('q-question').textContent = S.q.mode==='en-ja' ? q.w : q.m;
 
   // 3 decoys + correct
-  const decoys  = shuffle(V.filter(x=>x.id!==q.id)).slice(0,3);
+  const decoys  = shuffle(getActiveVocab().filter(x=>x.id!==q.id)).slice(0,3);
   S.q.choices   = shuffle([...decoys, q]);
   S.q.correctIdx = S.q.choices.findIndex(c=>c.id===q.id);
 
@@ -1616,7 +1804,7 @@ function qRestart() { hide('q-game'); hide('q-result'); show('q-start'); }
 // TYPING
 // ────────────────────────────────────────────────────────────
 function tStart() {
-  S.t.qs    = shuffle([...V]).slice(0,10);
+  S.t.qs    = shuffle([...getActiveVocab()]).slice(0,10);
   S.t.idx   = 0;
   S.t.score = 0;
   S.t.sessionStars = 0;
@@ -1629,7 +1817,7 @@ function tRender() {
   $('t-prog').style.width  = `${(S.t.idx/10)*100}%`;
   $('t-stars').textContent = S.t.sessionStars;
   $('t-meaning').textContent = q.m;
-  $('t-kana').textContent    = q.k;
+  $('t-kana').textContent    = q.k || q.w;
   $('t-len').textContent     = q.w.length;
 
   const inp = $('t-input');
@@ -1643,7 +1831,10 @@ function tRender() {
 function tHint() {
   if (S.t.hintUsed) return;
   const q = S.t.qs[S.t.idx];
-  const hint = q.w[0] + '_'.repeat(q.w.length-1);
+  const words = q.w.split(' ');
+  const hint = words.length > 1
+    ? words[0] + ' ' + words.slice(1).map(w => '_'.repeat(w.length)).join(' ')
+    : q.w[0] + '_'.repeat(q.w.length - 1);
   $('t-hint-box').textContent = `ヒント: ${hint}`;
   show('t-hint-box');
   S.t.hintUsed = true;
@@ -1712,7 +1903,7 @@ function tRestart() { hide('t-game'); hide('t-result'); show('t-start'); }
 // PROGRESS
 // ────────────────────────────────────────────────────────────
 function progUpdate() {
-  const lc = S.learned.size, total = V.length;
+  const lc = S.learned.size, total = getActiveVocab().length;
   const pct = Math.round(lc/total*100);
   $('p-stars').textContent   = S.stars;
   $('p-learned').textContent = lc;
@@ -1754,7 +1945,7 @@ function progUpdate() {
 
   // Part-of-speech chart
   const posMap = {};
-  V.forEach(w=>{ if (!posMap[w.p]) posMap[w.p]={total:0,learned:0}; posMap[w.p].total++; if(S.learned.has(w.id)) posMap[w.p].learned++; });
+  getActiveVocab().forEach(w=>{ if (!posMap[w.p]) posMap[w.p]={total:0,learned:0}; posMap[w.p].total++; if(S.learned.has(w.id)) posMap[w.p].learned++; });
   const posList = Object.entries(posMap).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
   const posChartEl = $('p-pos-chart');
   posChartEl.innerHTML = posList.map(([pos,d])=>{
@@ -1767,14 +1958,14 @@ function progUpdate() {
   const ws = getWordStats();
   const topWords = Object.entries(ws).sort((a,b)=>b[1].correct-a[1].correct).slice(0,5);
   $('p-top5').innerHTML = topWords.length ? topWords.map(([id,s],i)=>{
-    const w = V.find(x=>x.id===+id);
+    const w = getActiveVocab().find(x=>x.id===+id);
     return w ? `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-word">${w.w}</span><span class="rank-val">${s.correct}回</span></div>` : '';
   }).join('') : '<div style="font-size:12px;color:#b2bec3;padding:8px 0;">まだデータなし</div>';
 
   // WORST5 (most mistaken)
   const worstWords = Object.entries(mistakes).sort((a,b)=>b[1]-a[1]).slice(0,5);
   $('p-worst5').innerHTML = worstWords.length ? worstWords.map(([id,cnt],i)=>{
-    const w = V.find(x=>x.id===+id);
+    const w = getActiveVocab().find(x=>x.id===+id);
     return w ? `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-word">${w.w}</span><span class="rank-val">×${cnt}</span></div>` : '';
   }).join('') : '<div style="font-size:12px;color:#b2bec3;padding:8px 0;">まだデータなし</div>';
 
@@ -1785,11 +1976,12 @@ function progUpdate() {
 function pReset() {
   if (!confirm('きろくをぜんぶリセットしてもいいですか？')) return;
   S.learned.clear(); S.stars=0; S.streak=0; S.lastDate=null; S.qHist=[]; S.tHist=[];
-  localStorage.removeItem('etm');
-  localStorage.removeItem('etm-mistakes');
-  localStorage.removeItem('etm-timeatk');
-  localStorage.removeItem('etm-srs');
-  localStorage.removeItem('etm-wordstats');
+  const p = getModePrefix();
+  localStorage.removeItem(p);
+  localStorage.removeItem(p+'-mistakes');
+  localStorage.removeItem(p+'-timeatk');
+  localStorage.removeItem(p+'-srs');
+  localStorage.removeItem(p+'-wordstats');
   localStorage.removeItem('etm-daily');
   progUpdate(); alert('リセットしました！');
 }
@@ -2063,9 +2255,9 @@ function loadChar() {
 // MISTAKES TRACKING  (etm-mistakes: {wordId: count})
 // ────────────────────────────────────────────────────────────
 function getMistakes() {
-  try { return JSON.parse(localStorage.getItem('etm-mistakes')) || {}; } catch(e){ return {}; }
+  try { return JSON.parse(localStorage.getItem(getModePrefix()+'-mistakes')) || {}; } catch(e){ return {}; }
 }
-function saveMistakes(m) { localStorage.setItem('etm-mistakes', JSON.stringify(m)); }
+function saveMistakes(m) { localStorage.setItem(getModePrefix()+'-mistakes', JSON.stringify(m)); }
 function trackMistake(id) {
   const m = getMistakes();
   m[id] = (m[id]||0) + 1;
@@ -2076,9 +2268,9 @@ function trackMistake(id) {
 // WORD STATS  (etm-wordstats: {wordId: {correct,seen}})
 // ────────────────────────────────────────────────────────────
 function getWordStats() {
-  try { return JSON.parse(localStorage.getItem('etm-wordstats')) || {}; } catch(e){ return {}; }
+  try { return JSON.parse(localStorage.getItem(getModePrefix()+'-wordstats')) || {}; } catch(e){ return {}; }
 }
-function saveWordStats(ws) { localStorage.setItem('etm-wordstats', JSON.stringify(ws)); }
+function saveWordStats(ws) { localStorage.setItem(getModePrefix()+'-wordstats', JSON.stringify(ws)); }
 
 // ────────────────────────────────────────────────────────────
 // DAILY LOG  (etm-daily: {dateString: count})
@@ -2155,9 +2347,9 @@ function renderStreakCal() {
 // SRS  SM-2  (etm-srs: {wordId: {interval,ef,due}})
 // ────────────────────────────────────────────────────────────
 function getSrs() {
-  try { return JSON.parse(localStorage.getItem('etm-srs')) || {}; } catch(e){ return {}; }
+  try { return JSON.parse(localStorage.getItem(getModePrefix()+'-srs')) || {}; } catch(e){ return {}; }
 }
-function saveSrs(s) { localStorage.setItem('etm-srs', JSON.stringify(s)); }
+function saveSrs(s) { localStorage.setItem(getModePrefix()+'-srs', JSON.stringify(s)); }
 function srsUpdate(id, correct) {
   const srs = getSrs();
   const now  = Date.now();
@@ -2181,7 +2373,7 @@ function getSrsDue() {
 function startSrsReview() {
   const due = getSrsDue();
   if (!due.length) return;
-  S.q.qs    = shuffle(V.filter(w=>due.includes(w.id))).slice(0,10);
+  S.q.qs    = shuffle(getActiveVocab().filter(w=>due.includes(w.id))).slice(0,10);
   S.q.idx   = 0; S.q.score = 0; S.q.sessionStars = 0; S.q.mode = 'en-ja';
   hide('q-start'); hide('q-result'); show('q-game');
   qRender();
@@ -2205,7 +2397,7 @@ function wwUpdate() {
   hide('ww-empty');
   const sorted = ids.sort((a,b)=>mistakes[b]-mistakes[a]);
   $('ww-list').innerHTML = sorted.map(id=>{
-    const w = V.find(x=>x.id===id);
+    const w = getActiveVocab().find(x=>x.id===id);
     if (!w) return '';
     return `<div class="ww-item">
       <span class="ww-word">${w.w}</span>
@@ -2222,7 +2414,7 @@ function startWeakQuiz() {
   const mistakes = getMistakes();
   const ids = Object.keys(mistakes).map(Number);
   if (!ids.length) { alert('まだ苦手な単語がありません！'); return; }
-  S.q.qs    = shuffle(V.filter(w=>ids.includes(w.id))).slice(0,10);
+  S.q.qs    = shuffle(getActiveVocab().filter(w=>ids.includes(w.id))).slice(0,10);
   S.q.idx   = 0; S.q.score = 0; S.q.sessionStars = 0; S.q.mode = 'en-ja';
   hide('q-start'); hide('q-result'); show('q-game');
   qRender();
@@ -2236,10 +2428,10 @@ let taTimer = null;
 const TA = { timeLeft:60, score:0, answered:false, qs:[], idx:0, correctIdx:0 };
 
 function getTaBest() {
-  try { return parseInt(localStorage.getItem('etm-timeatk'))||0; } catch(e){ return 0; }
+  try { return parseInt(localStorage.getItem(getModePrefix()+'-timeatk'))||0; } catch(e){ return 0; }
 }
 function saveTaBest(n) {
-  if (n > getTaBest()) localStorage.setItem('etm-timeatk', n);
+  if (n > getTaBest()) localStorage.setItem(getModePrefix()+'-timeatk', n);
 }
 function taInit() {
   clearInterval(taTimer);
@@ -2250,7 +2442,7 @@ function taInit() {
 function taStart() {
   clearInterval(taTimer);
   TA.timeLeft = 60; TA.score = 0; TA.answered = false;
-  TA.qs = shuffle([...V]);
+  TA.qs = shuffle([...getActiveVocab()]);
   TA.idx = 0;
   hide('ta-start'); hide('ta-result'); show('ta-game');
   $('ta-score').textContent = 0;
@@ -2268,7 +2460,7 @@ function taRender() {
   const q = TA.qs[TA.idx % TA.qs.length];
   TA.answered = false;
   $('ta-question').textContent = q.w;
-  const decoys = shuffle(V.filter(x=>x.id!==q.id)).slice(0,3);
+  const decoys = shuffle(getActiveVocab().filter(x=>x.id!==q.id)).slice(0,3);
   const choices = shuffle([...decoys, q]);
   TA.correctIdx = choices.findIndex(c=>c.id===q.id);
   for (let i=0;i<4;i++) {
