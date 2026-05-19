@@ -2576,8 +2576,9 @@ const EASY_MEANINGS = {
 };
 
 function getMeaning(word) {
-  if (!S.easyMode) return word.m;
-  return EASY_MEANINGS[word.id] || word.m;
+  if (!word) return '';
+  if (S.easyMode) return word.me || word.m || '';
+  return word.m || '';
 }
 function toggleEasyMode() {
   S.easyMode = !S.easyMode;
@@ -2585,6 +2586,23 @@ function toggleEasyMode() {
   const btn = $('easy-bar-btn');
   btn.textContent = S.easyMode ? 'ON' : 'OFF';
   btn.classList.toggle('on', S.easyMode);
+  // クイズ画面の場合：選択肢の順番を変えずにテキストだけ更新
+  const name = document.querySelector('.screen.active')?.id?.replace('screen-', '');
+  if (name === 'quiz' && S.q && S.q.choices && !S.q.answered) {
+    for (let i = 0; i < 4; i++) {
+      const qbtn = document.getElementById('qc' + i);
+      if (qbtn && S.q.choices[i]) {
+        qbtn.textContent = (S.q.mode === 'en-ja')
+          ? getMeaning(S.q.choices[i])
+          : S.q.choices[i].w;
+      }
+    }
+    const qq = S.q.qs && S.q.qs[S.q.idx];
+    if (qq && S.q.mode === 'ja-en') {
+      const qEl = document.getElementById('q-question');
+      if (qEl) qEl.textContent = getMeaning(qq);
+    }
+  }
 }
 function initEasyMode() {
   S.easyMode = localStorage.getItem('easyMode') === '1';
