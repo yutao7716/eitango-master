@@ -431,8 +431,8 @@
   CHARACTER SELECT OVERLAY (shown once on first visit)
   ============================================================ -->
 <div id="charselect-overlay" class="charselect-overlay">
-  <div class="charselect-title">🌟 ようこそ！</div>
-  <div class="charselect-sub">
+  <div class="charselect-title" id="charselect-title">🌟 ようこそ！</div>
+  <div class="charselect-sub" id="charselect-sub">
     いっしょにべんきょうする<br>キャラクターをえらんでね！
   </div>
   <div class="char-select-grid">
@@ -456,7 +456,12 @@
       <span class="char-card-em">🐼</span>
       <div class="char-card-name">パンダ</div>
     </div>
+    <div class="char-card" onclick="selectChar('shima',this)">
+      <span class="char-card-em">🐦</span>
+      <div class="char-card-name">シマエナガ</div>
+    </div>
   </div>
+  <button id="charselect-cancel" class="btn" style="display:none;margin-top:18px;width:100%;max-width:300px;" onclick="cancelCharSelect()">キャンセル</button>
 </div>
 
 <!-- ============================================================
@@ -985,6 +990,7 @@
         Lv.3→4：300pt　Lv.4→5：500pt
       </div>
     </div>
+    <button class="btn btn-block" style="margin-top:14px;background:#f0edff;color:var(--primary);border:1.5px solid var(--primary-light);" onclick="changeChar()">🔄 キャラクターをかえる</button>
   </div>
 </div>
 
@@ -2058,11 +2064,12 @@ function levelName(stars) {
 // CHARACTER GROWTH SYSTEM
 // ────────────────────────────────────────────────────────────
 const CHAR_DEFS = {
-  cat:    { name:'ネコ',   displays:['🐱','🐱⭐','🎀🐱','🎩🐱','👑🐱✨'] },
-  dog:    { name:'イヌ',   displays:['🐶','🐶⭐','🎀🐶','🎩🐶','👑🐶✨'] },
-  rabbit: { name:'うさぎ', displays:['🐰','🐰⭐','🎀🐰','🎩🐰','👑🐰✨'] },
-  chick:  { name:'ひよこ', displays:['🐥','🐥⭐','🎀🐥','🎩🐥','👑🐥✨'] },
-  panda:  { name:'パンダ', displays:['🐼','🐼⭐','🎀🐼','🎩🐼','👑🐼✨'] },
+  cat:    { name:'ネコ',       displays:['🐱','🐱⭐','🎀🐱','🎩🐱','👑🐱✨'] },
+  dog:    { name:'イヌ',       displays:['🐶','🐶⭐','🎀🐶','🎩🐶','👑🐶✨'] },
+  rabbit: { name:'うさぎ',     displays:['🐰','🐰⭐','🎀🐰','🎩🐰','👑🐰✨'] },
+  chick:  { name:'ひよこ',     displays:['🐥','🐥⭐','🎀🐥','🎩🐥','👑🐥✨'] },
+  panda:  { name:'パンダ',     displays:['🐼','🐼⭐','🎀🐼','🎩🐼','👑🐼✨'] },
+  shima:  { name:'シマエナガ', displays:['🐦','🐦⭐','🎀🐦','🎩🐦','👑🐦✨'] },
 };
 
 const LEVEL_DEFS = [
@@ -2209,22 +2216,49 @@ function updateCharWidget() {
   updateCharBadge();
 }
 
+let charSelectMode = 'init'; // 'init' | 'change'
+
+function changeChar() {
+  charSelectMode = 'change';
+  $('charselect-title').textContent = '🔄 キャラクターをかえる';
+  $('charselect-sub').innerHTML = 'ポイント・アイテムはそのまま！<br>キャラクターだけかわるよ🌟';
+  $('charselect-cancel').style.display = 'block';
+  $('charselect-overlay').classList.remove('hidden');
+}
+
+function cancelCharSelect() {
+  charSelectMode = 'init';
+  $('charselect-overlay').classList.add('hidden');
+}
+
 function selectChar(id, el) {
-  // highlight picked card briefly
   document.querySelectorAll('.char-card').forEach(e => e.classList.remove('picked'));
   el.classList.add('picked');
 
   setTimeout(() => {
-    S.char.id           = id;
-    S.char.level        = 1;
-    S.char.points       = 0;
-    S.char.combo        = 0;
-    S.char.items        = [];
-    S.char.gachaTickets = 0;
+    if (charSelectMode === 'change') {
+      // ポイント・アイテム・チケットは引き継ぎ、キャラだけ変更
+      S.char.id    = id;
+      S.char.level = getLevelDef(S.char.points).lv;
+      S.char.combo = 0;
+    } else {
+      // 初回選択：全リセット
+      S.char.id           = id;
+      S.char.level        = 1;
+      S.char.points       = 0;
+      S.char.combo        = 0;
+      S.char.items        = [];
+      S.char.gachaTickets = 0;
+    }
+    charSelectMode = 'init';
+    $('charselect-cancel').style.display = 'none';
+    $('charselect-title').textContent = '🌟 ようこそ！';
+    $('charselect-sub').innerHTML = 'いっしょにべんきょうする<br>キャラクターをえらんでね！';
     saveChar();
     $('charselect-overlay').classList.add('hidden');
     updateCharWidget();
     homeUpdate();
+    gachaUpdate();
   }, 280);
 }
 
