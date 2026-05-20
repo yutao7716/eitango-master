@@ -291,19 +291,6 @@
       padding: 4px 10px; font-size: 15px; font-weight: bold; white-space: nowrap;
     }
 
-    /* ── CHARACTER BADGE (floating, shown during learning) ── */
-    .char-badge {
-      position: fixed; bottom: 74px; left: 12px;
-      background: #fff; border-radius: 50px; padding: 8px 14px 8px 10px;
-      box-shadow: 0 4px 16px rgba(108,92,231,.22);
-      display: flex; align-items: center; gap: 8px; z-index: 90;
-      cursor: pointer; transition: transform .2s;
-      border: 2px solid var(--primary-light);
-    }
-    .char-badge:active { transform: scale(.92); }
-    .cb-em    { font-size: 30px; line-height: 1; }
-    .cb-pts   { font-size: 12px; font-weight: bold; color: var(--primary); display: block; }
-    .cb-combo { font-size: 11px; color: #e17055; display: block; min-height: 14px; }
 
     /* ── GACHA SCREEN ── */
     .gacha-ticket-box {
@@ -422,6 +409,20 @@
       cursor: pointer; color: #fff; font-family: inherit; transition: all .2s;
     }
     .easy-bar-btn.on { background: #fff; color: var(--primary); border-color: #fff; }
+
+    /* ── CHARACTER BADGE (in easy-bar, right side) ── */
+    .char-badge {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.22); border-radius: 50px;
+      padding: 3px 10px 3px 6px;
+      display: flex; align-items: center; gap: 5px; z-index: 91;
+      cursor: pointer; transition: background .2s;
+      border: 1.5px solid rgba(255,255,255,.45);
+    }
+    .char-badge:active { background: rgba(255,255,255,.38); }
+    .cb-em    { font-size: 20px; line-height: 1; }
+    .cb-pts   { font-size: 11px; font-weight: bold; color: #fff; display: block; }
+    .cb-combo { font-size: 10px; color: #ffeaa7; display: block; min-height: 12px; }
   </style>
 </head>
 <body>
@@ -468,23 +469,22 @@
   <div class="lvup-tap">👆 タップしてとじる</div>
 </div>
 
-<!-- EASY BAR -->
+<!-- EASY BAR (キャラバッジも内包) -->
 <div id="easy-bar" class="easy-bar">
   <span class="easy-bar-lbl">📖 かんたん訳</span>
   <button id="easy-bar-btn" class="easy-bar-btn" onclick="toggleEasyMode()">OFF</button>
+  <!-- キャラクターバッジ（学習中のみ表示） -->
+  <div id="char-badge" class="char-badge hidden" onclick="go('gacha')">
+    <div class="cb-em" id="cb-em">🐱</div>
+    <div>
+      <span class="cb-pts"  id="cb-pts">0pt</span>
+      <span class="cb-combo" id="cb-combo"></span>
+    </div>
+  </div>
 </div>
 
 <!-- POINT TOAST -->
 <div id="pt-toast" class="pt-toast"></div>
-
-<!-- CHARACTER BADGE (floating, visible during learning) -->
-<div id="char-badge" class="char-badge hidden" onclick="go('gacha')">
-  <div class="cb-em" id="cb-em">🐱</div>
-  <div>
-    <span class="cb-pts"  id="cb-pts">0pt</span>
-    <span class="cb-combo" id="cb-combo"></span>
-  </div>
-</div>
 
 <!-- ============================================================
   NAV BAR
