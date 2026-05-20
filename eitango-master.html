@@ -126,7 +126,7 @@
     .qc {
       padding: 14px 10px; border-radius: 16px; font-size: 14px; font-weight: bold;
       cursor: pointer; border: 3px solid #e8eaed; background: #fff;
-      text-align: center; transition: all .2s; line-height: 1.5; font-family: inherit;
+      text-align: center; transition: background .2s, color .2s; line-height: 1.5; font-family: inherit;
     }
     .qc:hover { border-color: var(--primary-light); background: #f0edff; }
     .qc.correct { border-color: var(--accent2)!important; background: #e8fff5!important; color: #00b894!important; }
@@ -659,6 +659,7 @@
   ============================================================ -->
 <div class="screen" id="screen-quiz">
   <div class="screen-title">❓ ４<ruby>択<rt>たく</rt></ruby>クイズ</div>
+  <button id="q-next-btn" class="btn btn-primary btn-block hidden" onclick="qNext()" style="margin-bottom:10px;">つぎへ →</button>
 
   <!-- Start -->
   <div id="q-start">
@@ -692,7 +693,6 @@
     </div>
 
     <div id="q-fb" class="hidden fb-row fade-up">
-      <button class="btn btn-primary" onclick="qNext()">つぎへ →</button>
       <div class="fb-text"   id="q-fb-text"></div>
       <div class="fb-detail" id="q-fb-detail"></div>
     </div>
@@ -1759,6 +1759,8 @@ function qRender() {
   $('q-prog').style.width  = `${((S.q.idx)/10)*100}%`;
   $('q-stars').textContent = S.q.sessionStars;
   hide('q-fb');
+  hide('q-next-btn');
+  $('q-next-btn').textContent = 'つぎへ →';
 
   // Question text
   $('q-question').textContent = S.q.mode==='en-ja' ? q.w : getMeaning(q);
@@ -1770,9 +1772,7 @@ function qRender() {
 
   for (let i=0;i<4;i++) {
     const btn = $('qc'+i);
-    btn.style.transition = 'none';
     btn.className = 'qc';
-    requestAnimationFrame(() => requestAnimationFrame(() => btn.style.removeProperty('transition')));
     btn.textContent = S.q.mode==='en-ja' ? getMeaning(S.q.choices[i]) : S.q.choices[i].w;
     btn.disabled  = false;
     btn.onclick   = () => qAns(i);
@@ -1809,18 +1809,18 @@ function qAns(idx) {
   $('q-fb-detail').textContent = `${q.w} ＝ ${getMeaning(q)}`;
   $('q-stars').textContent = S.q.sessionStars;
   show('q-fb');
+  show('q-next-btn');
   // 正解時：4秒後に自動で次の問題へ
   if (ok) {
     let sec = 4;
-    const nextBtn = document.querySelector('#q-fb .btn');
-    if (nextBtn) nextBtn.textContent = `つぎへ → (${sec})`;
+    $('q-next-btn').textContent = `つぎへ → (${sec})`;
     qAutoTimer = setInterval(() => {
       sec--;
       if (sec > 0) {
-        if (nextBtn) nextBtn.textContent = `つぎへ → (${sec})`;
+        $('q-next-btn').textContent = `つぎへ → (${sec})`;
       } else {
         clearInterval(qAutoTimer); qAutoTimer = null;
-        if (nextBtn) nextBtn.textContent = 'つぎへ →';
+        $('q-next-btn').textContent = 'つぎへ →';
         qNext();
       }
     }, 1000);
@@ -1829,8 +1829,7 @@ function qAns(idx) {
 let qAutoTimer = null;
 function qNext() {
   if (qAutoTimer) { clearInterval(qAutoTimer); qAutoTimer = null; }
-  const nextBtn = document.querySelector('#q-fb .btn');
-  if (nextBtn) nextBtn.textContent = 'つぎへ →';
+  $('q-next-btn').textContent = 'つぎへ →';
   S.q.idx++;
   if (S.q.idx >= S.q.qs.length) qDone();
   else qRender();
