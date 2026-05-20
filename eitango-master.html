@@ -399,7 +399,7 @@
     .easy-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 150;
       background: linear-gradient(90deg, #a29bfe, #6c5ce7);
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+      display: flex; align-items: center; justify-content: flex-start; gap: 10px;
       padding: 7px 16px; box-shadow: 0 2px 8px rgba(108,92,231,.2);
     }
     .easy-bar-lbl { font-size: 12px; color: rgba(255,255,255,.9); font-weight: bold; }
@@ -1807,8 +1807,28 @@ function qAns(idx) {
   $('q-fb-detail').textContent = `${q.w} ＝ ${getMeaning(q)}`;
   $('q-stars').textContent = S.q.sessionStars;
   show('q-fb');
+  // 正解時：4秒後に自動で次の問題へ
+  if (ok) {
+    let sec = 4;
+    const nextBtn = document.querySelector('#q-fb .btn');
+    if (nextBtn) nextBtn.textContent = `つぎへ → (${sec})`;
+    qAutoTimer = setInterval(() => {
+      sec--;
+      if (sec > 0) {
+        if (nextBtn) nextBtn.textContent = `つぎへ → (${sec})`;
+      } else {
+        clearInterval(qAutoTimer); qAutoTimer = null;
+        if (nextBtn) nextBtn.textContent = 'つぎへ →';
+        qNext();
+      }
+    }, 1000);
+  }
 }
+let qAutoTimer = null;
 function qNext() {
+  if (qAutoTimer) { clearInterval(qAutoTimer); qAutoTimer = null; }
+  const nextBtn = document.querySelector('#q-fb .btn');
+  if (nextBtn) nextBtn.textContent = 'つぎへ →';
   S.q.idx++;
   if (S.q.idx >= S.q.qs.length) qDone();
   else qRender();
@@ -2727,6 +2747,32 @@ function addRuby(text) {
     '自由':'じゆう','平和':'へいわ','幸せ':'しあわせ','夢':'ゆめ',
     '未来':'みらい','過去':'かこ','現在':'げんざい','今後':'こんご',
     '以前':'いぜん','以来':'いらい','最初':'さいしょ','最後':'さいご',
+    // Level1 例文頻出
+    '目標':'もくひょう','達成':'たっせい','解決':'かいけつ',
+    '向上':'こうじょう','試験':'しけん','彼女':'かのじょ',
+    '忘れる':'わすれる','地震':'じしん','被害':'ひがい',
+    '切手':'きって','趣味':'しゅみ','期待':'きたい',
+    '可能性':'かのうせい','荷物':'にもつ','工場':'こうじょう',
+    '製造':'せいぞう','失敗':'しっぱい','提供':'ていきょう',
+    '配達':'はいたつ','生産':'せいさん','受け取る':'うけとる',
+    '続ける':'つづける','集める':'あつめる','祝う':'いわう',
+    '減らす':'へらす','法律':'ほうりつ','将来':'しょうらい',
+    '最新':'さいしん','調べる':'しらべる','減少':'げんしょう',
+    '広告':'こうこく','風邪':'かぜ','薬':'くすり',
+    '身につける':'みにつける','直面':'ちょくめん',
+    '雰囲気':'ふんいき','注意':'ちゅうい','前向き':'まえむき',
+    '注目':'ちゅうもく','遅刻':'ちこく','教科':'きょうか',
+    '素晴らしい':'すばらしい','製品':'せいひん','選択':'せんたく',
+    '効果':'こうか','磨く':'みがく','日々':'ひび',
+    '便利':'べんり','夜道':'よみち','優秀':'ゆうしゅう',
+    '自信':'じしん','人気':'にんき','関心':'かんしん',
+    '各自':'かくじ','自立':'じりつ','叶う':'かなう',
+    '温暖化':'おんだんか','世紀':'せいき','正確':'せいかく',
+    '調査':'ちょうさ','英語力':'えいごりょく',
+    '引き起こす':'ひきおこす','申し出る':'もうしでる',
+    '支援':'しえん','提出':'ていしゅつ','報告書':'ほうこくしょ',
+    '二人':'ふたり','正しい':'ただしい','彼':'かれ',
+    '取り組む':'とりくむ','申し込む':'もうしこむ',
     // Level2-3 例文頻出漢字
     '間違い':'まちがい','認める':'みとめる','余裕':'よゆう',
     '感謝':'かんしゃ','破壊':'はかい','防ぐ':'ふせぐ',
