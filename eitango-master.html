@@ -692,9 +692,9 @@
     </div>
 
     <div id="q-fb" class="hidden fb-row fade-up">
+      <button class="btn btn-primary" onclick="qNext()">つぎへ →</button>
       <div class="fb-text"   id="q-fb-text"></div>
       <div class="fb-detail" id="q-fb-detail"></div>
-      <button class="btn btn-primary" onclick="qNext()">つぎへ →</button>
     </div>
   </div>
 
@@ -1770,8 +1770,10 @@ function qRender() {
 
   for (let i=0;i<4;i++) {
     const btn = $('qc'+i);
-    btn.textContent = S.q.mode==='en-ja' ? getMeaning(S.q.choices[i]) : S.q.choices[i].w;
+    btn.style.transition = 'none';
     btn.className = 'qc';
+    requestAnimationFrame(() => requestAnimationFrame(() => btn.style.removeProperty('transition')));
+    btn.textContent = S.q.mode==='en-ja' ? getMeaning(S.q.choices[i]) : S.q.choices[i].w;
     btn.disabled  = false;
     btn.onclick   = () => qAns(i);
   }
