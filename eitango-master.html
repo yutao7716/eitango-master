@@ -962,7 +962,7 @@
 
   <!-- Collection -->
   <div class="card">
-    <div class="collection-title">🗂️ コレクション（<span id="g-owned-cnt">0</span>/10）</div>
+    <div class="collection-title">🗂️ コレクション（<span id="g-owned-cnt">0</span>/30）</div>
     <div class="collection-grid" id="g-collection"></div>
   </div>
 
@@ -2074,16 +2074,39 @@ const LEVEL_DEFS = [
 ];
 
 const GACHA_ITEMS = [
-  { id:'hat',       em:'🎩', name:'ぼうし',      rare:3 },
-  { id:'glasses',   em:'👓', name:'メガネ',      rare:2 },
-  { id:'star',      em:'⭐', name:'きらぼし',    rare:1 },
-  { id:'ribbon',    em:'🎀', name:'リボン',      rare:2 },
-  { id:'flower',    em:'🌺', name:'おはな',      rare:1 },
-  { id:'note',      em:'🎵', name:'おんぷ',      rare:1 },
-  { id:'diamond',   em:'💎', name:'ダイヤ',      rare:3 },
-  { id:'candy',     em:'🍭', name:'キャンディ',  rare:1 },
-  { id:'rainbow',   em:'🌈', name:'にじ',        rare:3 },
-  { id:'butterfly', em:'🦋', name:'ちょうちょ', rare:2 },
+  // ── もとの10こ ──
+  { id:'hat',        em:'🎩', name:'ぼうし',      rare:3 },
+  { id:'glasses',    em:'👓', name:'メガネ',      rare:2 },
+  { id:'star',       em:'⭐', name:'きらぼし',    rare:1 },
+  { id:'ribbon',     em:'🎀', name:'リボン',      rare:2 },
+  { id:'flower',     em:'🌺', name:'おはな',      rare:1 },
+  { id:'note',       em:'🎵', name:'おんぷ',      rare:1 },
+  { id:'diamond',    em:'💎', name:'ダイヤ',      rare:3 },
+  { id:'candy',      em:'🍭', name:'キャンディ',  rare:1 },
+  { id:'rainbow',    em:'🌈', name:'にじ',        rare:3 },
+  { id:'butterfly',  em:'🦋', name:'ちょうちょ',  rare:2 },
+  // ── 追加10こ（その1）──
+  { id:'crown',      em:'👑', name:'おうかん',    rare:3 },
+  { id:'clover',     em:'🍀', name:'よつばのクローバー', rare:2 },
+  { id:'apple',      em:'🍎', name:'りんご',      rare:1 },
+  { id:'cake',       em:'🎂', name:'ケーキ',      rare:1 },
+  { id:'balloon',    em:'🎈', name:'ふうせん',    rare:1 },
+  { id:'sun',        em:'☀️', name:'おひさま',    rare:1 },
+  { id:'moon',       em:'🌙', name:'つき',        rare:2 },
+  { id:'comet',      em:'☄️', name:'すいせい',    rare:3 },
+  { id:'heart',      em:'❤️', name:'はあと',      rare:1 },
+  { id:'fire',       em:'🔥', name:'ファイヤー',  rare:2 },
+  // ── 追加10こ（その2）──
+  { id:'icecream',   em:'🍦', name:'アイスクリーム', rare:1 },
+  { id:'pizza',      em:'🍕', name:'ピザ',        rare:1 },
+  { id:'rocket',     em:'🚀', name:'ロケット',    rare:3 },
+  { id:'alien',      em:'👽', name:'うちゅうじん', rare:3 },
+  { id:'magic',      em:'🪄', name:'まほうのつえ', rare:2 },
+  { id:'shield',     em:'🛡️', name:'たて',        rare:2 },
+  { id:'snowflake',  em:'❄️', name:'ゆきのけっしょう', rare:2 },
+  { id:'lightning',  em:'⚡', name:'いなずま',    rare:1 },
+  { id:'gem',        em:'🔮', name:'まほうのたま', rare:3 },
+  { id:'dragon',     em:'🐉', name:'ドラゴン',    rare:3 },
 ];
 
 function getLevelDef(pts) {
