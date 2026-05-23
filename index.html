@@ -1,0 +1,2519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌟 えいたんごマスター</title>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #a29bfe;
+      --secondary: #fd79a8;
+      --accent1: #fdcb6e;
+      --accent2: #00b894;
+      --accent3: #74b9ff;
+      --bg: #f0f4ff;
+      --card: #ffffff;
+      --text: #2d3436;
+      --text-sub: #636e72;
+      --radius: 20px;
+      --shadow: 0 8px 24px rgba(108,92,231,0.13);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN','BIZ UDPGothic','Meiryo',sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #fce4f0 100%);
+      min-height: 100vh;
+      color: var(--text);
+      padding-top: 40px;
+    }
+
+    /* ── NAV BAR ── */
+    .nav-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff;
+      display: flex; justify-content: space-around;
+      padding: 8px 0 env(safe-area-inset-bottom, 12px);
+      box-shadow: 0 -4px 20px rgba(108,92,231,0.13);
+      z-index: 100;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      cursor: pointer; padding: 4px 12px; border-radius: 12px;
+      background: none; border: none; color: #b2bec3; transition: all .2s;
+    }
+    .nav-item.active { color: var(--primary); background: #f0edff; }
+    .nav-item .ni { font-size: 22px; }
+    .nav-item .nl { font-size: 10px; font-weight: bold; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; padding: 20px 16px 90px; max-width: 520px; margin: 0 auto; }
+    .screen.active { display: block; }
+    .screen-title {
+      text-align: center; font-size: 22px; font-weight: bold;
+      color: var(--primary); margin-bottom: 16px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow);
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 24px; border-radius: 50px; font-size: 15px; font-weight: bold;
+      cursor: pointer; border: none; transition: all .2s; line-height: 1.3;
+    }
+    .btn:active { transform: scale(.95); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--accent2); color: #fff; }
+    .btn-danger  { background: #ff7675; color: #fff; }
+    .btn-warning { background: var(--accent1); color: var(--text); }
+    .btn-info    { background: var(--accent3); color: var(--text); }
+    .btn-block   { width: 100%; margin-bottom: 10px; }
+
+    /* ── PROGRESS BAR ── */
+    .prog-wrap { background: #e8eaed; border-radius: 50px; height: 12px; overflow: hidden; margin-bottom: 12px; }
+    .prog-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--primary-light), var(--primary)); transition: width .5s; }
+
+    /* ── STAR BADGE ── */
+    .star-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: linear-gradient(135deg, var(--accent1), #e17055);
+      color: #fff; padding: 5px 14px; border-radius: 50px; font-weight: bold; font-size: 15px;
+    }
+
+    /* ── COUNTER ROW ── */
+    .counter-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--text-sub); }
+
+    /* ── FLASHCARD ── */
+    .fc-wrap { perspective: 1000px; margin: 16px 0; }
+    .fc-card {
+      width: 100%; height: 230px; position: relative;
+      transform-style: preserve-3d; transition: transform .55s;
+      cursor: pointer; border-radius: var(--radius);
+    }
+    .fc-card.flipped { transform: rotateY(180deg); }
+    .fc-front, .fc-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: var(--radius);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 24px; box-shadow: var(--shadow);
+    }
+    .fc-front { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; }
+    .fc-back  { background: linear-gradient(135deg, #00b894, #55efc4); color: #fff; transform: rotateY(180deg); }
+    .fc-word  { font-size: 40px; font-weight: bold; letter-spacing: 2px; margin-bottom: 8px; }
+    .fc-kana  { font-size: 15px; opacity: .85; margin-bottom: 6px; }
+    .fc-pos   { font-size: 12px; background: rgba(255,255,255,.25); padding: 2px 12px; border-radius: 50px; }
+    .fc-meaning { font-size: 24px; font-weight: bold; margin-bottom: 8px; text-align: center; }
+    .fc-ex    { font-size: 12px; opacity: .8; text-align: center; line-height: 1.6; }
+    ruby { ruby-position: over; }
+    rt   { font-size: 0.6em; opacity: .75; }
+    .tap-hint { font-size: 11px; opacity: .65; margin-top: 14px; }
+    .fc-btn-row { display: flex; gap: 10px; margin-top: 4px; }
+    .fc-btn-row .btn { flex: 1; }
+
+    /* ── QUIZ ── */
+    .quiz-q {
+      font-size: 30px; font-weight: bold; text-align: center; color: var(--primary);
+      padding: 20px 16px; background: #fff; border-radius: var(--radius);
+      box-shadow: var(--shadow); margin-bottom: 16px; line-height: 1.4;
+    }
+    .quiz-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .qc {
+      padding: 14px 10px; border-radius: 16px; font-size: 14px; font-weight: bold;
+      cursor: pointer; border: 3px solid #e8eaed; background: #fff;
+      text-align: center; transition: background .2s, color .2s; line-height: 1.5; font-family: inherit;
+    }
+    .qc:hover { border-color: var(--primary-light); background: #f0edff; }
+    .qc.correct { border-color: var(--accent2)!important; background: #e8fff5!important; color: #00b894!important; }
+    .qc.wrong   { border-color: #ff7675!important; background: #fff0f0!important; color: #ff7675!important; }
+    .qc.reveal  { border-color: var(--accent2)!important; background: #e8fff5!important; color: #00b894!important; }
+    .qc:disabled { cursor: default; }
+    .mode-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .mode-btn { flex: 1; padding: 10px 8px; border-radius: 14px; border: 2px solid #e8eaed; background: #fff; font-size: 12px; font-weight: bold; cursor: pointer; text-align: center; transition: all .2s; font-family: inherit; line-height: 1.5; }
+    .mode-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+
+    /* ── TYPING ── */
+    .t-meaning-box { font-size: 26px; font-weight: bold; color: var(--primary); margin: 12px 0 4px; text-align: center; line-height: 1.5; }
+    .t-reading-sub  { font-size: 12px; color: var(--text-sub); text-align: center; margin-bottom: 16px; }
+    .t-input {
+      width: 100%; padding: 14px 18px; font-size: 22px;
+      border: 3px solid var(--primary-light); border-radius: 16px;
+      outline: none; text-align: center; letter-spacing: 3px;
+      font-family: 'Courier New', monospace; transition: border-color .2s;
+    }
+    .t-input:focus { border-color: var(--primary); }
+    .t-input.correct { border-color: var(--accent2); background: #e8fff5; }
+    .t-input.wrong   { border-color: #ff7675; background: #fff0f0; }
+    .hint-btn {
+      background: none; border: 2px dashed var(--primary-light);
+      color: var(--primary); font-size: 13px; padding: 6px 16px;
+      border-radius: 50px; cursor: pointer; font-family: inherit; margin: 10px auto; display: block;
+    }
+
+    /* ── RESULT ── */
+    .result-box { text-align: center; padding: 20px; }
+    .result-emoji { font-size: 64px; margin-bottom: 8px; }
+    .result-num   { font-size: 48px; font-weight: bold; color: var(--primary); }
+    .result-label { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; }
+    .result-comment { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+    .result-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── STAT GRID ── */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .stat-card { background: #fff; border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+    .stat-icon  { font-size: 28px; margin-bottom: 4px; }
+    .stat-val   { font-size: 28px; font-weight: bold; color: var(--primary); }
+    .stat-lbl   { font-size: 11px; color: var(--text-sub); }
+
+    /* ── HOME MENU ── */
+    .mascot { text-align: center; padding: 10px 0 4px; }
+    .mascot-em { font-size: 72px; display: inline-block; animation: jump 2.5s ease-in-out infinite; }
+    .home-title { font-size: 26px; font-weight: bold; color: var(--primary); text-align: center; margin-bottom: 2px; }
+    .home-sub { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 18px; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .menu-card {
+      background: #fff; border-radius: var(--radius); padding: 18px 12px;
+      text-align: center; cursor: pointer; box-shadow: var(--shadow);
+      transition: transform .2s; border: 3px solid transparent;
+    }
+    .menu-card:hover { transform: translateY(-3px); }
+    .menu-card:active { transform: scale(.95); }
+    .menu-card.mc-fc   { border-color: var(--primary-light); }
+    .menu-card.mc-quiz { border-color: var(--secondary); }
+    .menu-card.mc-type { border-color: var(--accent1); }
+    .menu-card.mc-prog { border-color: var(--accent2); }
+    .mc-em   { font-size: 34px; margin-bottom: 6px; }
+    .mc-name { font-size: 14px; font-weight: bold; }
+    .mc-desc { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+    /* ── WORD LIST ── */
+    .wl-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; background: #fff; border-radius: 14px;
+      margin-bottom: 7px; box-shadow: 0 2px 8px rgba(108,92,231,.07);
+    }
+    .wl-word { font-size: 16px; font-weight: bold; color: var(--primary); flex: 0 0 120px; }
+    .wl-mean { font-size: 12px; color: var(--text-sub); flex: 1; }
+    .wl-star { font-size: 16px; }
+
+    /* ── LEVEL BANNER ── */
+    .level-banner {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius); padding: 18px 20px; text-align: center;
+      color: #fff; margin-bottom: 14px;
+    }
+    .level-em   { font-size: 36px; }
+    .level-name { font-size: 20px; font-weight: bold; margin: 4px 0; }
+    .level-sub  { font-size: 13px; opacity: .85; }
+
+    /* ── FEEDBACK ── */
+    .fb-row { text-align: center; margin-top: 10px; padding: 12px 0; }
+    .fb-text { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .fb-detail { font-size: 13px; color: var(--text-sub); margin-bottom: 14px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes jump { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation: fadeUp .35s ease; }
+
+    ruby rt { font-size: .58em; }
+    .hidden { display: none !important; }
+
+    /* ── CHARACTER SELECT OVERLAY ── */
+    .charselect-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg,#fce4f0 0%,#e8f0ff 100%);
+      z-index: 200; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .charselect-title { font-size: 28px; font-weight: bold; color: var(--primary); text-align: center; margin-bottom: 6px; }
+    .charselect-sub   { font-size: 14px; color: var(--text-sub); text-align: center; margin-bottom: 24px; line-height: 1.7; }
+    .char-select-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; width: 100%; max-width: 420px; margin-bottom: 10px; }
+    .char-card {
+      background: #fff; border-radius: 20px; padding: 18px 8px; text-align: center;
+      cursor: pointer; border: 3px solid transparent; box-shadow: var(--shadow); transition: all .2s;
+    }
+    .char-card:hover  { transform: translateY(-4px); border-color: var(--primary-light); }
+    .char-card.picked { border-color: var(--primary); background: #f0edff; }
+    .char-card:active { transform: scale(.92); }
+    .char-card-em   { font-size: 46px; margin-bottom: 6px; display: block; }
+    .char-card-name { font-size: 14px; font-weight: bold; }
+
+    /* ── LEVEL UP OVERLAY ── */
+    .lvup-overlay {
+      position: fixed; inset: 0;
+      background: rgba(108,92,231,.88);
+      z-index: 400; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .lvup-overlay.show { opacity: 1; pointer-events: auto; }
+    @keyframes lvupBounce {
+      0%{transform:scale(.2) rotate(-20deg)} 65%{transform:scale(1.25) rotate(5deg)} 100%{transform:scale(1) rotate(0)}
+    }
+    .lvup-em   { font-size: 100px; animation: lvupBounce .9s cubic-bezier(.17,.67,.28,1.36); line-height: 1.2; }
+    .lvup-text { font-size: 34px; font-weight: bold; color: #fff; margin: 10px 0 6px; text-align: center; }
+    .lvup-sub  { font-size: 18px; color: rgba(255,255,255,.85); text-align: center; }
+    .lvup-tap  { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,.6); }
+
+    /* ── POINT TOAST ── */
+    .pt-toast {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg,var(--accent1),#e17055);
+      color: #fff; padding: 8px 22px; border-radius: 50px;
+      font-size: 20px; font-weight: bold; z-index: 350;
+      pointer-events: none; opacity: 0; transition: opacity .25s, transform .25s;
+    }
+    .pt-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── CHARACTER WIDGET (home) ── */
+    .char-widget {
+      background: linear-gradient(135deg,#a29bfe,#6c5ce7);
+      border-radius: var(--radius); padding: 16px 20px; margin-bottom: 14px;
+      color: #fff; display: flex; align-items: center; gap: 16px;
+      cursor: pointer; transition: transform .2s;
+    }
+    .char-widget:active { transform: scale(.97); }
+    .cw-em    { font-size: 58px; line-height: 1; min-width: 58px; text-align: center; }
+    .cw-info  { flex: 1; min-width: 0; }
+    .cw-name  { font-size: 17px; font-weight: bold; margin-bottom: 2px; }
+    .cw-lvname{ font-size: 12px; opacity: .85; margin-bottom: 6px; }
+    .cw-prog-wrap { background: rgba(255,255,255,.3); border-radius: 50px; height: 8px; overflow: hidden; }
+    .cw-prog-fill { height: 100%; border-radius: 50px; background: #fff; transition: width .5s; }
+    .cw-pts   { font-size: 11px; opacity: .75; margin-top: 3px; }
+    .cw-combo-badge {
+      background: rgba(255,255,255,.25); border-radius: 50px;
+      padding: 4px 10px; font-size: 15px; font-weight: bold; white-space: nowrap;
+    }
+
+
+    /* ── GACHA SCREEN ── */
+    .gacha-ticket-box {
+      background: linear-gradient(135deg,#fdcb6e,#e17055);
+      border-radius: var(--radius); padding: 18px; text-align: center;
+      color: #fff; margin-bottom: 14px;
+    }
+    .gt-num  { font-size: 52px; font-weight: bold; line-height: 1.1; }
+    .gt-lbl  { font-size: 14px; opacity: .9; }
+    .gt-hint { font-size: 11px; opacity: .75; margin-top: 4px; }
+    .gacha-btn {
+      width: 100%; padding: 18px; font-size: 22px; font-weight: bold;
+      background: linear-gradient(135deg,#fd79a8,#e17055);
+      color: #fff; border: none; border-radius: var(--radius);
+      cursor: pointer; box-shadow: var(--shadow); margin-bottom: 14px;
+      transition: all .2s; font-family: inherit;
+    }
+    .gacha-btn:active:not(:disabled) { transform: scale(.96); }
+    .gacha-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .gacha-result-box {
+      text-align: center; padding: 22px 16px; background: #fff;
+      border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 14px; display: none;
+    }
+    @keyframes gachaSpin {
+      0%{transform:scale(0) rotate(-360deg);opacity:0}
+      70%{transform:scale(1.3) rotate(15deg);opacity:1}
+      100%{transform:scale(1) rotate(0);opacity:1}
+    }
+    .gacha-spin { animation: gachaSpin .75s cubic-bezier(.17,.67,.28,1.36); }
+    .gr-em   { font-size: 76px; display: block; }
+    .gr-name { font-size: 24px; font-weight: bold; color: var(--primary); margin: 8px 0 4px; }
+    .gr-rare { font-size: 16px; }
+    .collection-title { font-size: 16px; font-weight: bold; color: var(--primary); margin-bottom: 12px; }
+    .collection-grid  { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .coll-item {
+      background: #fff; border-radius: 14px; padding: 12px 6px;
+      text-align: center; box-shadow: 0 2px 8px rgba(108,92,231,.08);
+      border: 2px solid #e8eaed; transition: border-color .2s;
+    }
+    .coll-item.owned  { border-color: var(--primary-light); background: #f8f6ff; }
+    .ci-em   { font-size: 30px; margin-bottom: 4px; display: block; }
+    .ci-name { font-size: 10px; color: var(--text-sub); display: block; }
+    .ci-cnt  { font-size: 11px; font-weight: bold; color: var(--primary); display: block; }
+
+    /* ── NAV BAR 7 items ── */
+    .nav-item { padding: 4px 4px; }
+    .nav-item .ni { font-size: 19px; }
+    .nav-item .nl { font-size: 9px; }
+
+    /* ── STREAK CALENDAR ── */
+    .streak-cal { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin: 8px 0; }
+    .streak-day { aspect-ratio:1; border-radius:5px; background:#e8eaed; display:flex; align-items:center; justify-content:center; font-size:10px; }
+    .streak-day.done  { background:var(--accent2); color:#fff; }
+    .streak-day.today { outline:2px solid var(--primary); }
+    .milestone-row { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+    .milestone { padding:3px 10px; border-radius:50px; font-size:11px; font-weight:bold; background:#e8eaed; color:var(--text-sub); }
+    .milestone.done { background:var(--accent1); color:#fff; }
+
+    /* ── WEAK WORDS ── */
+    .ww-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:#fff; border-radius:14px; margin-bottom:7px; box-shadow:0 2px 8px rgba(108,92,231,.07); }
+    .ww-word { font-size:15px; font-weight:bold; color:#ff7675; flex:0 0 100px; }
+    .ww-mean { font-size:12px; color:var(--text-sub); flex:1; }
+    .ww-cnt  { font-size:13px; font-weight:bold; color:#ff7675; white-space:nowrap; }
+
+    /* ── TIME ATTACK ── */
+    .ta-timer { font-size:72px; font-weight:bold; color:var(--primary); text-align:center; line-height:1; margin:8px 0; }
+    .ta-timer.warn { color:#ff7675; animation:tapulse .5s ease infinite; }
+    @keyframes tapulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    .ta-score-big { font-size:52px; font-weight:bold; color:var(--primary); text-align:center; }
+    .ta-best { text-align:center; font-size:13px; color:var(--text-sub); margin-bottom:4px; }
+
+    /* ── SPEAK BUTTON ── */
+    .speak-btn { background:none; border:2px solid var(--accent3); color:var(--accent3); border-radius:50px; padding:4px 12px; font-size:13px; cursor:pointer; font-family:inherit; transition:all .2s; }
+    .speak-btn:active { background:var(--accent3); color:#fff; }
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; }
+    .toggle-sw { width:38px; height:20px; background:#e8eaed; border-radius:50px; position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+    .toggle-sw.on { background:var(--accent2); }
+    .toggle-sw::after { content:''; position:absolute; width:16px; height:16px; background:#fff; border-radius:50%; top:2px; left:2px; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .toggle-sw.on::after { left:20px; }
+
+    /* ── DASHBOARD CHARTS ── */
+    .chart-wrap { display:flex; align-items:flex-end; gap:5px; height:80px; margin:10px 0 4px; }
+    .day-chart { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; height:100%; justify-content:flex-end; }
+    .day-chart-bar { width:100%; background:var(--primary-light); border-radius:3px 3px 0 0; min-height:2px; }
+    .day-chart-lbl { font-size:9px; color:var(--text-sub); }
+    .pos-chart-wrap { display:flex; align-items:flex-end; gap:5px; height:64px; margin:8px 0 4px; }
+    .pos-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; height:100%; justify-content:flex-end; }
+    .pos-bar { width:100%; border-radius:3px 3px 0 0; background:var(--accent3); min-height:2px; }
+    .pos-lbl { font-size:9px; color:var(--text-sub); text-align:center; }
+
+    /* ── SRS ── */
+    .srs-due-badge { display:inline-flex; align-items:center; gap:4px; background:#e8f0ff; color:var(--primary); padding:3px 10px; border-radius:50px; font-size:12px; font-weight:bold; }
+
+    /* ── MODE TOGGLE (home) ── */
+    .fc-mode-btn { flex:1; padding:10px 8px; border-radius:14px; border:2px solid #e8eaed; background:#fff; font-size:14px; font-weight:bold; cursor:pointer; text-align:center; transition:all .2s; font-family:inherit; }
+    .fc-mode-btn.active { border-color:var(--primary); background:var(--primary); color:#fff; }
+
+    /* ── TOP/WORST LIST ── */
+    .rank-item { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid #f0f0f0; }
+    .rank-item:last-child { border-bottom:none; }
+    .rank-num { font-size:16px; font-weight:bold; color:var(--text-sub); width:22px; text-align:center; flex-shrink:0; }
+    .rank-word { font-size:14px; font-weight:bold; color:var(--primary); flex:1; }
+    .rank-val  { font-size:12px; color:var(--text-sub); white-space:nowrap; }
+
+    /* ── GRADE SELECT ── */
+    .grade-select-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: linear-gradient(135deg, #f0f4ff 0%, #fce4f0 100%);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 24px;
+    }
+    .grade-select-overlay.hidden { display: none; }
+    .grade-select-title {
+      font-size: 28px; font-weight: bold; color: var(--primary);
+      margin-bottom: 8px; text-align: center;
+    }
+    .grade-select-sub {
+      font-size: 14px; color: var(--text-sub); margin-bottom: 32px; text-align: center;
+    }
+    .grade-cards {
+      display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 400px;
+    }
+    .grade-card {
+      background: #fff; border-radius: 20px; padding: 24px 20px;
+      box-shadow: 0 8px 24px rgba(108,92,231,0.13);
+      cursor: pointer; border: 3px solid transparent;
+      display: flex; align-items: center; gap: 16px;
+      transition: all .2s;
+    }
+    .grade-card:active { transform: scale(.97); }
+    .grade-card.pre2 { border-color: var(--primary); }
+    .grade-card.g4   { border-color: var(--accent2); }
+    .grade-card-em  { font-size: 44px; }
+    .grade-card-info { flex: 1; }
+    .grade-card-name { font-size: 20px; font-weight: bold; color: var(--text); }
+    .grade-card-desc { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+    .grade-loading { margin-top: 24px; font-size: 14px; color: var(--primary); display: none; }
+
+    /* ── EASY BAR ── */
+    .easy-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 150;
+      background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+      display: flex; align-items: center; justify-content: flex-start; gap: 10px;
+      padding: 7px 16px; box-shadow: 0 2px 8px rgba(108,92,231,.2);
+    }
+    .easy-bar-lbl { font-size: 12px; color: rgba(255,255,255,.9); font-weight: bold; }
+    .easy-bar-btn {
+      background: rgba(255,255,255,.25); border: 2px solid rgba(255,255,255,.5);
+      border-radius: 50px; padding: 3px 14px; font-size: 12px; font-weight: bold;
+      cursor: pointer; color: #fff; font-family: inherit; transition: all .2s;
+    }
+    .easy-bar-btn.on { background: #fff; color: var(--primary); border-color: #fff; }
+
+    /* ── CHARACTER BADGE (in easy-bar, right side) ── */
+    .char-badge {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.22); border-radius: 50px;
+      padding: 3px 10px 3px 6px;
+      display: flex; align-items: center; gap: 5px; z-index: 91;
+      cursor: pointer; transition: background .2s;
+      border: 1.5px solid rgba(255,255,255,.45);
+    }
+    .char-badge:active { background: rgba(255,255,255,.38); }
+    .cb-em    { font-size: 20px; line-height: 1; }
+    .cb-pts   { font-size: 11px; font-weight: bold; color: #fff; display: block; }
+    .cb-combo { font-size: 10px; color: #ffeaa7; display: block; min-height: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+  GRADE SELECT OVERLAY (shown at startup)
+  ============================================================ -->
+<div id="grade-select-overlay" class="grade-select-overlay">
+  <div class="grade-select-title">🌟 えいたんごマスター</div>
+  <div class="grade-select-sub">べんきょうする<ruby>級<rt>きゅう</rt></ruby>をえらんでね！</div>
+  <div class="grade-cards">
+    <div class="grade-card pre2" onclick="selectGrade('pre2')">
+      <span class="grade-card-em">📘</span>
+      <div class="grade-card-info">
+        <div class="grade-card-name"><ruby>英検<rt>えいけん</rt></ruby><ruby>準<rt>じゅん</rt></ruby>２<ruby>級<rt>きゅう</rt></ruby></div>
+        <div class="grade-card-desc"><ruby>中学生<rt>ちゅうがくせい</rt></ruby>〜<ruby>高校生<rt>こうこうせい</rt></ruby>レベル・400語</div>
+      </div>
+    </div>
+    <div class="grade-card g4" onclick="selectGrade('4')">
+      <span class="grade-card-em">📗</span>
+      <div class="grade-card-info">
+        <div class="grade-card-name"><ruby>英検<rt>えいけん</rt></ruby>４<ruby>級<rt>きゅう</rt></ruby></div>
+        <div class="grade-card-desc"><ruby>小学生<rt>しょうがくせい</rt></ruby>〜<ruby>中学<rt>ちゅうがく</rt></ruby>1<ruby>年生<rt>ねんせい</rt></ruby>レベル・300語</div>
+      </div>
+    </div>
+  </div>
+  <div class="grade-loading" id="grade-loading">⏳ よみこみちゅう…</div>
+</div>
+
+<!-- ============================================================
+  CHARACTER SELECT OVERLAY (shown once on first visit)
+  ============================================================ -->
+<div id="charselect-overlay" class="charselect-overlay">
+  <div class="charselect-title" id="charselect-title">🌟 ようこそ！</div>
+  <div class="charselect-sub" id="charselect-sub">
+    いっしょにべんきょうする<br>キャラクターをえらんでね！
+  </div>
+  <div class="char-select-grid">
+    <div class="char-card" onclick="selectChar('cat',this)">
+      <span class="char-card-em">🐱</span>
+      <div class="char-card-name">ネコ</div>
+    </div>
+    <div class="char-card" onclick="selectChar('dog',this)">
+      <span class="char-card-em">🐶</span>
+      <div class="char-card-name">イヌ</div>
+    </div>
+    <div class="char-card" onclick="selectChar('rabbit',this)">
+      <span class="char-card-em">🐰</span>
+      <div class="char-card-name">うさぎ</div>
+    </div>
+    <div class="char-card" onclick="selectChar('chick',this)">
+      <span class="char-card-em">🐥</span>
+      <div class="char-card-name">ひよこ</div>
+    </div>
+    <div class="char-card" onclick="selectChar('panda',this)">
+      <span class="char-card-em">🐼</span>
+      <div class="char-card-name">パンダ</div>
+    </div>
+    <div class="char-card" onclick="selectChar('shima',this)">
+      <span class="char-card-em">🐦</span>
+      <div class="char-card-name">シマエナガ</div>
+    </div>
+  </div>
+  <button id="charselect-cancel" class="btn" style="display:none;margin-top:18px;width:100%;max-width:300px;" onclick="cancelCharSelect()">キャンセル</button>
+</div>
+
+<!-- ============================================================
+  LEVEL UP OVERLAY
+  ============================================================ -->
+<div id="lvup-overlay" class="lvup-overlay hidden" onclick="closeLvUp()">
+  <div class="lvup-em" id="lvup-em">🐱</div>
+  <div class="lvup-text">🎉 レベルアップ！</div>
+  <div class="lvup-sub" id="lvup-sub">Lv.2 がんばりや になった！</div>
+  <div class="lvup-tap">👆 タップしてとじる</div>
+</div>
+
+<!-- EASY BAR (キャラバッジも内包) -->
+<div id="easy-bar" class="easy-bar">
+  <span class="easy-bar-lbl">📖 かんたん訳</span>
+  <button id="easy-bar-btn" class="easy-bar-btn" onclick="toggleEasyMode()">OFF</button>
+  <!-- キャラクターバッジ（学習中のみ表示） -->
+  <div id="char-badge" class="char-badge hidden" onclick="go('gacha')">
+    <div class="cb-em" id="cb-em">🐱</div>
+    <div>
+      <span class="cb-pts"  id="cb-pts">0pt</span>
+      <span class="cb-combo" id="cb-combo"></span>
+    </div>
+  </div>
+</div>
+
+<!-- POINT TOAST -->
+<div id="pt-toast" class="pt-toast"></div>
+
+<!-- ============================================================
+  NAV BAR
+  ============================================================ -->
+<nav class="nav-bar">
+  <button class="nav-item active" id="nav-home"      onclick="go('home')">
+    <span class="ni">🏠</span><span class="nl">ホーム</span>
+  </button>
+  <button class="nav-item" id="nav-flashcard" onclick="go('flashcard')">
+    <span class="ni">🃏</span><span class="nl">カード</span>
+  </button>
+  <button class="nav-item" id="nav-quiz"      onclick="go('quiz')">
+    <span class="ni">❓</span><span class="nl">クイズ</span>
+  </button>
+  <button class="nav-item" id="nav-typing"    onclick="go('typing')">
+    <span class="ni">⌨️</span><span class="nl">タイピング</span>
+  </button>
+  <button class="nav-item" id="nav-weakwords" onclick="go('weakwords')">
+    <span class="ni">📕</span><span class="nl">苦手</span>
+  </button>
+  <button class="nav-item" id="nav-progress"  onclick="go('progress')">
+    <span class="ni">📊</span><span class="nl">進捗</span>
+  </button>
+  <button class="nav-item" id="nav-gacha"     onclick="go('gacha')">
+    <span class="ni">🎰</span><span class="nl">ガチャ</span>
+  </button>
+</nav>
+
+<!-- ============================================================
+  HOME
+  ============================================================ -->
+<div class="screen active" id="screen-home">
+  <div class="mascot"><span class="mascot-em" id="home-mascot">🦊</span></div>
+  <div class="home-title">えいたんごマスター</div>
+  <div class="home-sub">
+    <span id="home-grade-label">英検準2級</span>
+    <button onclick="showGradeSelect()" style="margin-left:10px;font-size:11px;padding:2px 10px;border-radius:50px;border:1.5px solid var(--primary);background:none;color:var(--primary);cursor:pointer;font-family:inherit;font-weight:bold;">級をかえる</button>
+  </div>
+
+  <!-- Character widget -->
+  <div class="char-widget" id="home-char-widget" onclick="go('gacha')" style="display:none">
+    <div class="cw-em" id="cw-em">🐱</div>
+    <div class="cw-info">
+      <div class="cw-name"  id="cw-name">ネコ (Lv.1)</div>
+      <div class="cw-lvname" id="cw-lvname">はじめて</div>
+      <div class="cw-prog-wrap"><div class="cw-prog-fill" id="cw-prog" style="width:0%"></div></div>
+      <div class="cw-pts" id="cw-pts">0pt / 50pt</div>
+    </div>
+    <div class="cw-combo-badge" id="cw-combo" style="display:none"></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-weight:bold;font-size:14px;">きょうの<ruby>進捗<rt>しんちょく</rt></ruby></span>
+      <span class="star-badge">⭐ <span id="h-stars">0</span></span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="h-prog" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-sub);">
+      <span><ruby>覚<rt>おぼ</rt></ruby>えた: <b id="h-learned">0</b> / <span id="h-total">100</span></span>
+      <span><ruby>連続<rt>れんぞく</rt></ruby>: <b id="h-streak">0</b><ruby>日<rt>にち</rt></ruby> 🔥</span>
+    </div>
+  </div>
+
+  <!-- Streak calendar -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-weight:bold;font-size:14px;">🔥 <ruby>連続学習<rt>れんぞくがくしゅう</rt></ruby>カレンダー</span>
+      <span id="h-streak-num" style="font-weight:bold;color:var(--primary);">0日</span>
+    </div>
+    <div class="streak-cal" id="h-streak-cal"></div>
+    <div class="milestone-row" id="h-milestones"></div>
+  </div>
+
+  <!-- SRS due notice -->
+  <div id="h-srs-notice" class="card hidden" style="text-align:center;padding:14px;">
+    <span class="srs-due-badge">📅 <span id="h-srs-due">0</span>語 復習の時間です！</span>
+    <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="startSrsReview()">復習スタート</button>
+  </div>
+
+  <!-- Mode toggle -->
+  <div id="fc-mode-bar" style="display:flex;gap:8px;margin-bottom:12px;">
+    <button id="mode-words"   class="fc-mode-btn active" onclick="setMode('words')">📚 単語</button>
+    <button id="mode-phrases" class="fc-mode-btn"        onclick="setMode('phrases')">📖 熟語</button>
+  </div>
+
+  <div class="menu-grid">
+    <div class="menu-card mc-fc"   onclick="go('flashcard')">
+      <div class="mc-em">🃏</div>
+      <div class="mc-name">フラッシュカード</div>
+      <div class="mc-desc"><ruby>単語<rt>たんご</rt></ruby>をカードで<ruby>確認<rt>かくにん</rt></ruby></div>
+    </div>
+    <div class="menu-card mc-quiz" onclick="go('quiz')">
+      <div class="mc-em">❓</div>
+      <div class="mc-name">４<ruby>択<rt>たく</rt></ruby>クイズ</div>
+      <div class="mc-desc">４つからこたえをえらぼう</div>
+    </div>
+    <div class="menu-card mc-type" onclick="go('typing')">
+      <div class="mc-em">⌨️</div>
+      <div class="mc-name">タイピング</div>
+      <div class="mc-desc"><ruby>英語<rt>えいご</rt></ruby>をうちこんでみよう</div>
+    </div>
+    <div class="menu-card" style="border-color:#ff7675;" onclick="go('weakwords')">
+      <div class="mc-em">📕</div>
+      <div class="mc-name">苦手リスト</div>
+      <div class="mc-desc">まちがえた<ruby>単語<rt>たんご</rt></ruby>を<ruby>復習<rt>ふくしゅう</rt></ruby></div>
+    </div>
+  </div>
+
+  <!-- Time Attack button -->
+  <button class="btn btn-block" style="background:linear-gradient(135deg,#fd79a8,#e17055);color:#fff;font-size:17px;padding:16px;border-radius:var(--radius);margin-bottom:14px;" onclick="go('timeatk')">
+    ⏱️ タイムアタック！ <span id="h-ta-best" style="font-size:12px;opacity:.8;"></span>
+  </button>
+
+  <div class="card" style="text-align:center;">
+    <div style="font-size:13px;margin-bottom:4px;">🎯 きょうの<ruby>目標<rt>もくひょう</rt></ruby></div>
+    <div id="h-goal" style="font-size:22px;font-weight:bold;color:var(--primary);">10<ruby>語<rt>ご</rt></ruby><ruby>覚<rt>おぼ</rt></ruby>えよう！</div>
+  </div>
+</div>
+
+<!-- ============================================================
+  FLASHCARD
+  ============================================================ -->
+<div class="screen" id="screen-flashcard">
+  <div class="screen-title">🃏 フラッシュカード</div>
+
+  <div class="counter-row">
+    <span id="fc-counter">1 / 100</span>
+    <span class="star-badge">⭐ <span id="fc-stars">0</span></span>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="fc-prog" style="width:1%"></div></div>
+
+  <!-- Card -->
+  <div class="fc-wrap" id="fc-wrap">
+    <div class="fc-card" id="fc-card" onclick="fcFlip()">
+      <div class="fc-front">
+        <div class="fc-pos"  id="fc-pos">名詞</div>
+        <div class="fc-word" id="fc-word">ability</div>
+        <div class="fc-kana" id="fc-kana">アビリティ</div>
+        <button class="speak-btn" onclick="event.stopPropagation();speakWord()" style="margin-top:8px;">🔊 よむ</button>
+        <div class="tap-hint" style="margin-top:8px;">👆 タップして<ruby>意味<rt>いみ</rt></ruby>をみる</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-meaning" id="fc-meaning">できること・とくいなこと</div>
+        <div class="fc-ex"      id="fc-ex"></div>
+        <div class="tap-hint">👆 タップしてもどる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="fc-btn-row" id="fc-btns">
+    <button class="btn btn-danger"  onclick="fcAns(false)">😕 もう<ruby>一度<rt>いちど</rt></ruby></button>
+    <button class="btn btn-success" onclick="fcAns(true)">😄 わかった！</button>
+  </div>
+
+  <!-- Result -->
+  <div id="fc-result" class="hidden result-box fade-up">
+    <div class="result-emoji">🎉</div>
+    <div style="font-size:22px;font-weight:bold;margin-bottom:6px;">カードおわり！</div>
+    <div style="font-size:15px;color:var(--text-sub);margin-bottom:18px;">
+      <ruby>覚<rt>おぼ</rt></ruby>えた: <b id="fc-r-learned">0</b> / <span id="fc-r-total">100</span>
+    </div>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="fcRestart()">もう一度やる</button>
+      <button class="btn btn-info"    onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  QUIZ
+  ============================================================ -->
+<div class="screen" id="screen-quiz">
+  <div class="screen-title">❓ ４<ruby>択<rt>たく</rt></ruby>クイズ</div>
+  <button id="q-next-btn" class="btn btn-primary btn-block hidden" onclick="qNext()" style="margin-bottom:10px;">つぎへ →</button>
+
+  <!-- Start -->
+  <div id="q-start">
+    <div class="card" style="text-align:center;padding:26px;">
+      <div style="font-size:50px;margin-bottom:10px;">❓</div>
+      <div style="font-size:17px;font-weight:bold;margin-bottom:6px;"><ruby>英語<rt>えいご</rt></ruby>の<ruby>意味<rt>いみ</rt></ruby>を<ruby>選<rt>えら</rt></ruby>ぼう！</div>
+      <div style="font-size:12px;color:var(--text-sub);margin-bottom:18px;">10もんチャレンジ ⭐</div>
+      <div class="mode-row">
+        <button class="mode-btn active" id="qm-enja" onclick="setQMode('en-ja')">🇬🇧→🇯🇵<br><ruby>英語<rt>えいご</rt></ruby>→<ruby>日本語<rt>にほんご</rt></ruby></button>
+        <button class="mode-btn"        id="qm-jaen" onclick="setQMode('ja-en')">🇯🇵→🇬🇧<br><ruby>日本語<rt>にほんご</rt></ruby>→<ruby>英語<rt>えいご</rt></ruby></button>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="qStart()">🚀 スタート！</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="q-game" class="hidden">
+    <div class="counter-row">
+      <span><span id="q-num">1</span> / 10もん</span>
+      <span class="star-badge">⭐ <span id="q-stars">0</span></span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="q-prog" style="width:10%"></div></div>
+
+    <div class="quiz-q" id="q-question">ability</div>
+
+    <div class="quiz-choices" id="q-choices">
+      <button class="qc" id="qc0"></button>
+      <button class="qc" id="qc1"></button>
+      <button class="qc" id="qc2"></button>
+      <button class="qc" id="qc3"></button>
+    </div>
+
+    <div id="q-fb" class="hidden fb-row fade-up">
+      <div class="fb-text"   id="q-fb-text"></div>
+      <div class="fb-detail" id="q-fb-detail"></div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="q-result" class="hidden result-box fade-up">
+    <div class="result-emoji"   id="q-r-em">🎉</div>
+    <div class="result-num"><span id="q-r-score">0</span>/10</div>
+    <div class="result-label"><ruby>正解<rt>せいかい</rt></ruby></div>
+    <div class="result-comment" id="q-r-comment"></div>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="qRestart()">もう一度！</button>
+      <button class="btn btn-info"    onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  TYPING
+  ============================================================ -->
+<div class="screen" id="screen-typing">
+  <div class="screen-title">⌨️ タイピング</div>
+
+  <!-- Start -->
+  <div id="t-start">
+    <div class="card" style="text-align:center;padding:26px;">
+      <div style="font-size:50px;margin-bottom:10px;">⌨️</div>
+      <div style="font-size:17px;font-weight:bold;margin-bottom:6px;">
+        <ruby>意味<rt>いみ</rt></ruby>を<ruby>見<rt>み</rt></ruby>て<ruby>英語<rt>えいご</rt></ruby>を<ruby>打<rt>う</rt></ruby>ちこもう！
+      </div>
+      <div style="font-size:12px;color:var(--text-sub);margin-bottom:18px;">10もんチャレンジ ⭐</div>
+      <button class="btn btn-warning btn-block" onclick="tStart()">🚀 スタート！</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="t-game" class="hidden">
+    <div class="counter-row">
+      <span><span id="t-num">1</span> / 10もん</span>
+      <span class="star-badge">⭐ <span id="t-stars">0</span></span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="t-prog" style="width:10%"></div></div>
+
+    <div class="card" style="text-align:center;padding:22px;">
+      <div style="font-size:13px;color:var(--text-sub);">意味</div>
+      <div class="t-meaning-box" id="t-meaning">できること</div>
+      <div class="t-reading-sub">（カタカナ: <span id="t-kana"></span>）</div>
+      <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;">
+        <ruby>英語<rt>えいご</rt></ruby><ruby>文字数<rt>もじすう</rt></ruby>: <span id="t-len"></span><ruby>文字<rt>もじ</rt></ruby>
+      </div>
+      <input type="text" class="t-input" id="t-input"
+             placeholder="ここに入力..." autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" oninput="tCheck()">
+    </div>
+
+    <button class="hint-btn" id="t-hint-btn" onclick="tHint()">💡 ヒント（さいしょの<ruby>文字<rt>もじ</rt></ruby>をみる）</button>
+    <div id="t-hint-box" class="hidden" style="text-align:center;font-size:16px;color:var(--primary);font-weight:bold;margin-bottom:10px;"></div>
+
+    <div id="t-submit">
+      <button class="btn btn-warning btn-block" onclick="tSubmit()">✅ かくにん！</button>
+    </div>
+
+    <div id="t-fb" class="hidden fb-row fade-up">
+      <div class="fb-text"   id="t-fb-text"></div>
+      <div class="fb-detail" id="t-fb-detail"></div>
+      <button class="btn btn-primary" onclick="tNext()">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="t-result" class="hidden result-box fade-up">
+    <div class="result-emoji"   id="t-r-em">🎉</div>
+    <div class="result-num"><span id="t-r-score">0</span>/10</div>
+    <div class="result-label"><ruby>正解<rt>せいかい</rt></ruby></div>
+    <div class="result-comment" id="t-r-comment"></div>
+    <div class="result-btns">
+      <button class="btn btn-warning" onclick="tRestart()">もう一度！</button>
+      <button class="btn btn-info"    onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  WEAK WORDS
+  ============================================================ -->
+<div class="screen" id="screen-weakwords">
+  <div class="screen-title">📕 苦手単語リスト</div>
+
+  <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;">
+    <div>
+      <div style="font-weight:bold;font-size:14px;">苦手優先モード</div>
+      <div style="font-size:11px;color:var(--text-sub);">クイズでまちがえた単語を優先出題</div>
+    </div>
+    <div class="toggle-sw" id="ww-mode-toggle" onclick="toggleWeakMode()"></div>
+  </div>
+
+  <div class="card" style="text-align:center;padding:14px;">
+    <button class="btn btn-danger btn-block" onclick="startWeakQuiz()">📕 苦手単語でクイズ！</button>
+  </div>
+
+  <div id="ww-empty" class="card hidden" style="text-align:center;padding:24px;color:var(--text-sub);">
+    まだ苦手な単語はありません！<br>クイズで間違えると登録されます 😊
+  </div>
+
+  <div id="ww-list"></div>
+</div>
+
+<!-- ============================================================
+  TIME ATTACK
+  ============================================================ -->
+<div class="screen" id="screen-timeatk" style="padding-bottom:24px;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+    <button class="btn btn-info" onclick="go('home')" style="padding:8px 14px;">← もどる</button>
+    <div style="font-size:20px;font-weight:bold;color:var(--primary);">⏱️ タイムアタック</div>
+  </div>
+
+  <!-- Start -->
+  <div id="ta-start">
+    <div class="card" style="text-align:center;padding:28px;">
+      <div style="font-size:56px;margin-bottom:10px;">⏱️</div>
+      <div style="font-size:18px;font-weight:bold;margin-bottom:4px;">60びょうで何問こたえられる？</div>
+      <div class="ta-best" id="ta-best-disp">ベストスコア: -</div>
+      <button class="btn btn-block" style="background:linear-gradient(135deg,#fd79a8,#e17055);color:#fff;font-size:18px;padding:16px;" onclick="taStart()">🚀 スタート！</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="ta-game" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="ta-timer" id="ta-timer">60</div>
+      <div style="text-align:center;">
+        <div style="font-size:32px;font-weight:bold;color:var(--primary);" id="ta-score">0</div>
+        <div style="font-size:11px;color:var(--text-sub);">正解</div>
+      </div>
+    </div>
+    <div class="quiz-q" id="ta-question" style="font-size:26px;margin-bottom:12px;"></div>
+    <div class="quiz-choices" id="ta-choices">
+      <button class="qc" id="tac0"></button>
+      <button class="qc" id="tac1"></button>
+      <button class="qc" id="tac2"></button>
+      <button class="qc" id="tac3"></button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="ta-result" class="hidden result-box fade-up">
+    <div style="font-size:48px;margin-bottom:8px;">⏱️</div>
+    <div class="ta-score-big" id="ta-r-score">0</div>
+    <div style="font-size:14px;color:var(--text-sub);margin-bottom:4px;">問正解！</div>
+    <div id="ta-r-best" style="font-size:13px;color:var(--accent2);font-weight:bold;margin-bottom:18px;"></div>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="taStart()">もう一度！</button>
+      <button class="btn btn-info" onclick="go('home')">ホームへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  PROGRESS / DASHBOARD
+  ============================================================ -->
+<div class="screen" id="screen-progress">
+  <div class="screen-title">📊 学習ダッシュボード</div>
+
+  <div class="level-banner">
+    <div class="level-em" id="p-char-em">🦊</div>
+    <div class="level-name" id="p-level">ビギナー</div>
+    <div class="level-sub">⭐ <span id="p-stars">0</span>個のスター　🔥 <span id="p-streak">0</span>日連続</div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-val" id="p-learned">0</div>
+      <div class="stat-lbl">覚えた単語</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📕</div>
+      <div class="stat-val" id="p-weak-cnt">0</div>
+      <div class="stat-lbl">苦手単語数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">❓</div>
+      <div class="stat-val" id="p-qacc">-</div>
+      <div class="stat-lbl">クイズ正解率</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-val" id="p-ta-best">-</div>
+      <div class="stat-lbl">タイムアタック最高</div>
+    </div>
+  </div>
+
+  <!-- 7-day chart -->
+  <div class="card">
+    <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">📅 7日間の学習グラフ</div>
+    <div class="chart-wrap" id="p-day-chart"></div>
+    <div style="display:flex;justify-content:space-around;" id="p-day-labels"></div>
+  </div>
+
+  <!-- Part-of-speech chart -->
+  <div class="card">
+    <div style="font-weight:bold;font-size:14px;margin-bottom:4px;">📖 品詞別 習得率</div>
+    <div class="pos-chart-wrap" id="p-pos-chart"></div>
+    <div style="display:flex;justify-content:space-around;" id="p-pos-labels"></div>
+  </div>
+
+  <!-- Overall progress -->
+  <div class="card">
+    <div style="font-weight:bold;margin-bottom:8px;">
+      覚えた単語（<span id="p-lc">0</span>/<span id="p-tc">400</span>）
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="p-prog" style="width:0%"></div></div>
+  </div>
+
+  <!-- TOP5 / WORST5 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div class="card" style="padding:14px;">
+      <div style="font-weight:bold;font-size:13px;margin-bottom:8px;">🏆 よく覚えてる TOP5</div>
+      <div id="p-top5"></div>
+    </div>
+    <div class="card" style="padding:14px;">
+      <div style="font-weight:bold;font-size:13px;margin-bottom:8px;">📕 苦手 WORST5</div>
+      <div id="p-worst5"></div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="card">
+    <div style="font-weight:bold;font-size:14px;margin-bottom:8px;">⚙️ 設定</div>
+    <div class="toggle-row">
+      <div>
+        <div style="font-size:13px;font-weight:bold;">🔊 自動読み上げ</div>
+        <div style="font-size:11px;color:var(--text-sub);">カードめくり時に英語を読む</div>
+      </div>
+      <div class="toggle-sw" id="p-autospeak-toggle" onclick="toggleAutoSpeak()"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-danger btn-block" onclick="pReset()" style="margin-top:6px;">
+    🔄 記録をリセット
+  </button>
+</div>
+
+<!-- ============================================================
+  GACHA & COLLECTION
+  ============================================================ -->
+<div class="screen" id="screen-gacha">
+  <div class="screen-title">🎰 ガチャ・コレクション</div>
+
+  <!-- Ticket count -->
+  <div class="gacha-ticket-box">
+    <div class="gt-num" id="g-tickets">0</div>
+    <div class="gt-lbl">🎫 ガチャけん</div>
+    <div class="gt-hint">100ptたまるとガチャけんが1まいもらえるよ！</div>
+  </div>
+
+  <!-- Pull button -->
+  <button class="gacha-btn" id="g-btn" onclick="doGacha()">🎰 ガチャをひく！</button>
+
+  <!-- Result (hidden until first pull) -->
+  <div class="gacha-result-box" id="g-result">
+    <span class="gr-em gacha-spin" id="g-r-em">🎩</span>
+    <div class="gr-name" id="g-r-name">ぼうし</div>
+    <div class="gr-rare" id="g-r-rare">★★★ レア！</div>
+  </div>
+
+  <!-- Collection -->
+  <div class="card">
+    <div class="collection-title">🗂️ コレクション（<span id="g-owned-cnt">0</span>/30）</div>
+    <div class="collection-grid" id="g-collection"></div>
+  </div>
+
+  <!-- Character level info -->
+  <div class="card" id="g-char-card" style="display:none">
+    <div style="font-weight:bold;font-size:14px;margin-bottom:12px;">🌱 キャラクターのせいちょう</div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="font-size:56px;line-height:1" id="g-char-em">🐱</div>
+      <div style="flex:1">
+        <div style="font-weight:bold;font-size:16px" id="g-char-name">ネコ</div>
+        <div style="font-size:13px;color:var(--text-sub);margin-bottom:6px" id="g-char-lv">Lv.1 はじめて</div>
+        <div class="prog-wrap"><div class="prog-fill" id="g-char-prog" style="width:0%"></div></div>
+        <div style="font-size:11px;color:var(--text-sub);margin-top:3px" id="g-char-pts">0pt / 50pt</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;font-size:13px;color:var(--text-sub)">
+      <b>レベルアップに必要なポイント：</b>
+      <div style="margin-top:6px;line-height:2">
+        Lv.1→2：50pt　Lv.2→3：150pt<br>
+        Lv.3→4：300pt　Lv.4→5：500pt
+      </div>
+    </div>
+    <button class="btn btn-block" style="margin-top:14px;background:#f0edff;color:var(--primary);border:1.5px solid var(--primary-light);" onclick="changeChar()">🔄 キャラクターをかえる</button>
+  </div>
+</div>
+
+<!-- ============================================================
+  JAVASCRIPT
+  ============================================================ -->
+<script>
+// ────────────────────────────────────────────────────────────
+// VOCABULARY (JSONから動的読み込み)
+// ────────────────────────────────────────────────────────────
+let V = [];
+// ────────────────────────────────────────────────────────────
+// PHRASES (JSONから動的読み込み)
+// ────────────────────────────────────────────────────────────
+let PHRASES = [];
+let currentGrade = null;
+
+// ────────────────────────────────────────────────────────────
+// GRADE SELECT
+// ────────────────────────────────────────────────────────────
+const GRADE_LABELS = { 'pre2': '英検準2級', '4': '英検4級' };
+
+function showGradeSelect() {
+  document.getElementById('grade-select-overlay').classList.remove('hidden');
+}
+
+async function selectGrade(grade) {
+  const loading = document.getElementById('grade-loading');
+  loading.style.display = 'block';
+  try {
+    const data = await fetch('./words/grade-' + grade + '.json').then(r => r.json());
+    V = data.words || data;
+    PHRASES = data.phrases || [];
+  } catch(e) {
+    alert('データの読み込みに失敗しました。ページを再読み込みしてください。');
+    loading.style.display = 'none';
+    return;
+  }
+  loading.style.display = 'none';
+  currentGrade = grade;
+  localStorage.setItem('eitan_grade', grade);
+  document.getElementById('home-grade-label').textContent = GRADE_LABELS[grade] || grade;
+  document.getElementById('grade-select-overlay').classList.add('hidden');
+  // Show phrases tab only for pre2 which has phrases data
+  const modeBar = document.getElementById('fc-mode-bar');
+  if (modeBar) modeBar.style.display = PHRASES.length > 0 ? '' : 'none';
+  load();
+  loadChar();
+  checkStreak();
+  fcInit();
+  homeUpdate();
+  initEasyMode();
+  if (S.char.id) {
+    document.getElementById('charselect-overlay').classList.add('hidden');
+    updateCharWidget();
+  }
+}
+
+let currentMode = 'words';
+function getActiveVocab() { return currentMode === 'phrases' ? PHRASES : V; }
+function getModePrefix()  {
+  const g = currentGrade || 'pre2';
+  return currentMode === 'phrases' ? `etmp_${g}` : `etm_${g}`;
+}
+function getCharKey() { return `eitan_char_${currentGrade || 'pre2'}`; }
+
+function setMode(mode) {
+  if (currentMode === mode) return;
+  save(); // persist current mode state first
+  currentMode = mode;
+  load(); // load new mode state
+  document.querySelectorAll('.fc-mode-btn').forEach(b => b.classList.remove('active'));
+  const btn = $('mode-' + mode);
+  if (btn) btn.classList.add('active');
+  fcInit();
+  homeUpdate();
+}
+
+// ────────────────────────────────────────────────────────────
+// APP STATE
+// ────────────────────────────────────────────────────────────
+const S = {
+  learned: new Set(),
+  stars: 0, streak: 0, lastDate: null,
+  easyMode: false,
+  qHist: [], tHist: [],
+  // flashcard
+  fc: { deck:[], idx:0, okCount:0, sessionStars:0, flipped:false },
+  // quiz
+  q: { mode:'en-ja', qs:[], idx:0, score:0, sessionStars:0, answered:false, correctIdx:0, choices:[] },
+  // typing
+  t: { qs:[], idx:0, score:0, sessionStars:0, hintUsed:false },
+  // character growth
+  char: { id:null, level:1, points:0, combo:0, items:[], gachaTickets:0 },
+};
+
+// ────────────────────────────────────────────────────────────
+// STORAGE
+// ────────────────────────────────────────────────────────────
+function save() {
+  localStorage.setItem(getModePrefix(), JSON.stringify({
+    learned:[...S.learned], stars:S.stars, streak:S.streak,
+    lastDate:S.lastDate, qHist:S.qHist.slice(-10), tHist:S.tHist.slice(-10)
+  }));
+}
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem(getModePrefix()));
+    if (!d) return;
+    S.learned  = new Set(d.learned||[]);
+    S.stars    = d.stars||0;
+    S.streak   = d.streak||0;
+    S.lastDate = d.lastDate;
+    S.qHist    = d.qHist||[];
+    S.tHist    = d.tHist||[];
+  } catch(e){}
+}
+function checkStreak() {
+  const today = new Date().toDateString();
+  const yday  = new Date(Date.now()-86400000).toDateString();
+  if (S.lastDate === today) return;
+  if (S.lastDate === yday) S.streak++;
+  else if (S.lastDate && S.lastDate !== today) S.streak = 1;
+  else if (!S.lastDate) S.streak = 1;
+  S.lastDate = today;
+  save();
+}
+
+// ────────────────────────────────────────────────────────────
+// NAVIGATION
+// ────────────────────────────────────────────────────────────
+function go(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  const navEl = document.getElementById('nav-'+name);
+  if (navEl) navEl.classList.add('active');
+  if (name==='home')      { homeUpdate(); updateCharWidget(); }
+  if (name==='progress')  progUpdate();
+  if (name==='gacha')     gachaUpdate();
+  if (name==='weakwords') wwUpdate();
+  if (name==='timeatk')   taInit();
+  const badge = $('char-badge');
+  if (S.char.id && ['flashcard','quiz','typing'].includes(name)) {
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+// ────────────────────────────────────────────────────────────
+// HOME
+// ────────────────────────────────────────────────────────────
+function homeUpdate() {
+  const lc = S.learned.size, total = getActiveVocab().length;
+  const pct = Math.round(lc/total*100);
+  $('h-stars').textContent  = S.stars;
+  $('h-learned').textContent= lc;
+  $('h-total').textContent  = total;
+  $('h-streak').textContent = S.streak;
+  $('h-prog').style.width   = pct+'%';
+  const rem = 10-(lc%10);
+  $('h-goal').textContent   = lc>=total ? '全部おぼえた！🎉' : `あと ${rem} 語おぼえよう！`;
+  renderStreakCal();
+  // SRS due notice
+  const due = getSrsDue().length;
+  if (due > 0) {
+    $('h-srs-due').textContent = due;
+    show('h-srs-notice');
+  } else {
+    hide('h-srs-notice');
+  }
+  // Time attack best
+  const best = getTaBest();
+  $('h-ta-best').textContent = best > 0 ? `ベスト: ${best}問` : '';
+}
+
+// ────────────────────────────────────────────────────────────
+// FLASHCARD
+// ────────────────────────────────────────────────────────────
+function fcInit() {
+  S.fc.deck    = [1, 2, 3].flatMap(lv => shuffle(getActiveVocab().filter(w => w.level === lv)));
+  S.fc.idx     = 0;
+  S.fc.okCount = 0;
+  S.fc.sessionStars = 0;
+  S.fc.flipped = false;
+  hide('fc-result'); show('fc-wrap'); show('fc-btns');
+  fcRender();
+}
+function fcRender() {
+  const word = S.fc.deck[S.fc.idx];
+  if (!word) { fcDone(); return; }
+  $('fc-word').textContent = word.w;
+  $('fc-kana').textContent = word.k || '';
+  $('fc-pos').textContent  = word.p;
+  $('fc-meaning').textContent = getMeaning(word);
+  $('fc-ex').innerHTML     = addRuby(word.ex || word.ej || '');
+  $('fc-counter').textContent = `${S.fc.idx+1} / ${S.fc.deck.length}`;
+  $('fc-prog').style.width = `${(S.fc.idx/S.fc.deck.length)*100}%`;
+  $('fc-stars').textContent= S.fc.sessionStars;
+  const card = $('fc-card');
+  card.classList.remove('flipped');
+  S.fc.flipped = false;
+  if (getSettings().autoSpeak) speakWord();
+}
+function fcFlip() {
+  const card = $('fc-card');
+  S.fc.flipped = !S.fc.flipped;
+  S.fc.flipped ? card.classList.add('flipped') : card.classList.remove('flipped');
+}
+function fcAns(ok) {
+  const word = S.fc.deck[S.fc.idx];
+  if (ok) {
+    S.learned.add(word.id);
+    S.fc.okCount++;
+    S.fc.sessionStars++;
+    S.stars++;
+    srsUpdate(word.id, true);
+    save();
+  } else {
+    trackMistake(word.id);
+    srsUpdate(word.id, false);
+  }
+  addPoints(ok);
+  recordDaily();
+  S.fc.idx++;
+  if (S.fc.idx >= S.fc.deck.length) fcDone();
+  else fcRender();
+}
+function fcDone() {
+  hide('fc-wrap'); hide('fc-btns'); show('fc-result');
+  $('fc-r-learned').textContent = S.fc.okCount;
+  $('fc-r-total').textContent   = S.fc.deck.length;
+}
+function fcRestart() { fcInit(); }
+
+// ────────────────────────────────────────────────────────────
+// QUIZ
+// ────────────────────────────────────────────────────────────
+let qMode = 'en-ja';
+function setQMode(m) {
+  qMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  $('qm-'+m.replace('-','')).classList.add('active');
+}
+function qStart() {
+  S.q.qs    = shuffle([...getActiveVocab()]).slice(0,10);
+  S.q.idx   = 0;
+  S.q.score = 0;
+  S.q.sessionStars = 0;
+  S.q.mode  = qMode;
+  hide('q-start'); hide('q-result'); show('q-game');
+  qRender();
+}
+function qRender() {
+  const q = S.q.qs[S.q.idx];
+  S.q.answered = false;
+  $('q-num').textContent   = S.q.idx+1;
+  $('q-prog').style.width  = `${((S.q.idx)/10)*100}%`;
+  $('q-stars').textContent = S.q.sessionStars;
+  hide('q-fb');
+  hide('q-next-btn');
+  $('q-next-btn').textContent = 'つぎへ →';
+
+  // Question text
+  $('q-question').textContent = S.q.mode==='en-ja' ? q.w : getMeaning(q);
+
+  // 3 decoys + correct
+  const decoys  = shuffle(getActiveVocab().filter(x=>x.id!==q.id)).slice(0,3);
+  S.q.choices   = shuffle([...decoys, q]);
+  S.q.correctIdx = S.q.choices.findIndex(c=>c.id===q.id);
+
+  for (let i=0;i<4;i++) {
+    const btn = $('qc'+i);
+    btn.className = 'qc';
+    btn.textContent = S.q.mode==='en-ja' ? getMeaning(S.q.choices[i]) : S.q.choices[i].w;
+    btn.disabled  = false;
+    btn.onclick   = () => qAns(i);
+  }
+}
+function qAns(idx) {
+  if (S.q.answered) return;
+  S.q.answered = true;
+  const ok = idx === S.q.correctIdx;
+  const q  = S.q.qs[S.q.idx];
+
+  for (let i=0;i<4;i++) $('qc'+i).disabled = true;
+
+  if (ok) {
+    $('qc'+idx).classList.add('correct');
+    S.q.score++;
+    S.q.sessionStars++;
+    S.stars++;
+    S.learned.add(q.id);
+    srsUpdate(q.id, true);
+    save();
+    $('q-fb-text').textContent  = '✅ せいかい！すごい！';
+    $('q-fb-text').style.color  = '#00b894';
+  } else {
+    $('qc'+idx).classList.add('wrong');
+    $('qc'+S.q.correctIdx).classList.add('reveal');
+    trackMistake(q.id);
+    srsUpdate(q.id, false);
+    $('q-fb-text').textContent  = '❌ ざんねん…';
+    $('q-fb-text').style.color  = '#ff7675';
+  }
+  addPoints(ok);
+  recordDaily();
+  $('q-fb-detail').textContent = `${q.w} ＝ ${getMeaning(q)}`;
+  $('q-stars').textContent = S.q.sessionStars;
+  show('q-fb');
+  show('q-next-btn');
+  // 正解時：4秒後に自動で次の問題へ
+  if (ok) {
+    let sec = 4;
+    $('q-next-btn').textContent = `つぎへ → (${sec})`;
+    qAutoTimer = setInterval(() => {
+      sec--;
+      if (sec > 0) {
+        $('q-next-btn').textContent = `つぎへ → (${sec})`;
+      } else {
+        clearInterval(qAutoTimer); qAutoTimer = null;
+        $('q-next-btn').textContent = 'つぎへ →';
+        qNext();
+      }
+    }, 1000);
+  }
+}
+let qAutoTimer = null;
+function qNext() {
+  if (qAutoTimer) { clearInterval(qAutoTimer); qAutoTimer = null; }
+  $('q-next-btn').textContent = 'つぎへ →';
+  S.q.idx++;
+  if (S.q.idx >= S.q.qs.length) qDone();
+  else qRender();
+}
+function qDone() {
+  hide('q-game'); show('q-result');
+  const sc = S.q.score;
+  $('q-r-score').textContent  = sc;
+  const {em,cm} = scoreMsg(sc);
+  $('q-r-em').textContent      = em;
+  $('q-r-comment').textContent = cm;
+  S.qHist.push({score:sc,total:10,date:new Date().toLocaleDateString()});
+  save();
+}
+function qRestart() { hide('q-game'); hide('q-result'); show('q-start'); }
+
+// ────────────────────────────────────────────────────────────
+// TYPING
+// ────────────────────────────────────────────────────────────
+function tStart() {
+  S.t.qs    = shuffle([...getActiveVocab()]).slice(0,10);
+  S.t.idx   = 0;
+  S.t.score = 0;
+  S.t.sessionStars = 0;
+  hide('t-start'); hide('t-result'); show('t-game');
+  tRender();
+}
+function tRender() {
+  const q = S.t.qs[S.t.idx];
+  $('t-num').textContent   = S.t.idx+1;
+  $('t-prog').style.width  = `${(S.t.idx/10)*100}%`;
+  $('t-stars').textContent = S.t.sessionStars;
+  $('t-meaning').textContent = getMeaning(q);
+  $('t-kana').textContent    = q.k || q.w;
+  $('t-len').textContent     = q.w.length;
+
+  const inp = $('t-input');
+  inp.value = ''; inp.className = 't-input'; inp.disabled = false;
+
+  hide('t-fb'); hide('t-hint-box'); show('t-submit');
+  $('t-hint-btn').disabled = false;
+  S.t.hintUsed = false;
+  setTimeout(()=>inp.focus(),100);
+}
+function tHint() {
+  if (S.t.hintUsed) return;
+  const q = S.t.qs[S.t.idx];
+  const words = q.w.split(' ');
+  const hint = words.length > 1
+    ? words[0] + ' ' + words.slice(1).map(w => '_'.repeat(w.length)).join(' ')
+    : q.w[0] + '_'.repeat(q.w.length - 1);
+  $('t-hint-box').textContent = `ヒント: ${hint}`;
+  show('t-hint-box');
+  S.t.hintUsed = true;
+  $('t-hint-btn').disabled = true;
+}
+function tCheck() {
+  const q   = S.t.qs[S.t.idx];
+  const val = $('t-input').value.toLowerCase().trim();
+  if (val === q.w.toLowerCase()) {
+    $('t-input').className = 't-input correct';
+    setTimeout(()=>tAns(true),300);
+  }
+}
+function tSubmit() {
+  const q   = S.t.qs[S.t.idx];
+  const val = $('t-input').value.toLowerCase().trim();
+  tAns(val === q.w.toLowerCase());
+}
+function tAns(ok) {
+  const q   = S.t.qs[S.t.idx];
+  const inp = $('t-input');
+  inp.disabled = true;
+  hide('t-submit');
+  if (ok) {
+    inp.className = 't-input correct';
+    S.t.score++;
+    S.t.sessionStars++;
+    S.stars++;
+    S.learned.add(q.id);
+    srsUpdate(q.id, true);
+    save();
+    $('t-fb-text').textContent  = '✅ せいかい！すごい！';
+    $('t-fb-text').style.color  = '#00b894';
+    $('t-fb-detail').textContent= `こたえ: ${q.w}`;
+  } else {
+    inp.className = 't-input wrong';
+    trackMistake(q.id);
+    srsUpdate(q.id, false);
+    $('t-fb-text').textContent  = '❌ ざんねん…';
+    $('t-fb-text').style.color  = '#ff7675';
+    $('t-fb-detail').textContent= `せいかい: ${q.w}`;
+  }
+  addPoints(ok);
+  recordDaily();
+  $('t-stars').textContent = S.t.sessionStars;
+  show('t-fb');
+}
+function tNext() {
+  S.t.idx++;
+  if (S.t.idx >= S.t.qs.length) tDone();
+  else tRender();
+}
+function tDone() {
+  hide('t-game'); show('t-result');
+  const sc = S.t.score;
+  $('t-r-score').textContent = sc;
+  const {em,cm} = scoreMsg(sc);
+  $('t-r-em').textContent      = em;
+  $('t-r-comment').textContent = cm;
+  S.tHist.push({score:sc,total:10,date:new Date().toLocaleDateString()});
+  save();
+}
+function tRestart() { hide('t-game'); hide('t-result'); show('t-start'); }
+
+// ────────────────────────────────────────────────────────────
+// PROGRESS
+// ────────────────────────────────────────────────────────────
+function progUpdate() {
+  const lc = S.learned.size, total = getActiveVocab().length;
+  const pct = Math.round(lc/total*100);
+  $('p-stars').textContent   = S.stars;
+  $('p-learned').textContent = lc;
+  $('p-streak').textContent  = S.streak;
+  $('p-lc').textContent      = lc;
+  $('p-tc').textContent      = total;
+  $('p-prog').style.width    = pct+'%';
+  $('p-level').textContent   = levelName(S.stars);
+  if (S.char.id) $('p-char-em').textContent = getCharDisplay();
+
+  const mistakes = getMistakes();
+  $('p-weak-cnt').textContent = Object.keys(mistakes).length;
+
+  const best = getTaBest();
+  $('p-ta-best').textContent = best > 0 ? best+'問' : '-';
+
+  if (S.qHist.length) {
+    const s = S.qHist.reduce((a,b)=>a+b.score,0);
+    const t = S.qHist.reduce((a,b)=>a+b.total,0);
+    $('p-qacc').textContent = Math.round(s/t*100)+'%';
+  }
+
+  // 7-day chart
+  const daily = getDaily();
+  const chartEl = $('p-day-chart');
+  const lblEl   = $('p-day-labels');
+  const days7 = [];
+  for (let i=6; i>=0; i--) {
+    const d = new Date(Date.now()-i*86400000);
+    const key = d.toDateString();
+    days7.push({ key, cnt: daily[key]||0, lbl: (d.getMonth()+1)+'/'+(d.getDate()) });
+  }
+  const maxCnt = Math.max(1, ...days7.map(d=>d.cnt));
+  chartEl.innerHTML = days7.map(d=>{
+    const h = Math.round((d.cnt/maxCnt)*70);
+    return `<div class="day-chart"><div class="day-chart-bar" style="height:${h}px;"></div></div>`;
+  }).join('');
+  lblEl.innerHTML = days7.map(d=>`<div style="flex:1;text-align:center;font-size:9px;color:var(--text-sub);">${d.lbl}</div>`).join('');
+
+  // Part-of-speech chart
+  const posMap = {};
+  getActiveVocab().forEach(w=>{ if (!posMap[w.p]) posMap[w.p]={total:0,learned:0}; posMap[w.p].total++; if(S.learned.has(w.id)) posMap[w.p].learned++; });
+  const posList = Object.entries(posMap).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
+  const posChartEl = $('p-pos-chart');
+  posChartEl.innerHTML = posList.map(([pos,d])=>{
+    const h = Math.round((d.learned/d.total)*56);
+    return `<div class="pos-bar-col"><div class="pos-bar" style="height:${h}px;"></div></div>`;
+  }).join('');
+  $('p-pos-labels').innerHTML = posList.map(([pos])=>`<div style="flex:1;text-align:center;font-size:9px;color:var(--text-sub);">${pos.replace('詞','')}</div>`).join('');
+
+  // TOP5 (most seen/learned words by wordstats)
+  const ws = getWordStats();
+  const topWords = Object.entries(ws).sort((a,b)=>b[1].correct-a[1].correct).slice(0,5);
+  $('p-top5').innerHTML = topWords.length ? topWords.map(([id,s],i)=>{
+    const w = getActiveVocab().find(x=>x.id===+id);
+    return w ? `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-word">${w.w}</span><span class="rank-val">${s.correct}回</span></div>` : '';
+  }).join('') : '<div style="font-size:12px;color:#b2bec3;padding:8px 0;">まだデータなし</div>';
+
+  // WORST5 (most mistaken)
+  const worstWords = Object.entries(mistakes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  $('p-worst5').innerHTML = worstWords.length ? worstWords.map(([id,cnt],i)=>{
+    const w = getActiveVocab().find(x=>x.id===+id);
+    return w ? `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-word">${w.w}</span><span class="rank-val">×${cnt}</span></div>` : '';
+  }).join('') : '<div style="font-size:12px;color:#b2bec3;padding:8px 0;">まだデータなし</div>';
+
+  // Auto-speak toggle
+  const ts = $('p-autospeak-toggle');
+  ts.className = 'toggle-sw' + (getSettings().autoSpeak ? ' on' : '');
+}
+function pReset() {
+  if (!confirm('きろくをぜんぶリセットしてもいいですか？')) return;
+  S.learned.clear(); S.stars=0; S.streak=0; S.lastDate=null; S.qHist=[]; S.tHist=[];
+  const p = getModePrefix();
+  localStorage.removeItem(p);
+  localStorage.removeItem(p+'-mistakes');
+  localStorage.removeItem(p+'-timeatk');
+  localStorage.removeItem(p+'-srs');
+  localStorage.removeItem(p+'-wordstats');
+  localStorage.removeItem(`etm-daily_${currentGrade||'pre2'}`);
+  progUpdate(); alert('リセットしました！');
+}
+
+// ────────────────────────────────────────────────────────────
+// HELPERS
+// ────────────────────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+function show(id) { $( id).classList.remove('hidden'); }
+function hide(id) { $(id).classList.add('hidden');    }
+function shuffle(a) { return a.sort(()=>Math.random()-.5); }
+function scoreMsg(sc) {
+  if (sc===10) return {em:'🏆', cm:'パーフェクト！さいこう！！'};
+  if (sc>=8)   return {em:'🌟', cm:'とってもじょうず！'};
+  if (sc>=6)   return {em:'😄', cm:'よくできました！'};
+  if (sc>=4)   return {em:'😊', cm:'もうすこし！がんばれ！'};
+  return       {em:'💪', cm:'くりかえしてみよう！'};
+}
+function levelName(stars) {
+  if (stars>=200) return '🏆 えいたんごマスター';
+  if (stars>=100) return '🌟 スーパー学習者';
+  if (stars>=50)  return '🚀 チャレンジャー';
+  if (stars>=20)  return '😊 がんばりやさん';
+  return '🦊 ビギナー';
+}
+
+// ────────────────────────────────────────────────────────────
+// CHARACTER GROWTH SYSTEM
+// ────────────────────────────────────────────────────────────
+const CHAR_DEFS = {
+  cat:    { name:'ネコ',       displays:['🐱','🐱⭐','🎀🐱','🎩🐱','👑🐱✨'] },
+  dog:    { name:'イヌ',       displays:['🐶','🐶⭐','🎀🐶','🎩🐶','👑🐶✨'] },
+  rabbit: { name:'うさぎ',     displays:['🐰','🐰⭐','🎀🐰','🎩🐰','👑🐰✨'] },
+  chick:  { name:'ひよこ',     displays:['🐥','🐥⭐','🎀🐥','🎩🐥','👑🐥✨'] },
+  panda:  { name:'パンダ',     displays:['🐼','🐼⭐','🎀🐼','🎩🐼','👑🐼✨'] },
+  shima:  { name:'シマエナガ', displays:['🐦','🐦⭐','🎀🐦','🎩🐦','👑🐦✨'] },
+};
+
+const LEVEL_DEFS = [
+  { lv:1, minPt:0,   name:'はじめて' },
+  { lv:2, minPt:50,  name:'がんばりや' },
+  { lv:3, minPt:150, name:'チャレンジャー' },
+  { lv:4, minPt:300, name:'すごいひと' },
+  { lv:5, minPt:500, name:'マスター' },
+];
+
+const GACHA_ITEMS = [
+  // ── もとの10こ ──
+  { id:'hat',        em:'🎩', name:'ぼうし',      rare:3 },
+  { id:'glasses',    em:'👓', name:'メガネ',      rare:2 },
+  { id:'star',       em:'⭐', name:'きらぼし',    rare:1 },
+  { id:'ribbon',     em:'🎀', name:'リボン',      rare:2 },
+  { id:'flower',     em:'🌺', name:'おはな',      rare:1 },
+  { id:'note',       em:'🎵', name:'おんぷ',      rare:1 },
+  { id:'diamond',    em:'💎', name:'ダイヤ',      rare:3 },
+  { id:'candy',      em:'🍭', name:'キャンディ',  rare:1 },
+  { id:'rainbow',    em:'🌈', name:'にじ',        rare:3 },
+  { id:'butterfly',  em:'🦋', name:'ちょうちょ',  rare:2 },
+  // ── 追加10こ（その1）──
+  { id:'crown',      em:'👑', name:'おうかん',    rare:3 },
+  { id:'clover',     em:'🍀', name:'よつばのクローバー', rare:2 },
+  { id:'apple',      em:'🍎', name:'りんご',      rare:1 },
+  { id:'cake',       em:'🎂', name:'ケーキ',      rare:1 },
+  { id:'balloon',    em:'🎈', name:'ふうせん',    rare:1 },
+  { id:'sun',        em:'☀️', name:'おひさま',    rare:1 },
+  { id:'moon',       em:'🌙', name:'つき',        rare:2 },
+  { id:'comet',      em:'☄️', name:'すいせい',    rare:3 },
+  { id:'heart',      em:'❤️', name:'はあと',      rare:1 },
+  { id:'fire',       em:'🔥', name:'ファイヤー',  rare:2 },
+  // ── 追加10こ（その2）──
+  { id:'icecream',   em:'🍦', name:'アイスクリーム', rare:1 },
+  { id:'pizza',      em:'🍕', name:'ピザ',        rare:1 },
+  { id:'rocket',     em:'🚀', name:'ロケット',    rare:3 },
+  { id:'alien',      em:'👽', name:'うちゅうじん', rare:3 },
+  { id:'magic',      em:'🪄', name:'まほうのつえ', rare:2 },
+  { id:'shield',     em:'🛡️', name:'たて',        rare:2 },
+  { id:'snowflake',  em:'❄️', name:'ゆきのけっしょう', rare:2 },
+  { id:'lightning',  em:'⚡', name:'いなずま',    rare:1 },
+  { id:'gem',        em:'🔮', name:'まほうのたま', rare:3 },
+  { id:'dragon',     em:'🐉', name:'ドラゴン',    rare:3 },
+];
+
+function getLevelDef(pts) {
+  let def = LEVEL_DEFS[0];
+  for (const l of LEVEL_DEFS) { if (pts >= l.minPt) def = l; }
+  return def;
+}
+
+function getCharDisplay() {
+  const c = S.char;
+  if (!c.id || !CHAR_DEFS[c.id]) return '🐱';
+  return CHAR_DEFS[c.id].displays[c.level - 1] || CHAR_DEFS[c.id].displays[0];
+}
+
+function addPoints(isCorrect) {
+  const c = S.char;
+  if (!c.id) return;
+
+  if (!isCorrect) { c.combo = 0; saveChar(); updateCharBadge(); return; }
+
+  c.combo++;
+  let pts = 10;
+  if (c.combo === 3)     pts += 5;
+  else if (c.combo >= 5) pts += 15;
+
+  const prevTickets = Math.floor(c.points / 100);
+  c.points += pts;
+  const newTickets = Math.floor(c.points / 100);
+  c.gachaTickets += (newTickets - prevTickets);
+
+  const prevLv = c.level;
+  const newLvDef = getLevelDef(c.points);
+  if (newLvDef.lv > prevLv) {
+    c.level = newLvDef.lv;
+    setTimeout(() => showLevelUp(newLvDef), 700);
+  }
+
+  showPointToast(pts, c.combo);
+  saveChar();
+  updateCharBadge();
+}
+
+function showPointToast(pts, combo) {
+  const el = $('pt-toast');
+  let msg = '+' + pts + 'pt';
+  if (combo >= 5)      msg += ' 🔥🔥 ' + combo + 'コンボ！';
+  else if (combo >= 3) msg += ' 🔥 ' + combo + 'コンボ！';
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+function showLevelUp(lvDef) {
+  const ov = $('lvup-overlay');
+  $('lvup-em').textContent  = getCharDisplay();
+  $('lvup-sub').textContent = 'Lv.' + lvDef.lv + ' ' + lvDef.name + ' になった！';
+  ov.classList.remove('hidden');
+  ov.classList.add('show');
+}
+function closeLvUp() {
+  const ov = $('lvup-overlay');
+  ov.classList.remove('show');
+  setTimeout(() => ov.classList.add('hidden'), 320);
+}
+
+function updateCharBadge() {
+  const c = S.char;
+  if (!c.id) return;
+  $('cb-em').textContent    = getCharDisplay();
+  $('cb-pts').textContent   = c.points + 'pt';
+  $('cb-combo').textContent = c.combo >= 2 ? c.combo + 'コンボ🔥' : '';
+}
+
+function updateCharWidget() {
+  const c = S.char;
+  if (!c.id) return;
+  const def     = CHAR_DEFS[c.id];
+  const lvDef   = getLevelDef(c.points);
+  const nextLv  = LEVEL_DEFS.find(l => l.lv === c.level + 1);
+  const progPct = nextLv
+    ? Math.round((c.points - lvDef.minPt) / (nextLv.minPt - lvDef.minPt) * 100)
+    : 100;
+
+  $('home-mascot').textContent     = getCharDisplay();
+  $('home-char-widget').style.display = 'flex';
+  $('cw-em').textContent           = getCharDisplay();
+  $('cw-name').textContent         = def.name + ' (Lv.' + c.level + ')';
+  $('cw-lvname').textContent       = lvDef.name;
+  $('cw-prog').style.width         = progPct + '%';
+  $('cw-pts').textContent          = nextLv ? c.points + 'pt / ' + nextLv.minPt + 'pt' : 'MAX! 🏆';
+
+  const comboBadge = $('cw-combo');
+  if (c.combo >= 2) {
+    comboBadge.textContent    = c.combo + 'コンボ！🔥';
+    comboBadge.style.display  = 'block';
+  } else {
+    comboBadge.style.display  = 'none';
+  }
+  updateCharBadge();
+}
+
+let charSelectMode = 'init'; // 'init' | 'change'
+
+function changeChar() {
+  charSelectMode = 'change';
+  $('charselect-title').textContent = '🔄 キャラクターをかえる';
+  $('charselect-sub').innerHTML = 'ポイント・アイテムはそのまま！<br>キャラクターだけかわるよ🌟';
+  $('charselect-cancel').style.display = 'block';
+  $('charselect-overlay').classList.remove('hidden');
+}
+
+function cancelCharSelect() {
+  charSelectMode = 'init';
+  $('charselect-overlay').classList.add('hidden');
+}
+
+function selectChar(id, el) {
+  document.querySelectorAll('.char-card').forEach(e => e.classList.remove('picked'));
+  el.classList.add('picked');
+
+  setTimeout(() => {
+    if (charSelectMode === 'change') {
+      // ポイント・アイテム・チケットは引き継ぎ、キャラだけ変更
+      S.char.id    = id;
+      S.char.level = getLevelDef(S.char.points).lv;
+      S.char.combo = 0;
+    } else {
+      // 初回選択：全リセット
+      S.char.id           = id;
+      S.char.level        = 1;
+      S.char.points       = 0;
+      S.char.combo        = 0;
+      S.char.items        = [];
+      S.char.gachaTickets = 0;
+    }
+    charSelectMode = 'init';
+    $('charselect-cancel').style.display = 'none';
+    $('charselect-title').textContent = '🌟 ようこそ！';
+    $('charselect-sub').innerHTML = 'いっしょにべんきょうする<br>キャラクターをえらんでね！';
+    saveChar();
+    $('charselect-overlay').classList.add('hidden');
+    updateCharWidget();
+    homeUpdate();
+    gachaUpdate();
+  }, 280);
+}
+
+function doGacha() {
+  const c = S.char;
+  if (c.gachaTickets <= 0) return;
+  c.gachaTickets--;
+
+  // weighted random: rare=1 weight, uncommon=3, common=6
+  const pool = [];
+  for (const item of GACHA_ITEMS) {
+    const w = item.rare === 3 ? 1 : item.rare === 2 ? 3 : 6;
+    for (let i = 0; i < w; i++) pool.push(item);
+  }
+  const won = pool[Math.floor(Math.random() * pool.length)];
+
+  const existing = c.items.find(x => x.id === won.id);
+  if (existing) existing.count++;
+  else c.items.push({ id: won.id, count: 1 });
+
+  saveChar();
+
+  // animate result
+  const rb = $('g-result');
+  rb.style.display = 'block';
+  const emEl = $('g-r-em');
+  emEl.className = 'gr-em'; // remove old animation
+  void emEl.offsetWidth;    // reflow
+  emEl.className = 'gr-em gacha-spin';
+  emEl.textContent  = won.em;
+  $('g-r-name').textContent = won.name;
+  $('g-r-rare').textContent =
+    won.rare === 3 ? '★★★ レア！🎉' :
+    won.rare === 2 ? '★★☆ アンコモン' : '★☆☆ ふつう';
+
+  gachaUpdate();
+}
+
+function gachaUpdate() {
+  const c = S.char;
+  $('g-tickets').textContent = c.gachaTickets;
+  $('g-btn').disabled        = c.gachaTickets <= 0;
+
+  // collection grid
+  const grid  = $('g-collection');
+  const owned = c.items.reduce((a, x) => { a[x.id] = x.count; return a; }, {});
+  grid.innerHTML = GACHA_ITEMS.map(item => {
+    const cnt = owned[item.id] || 0;
+    return `<div class="coll-item${cnt > 0 ? ' owned' : ''}">
+      <span class="ci-em" style="${cnt === 0 ? 'filter:grayscale(1);opacity:.35' : ''}">${item.em}</span>
+      <span class="ci-name">${item.name}</span>
+      <span class="ci-cnt">${cnt > 0 ? '×' + cnt : '？'}</span>
+    </div>`;
+  }).join('');
+  $('g-owned-cnt').textContent = Object.keys(owned).length;
+
+  // character info card
+  if (c.id) {
+    const def     = CHAR_DEFS[c.id];
+    const lvDef   = getLevelDef(c.points);
+    const nextLv  = LEVEL_DEFS.find(l => l.lv === c.level + 1);
+    const progPct = nextLv
+      ? Math.round((c.points - lvDef.minPt) / (nextLv.minPt - lvDef.minPt) * 100)
+      : 100;
+    $('g-char-card').style.display = 'block';
+    $('g-char-em').textContent     = getCharDisplay();
+    $('g-char-name').textContent   = def.name + ' (Lv.' + c.level + ')';
+    $('g-char-lv').textContent     = lvDef.name;
+    $('g-char-prog').style.width   = progPct + '%';
+    $('g-char-pts').textContent    = nextLv
+      ? c.points + 'pt / ' + nextLv.minPt + 'pt'
+      : 'MAX! 🏆';
+  }
+}
+
+function saveChar() {
+  const c = S.char;
+  localStorage.setItem(getCharKey(), JSON.stringify({
+    id: c.id, level: c.level, points: c.points,
+    combo: c.combo, items: c.items, gachaTickets: c.gachaTickets,
+  }));
+}
+function loadChar() {
+  try {
+    const d = JSON.parse(localStorage.getItem(getCharKey()));
+    if (!d || !d.id) return;
+    S.char.id           = d.id;
+    S.char.level        = d.level        || 1;
+    S.char.points       = d.points       || 0;
+    S.char.combo        = 0; // reset combo on page load
+    S.char.items        = d.items        || [];
+    S.char.gachaTickets = d.gachaTickets || 0;
+  } catch(e) {}
+}
+
+// ────────────────────────────────────────────────────────────
+// MISTAKES TRACKING  (etm-mistakes: {wordId: count})
+// ────────────────────────────────────────────────────────────
+function getMistakes() {
+  try { return JSON.parse(localStorage.getItem(getModePrefix()+'-mistakes')) || {}; } catch(e){ return {}; }
+}
+function saveMistakes(m) { localStorage.setItem(getModePrefix()+'-mistakes', JSON.stringify(m)); }
+function trackMistake(id) {
+  const m = getMistakes();
+  m[id] = (m[id]||0) + 1;
+  saveMistakes(m);
+}
+
+// ────────────────────────────────────────────────────────────
+// WORD STATS  (etm-wordstats: {wordId: {correct,seen}})
+// ────────────────────────────────────────────────────────────
+function getWordStats() {
+  try { return JSON.parse(localStorage.getItem(getModePrefix()+'-wordstats')) || {}; } catch(e){ return {}; }
+}
+function saveWordStats(ws) { localStorage.setItem(getModePrefix()+'-wordstats', JSON.stringify(ws)); }
+
+// ────────────────────────────────────────────────────────────
+// DAILY LOG  (etm-daily: {dateString: count})
+// ────────────────────────────────────────────────────────────
+function getDaily() {
+  try { return JSON.parse(localStorage.getItem(`etm-daily_${currentGrade||'pre2'}`)) || {}; } catch(e){ return {}; }
+}
+function recordDaily() {
+  const d = getDaily();
+  const key = new Date().toDateString();
+  d[key] = (d[key]||0) + 1;
+  localStorage.setItem(`etm-daily_${currentGrade||'pre2'}`, JSON.stringify(d));
+}
+
+// ────────────────────────────────────────────────────────────
+// SETTINGS  (etm-settings: {autoSpeak})
+// ────────────────────────────────────────────────────────────
+function getSettings() {
+  try { return JSON.parse(localStorage.getItem('etm-settings')) || {autoSpeak:false}; } catch(e){ return {autoSpeak:false}; }
+}
+function saveSettings(s) { localStorage.setItem('etm-settings', JSON.stringify(s)); }
+function toggleAutoSpeak() {
+  const s = getSettings();
+  s.autoSpeak = !s.autoSpeak;
+  saveSettings(s);
+  const ts = $('p-autospeak-toggle');
+  ts.className = 'toggle-sw' + (s.autoSpeak ? ' on' : '');
+}
+
+// ────────────────────────────────────────────────────────────
+// SPEECH SYNTHESIS
+// ────────────────────────────────────────────────────────────
+function speakWord() {
+  const word = S.fc.deck && S.fc.deck[S.fc.idx] ? S.fc.deck[S.fc.idx].w : null;
+  if (!word || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+function speakText(text) {
+  if (!text || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+// ────────────────────────────────────────────────────────────
+// STREAK CALENDAR
+// ────────────────────────────────────────────────────────────
+function renderStreakCal() {
+  const daily = getDaily();
+  const cal   = $('h-streak-cal');
+  const ms    = $('h-milestones');
+  if (!cal) return;
+  $('h-streak-num').textContent = S.streak + '日';
+  const days = [];
+  for (let i=29; i>=0; i--) {
+    const d   = new Date(Date.now()-i*86400000);
+    const key = d.toDateString();
+    days.push({ key, done: !!daily[key], today: i===0 });
+  }
+  cal.innerHTML = days.map(d=>`<div class="streak-day${d.done?' done':''}${d.today?' today':''}"></div>`).join('');
+  const milestones = [
+    { days:7,   label:'7日' },
+    { days:30,  label:'30日' },
+    { days:100, label:'100日' },
+  ];
+  ms.innerHTML = milestones.map(m=>`<span class="milestone${S.streak>=m.days?' done':''}">${m.label} ${S.streak>=m.days?'✓':''}</span>`).join('');
+}
+
+// ────────────────────────────────────────────────────────────
+// SRS  SM-2  (etm-srs: {wordId: {interval,ef,due}})
+// ────────────────────────────────────────────────────────────
+function getSrs() {
+  try { return JSON.parse(localStorage.getItem(getModePrefix()+'-srs')) || {}; } catch(e){ return {}; }
+}
+function saveSrs(s) { localStorage.setItem(getModePrefix()+'-srs', JSON.stringify(s)); }
+function srsUpdate(id, correct) {
+  const srs = getSrs();
+  const now  = Date.now();
+  const card = srs[id] || { interval:1, ef:2.5, due:now };
+  if (correct) {
+    card.interval = card.interval === 1 ? 1 : card.interval === 2 ? 6 : Math.round(card.interval * card.ef);
+    card.ef = Math.max(1.3, card.ef + 0.1);
+  } else {
+    card.interval = 1;
+    card.ef = Math.max(1.3, card.ef - 0.2);
+  }
+  card.due = now + card.interval * 86400000;
+  srs[id] = card;
+  saveSrs(srs);
+}
+function getSrsDue() {
+  const srs  = getSrs();
+  const now  = Date.now();
+  return Object.entries(srs).filter(([,c])=> c.due <= now).map(([id])=>+id);
+}
+function startSrsReview() {
+  const due = getSrsDue();
+  if (!due.length) return;
+  S.q.qs    = shuffle(getActiveVocab().filter(w=>due.includes(w.id))).slice(0,10);
+  S.q.idx   = 0; S.q.score = 0; S.q.sessionStars = 0; S.q.mode = 'en-ja';
+  hide('q-start'); hide('q-result'); show('q-game');
+  qRender();
+  go('quiz');
+}
+
+// ────────────────────────────────────────────────────────────
+// WEAK WORDS SCREEN
+// ────────────────────────────────────────────────────────────
+let weakModeOn = false;
+function wwUpdate() {
+  const mistakes = getMistakes();
+  const ids = Object.keys(mistakes).map(Number);
+  const toggle = $('ww-mode-toggle');
+  toggle.className = 'toggle-sw' + (weakModeOn ? ' on' : '');
+  if (!ids.length) {
+    show('ww-empty');
+    $('ww-list').innerHTML = '';
+    return;
+  }
+  hide('ww-empty');
+  const sorted = ids.sort((a,b)=>mistakes[b]-mistakes[a]);
+  $('ww-list').innerHTML = sorted.map(id=>{
+    const w = getActiveVocab().find(x=>x.id===id);
+    if (!w) return '';
+    return `<div class="ww-item">
+      <span class="ww-word">${w.w}</span>
+      <span class="ww-mean">${getMeaning(w)}</span>
+      <span class="ww-cnt">×${mistakes[id]}</span>
+    </div>`;
+  }).join('');
+}
+function toggleWeakMode() {
+  weakModeOn = !weakModeOn;
+  $('ww-mode-toggle').className = 'toggle-sw' + (weakModeOn ? ' on' : '');
+}
+function startWeakQuiz() {
+  const mistakes = getMistakes();
+  const ids = Object.keys(mistakes).map(Number);
+  if (!ids.length) { alert('まだ苦手な単語がありません！'); return; }
+  S.q.qs    = shuffle(getActiveVocab().filter(w=>ids.includes(w.id))).slice(0,10);
+  S.q.idx   = 0; S.q.score = 0; S.q.sessionStars = 0; S.q.mode = 'en-ja';
+  hide('q-start'); hide('q-result'); show('q-game');
+  qRender();
+  go('quiz');
+}
+
+// ────────────────────────────────────────────────────────────
+// TIME ATTACK
+// ────────────────────────────────────────────────────────────
+let taTimer = null;
+const TA = { timeLeft:60, score:0, answered:false, qs:[], idx:0, correctIdx:0 };
+
+function getTaBest() {
+  try { return parseInt(localStorage.getItem(getModePrefix()+'-timeatk'))||0; } catch(e){ return 0; }
+}
+function saveTaBest(n) {
+  if (n > getTaBest()) localStorage.setItem(getModePrefix()+'-timeatk', n);
+}
+function taInit() {
+  clearInterval(taTimer);
+  const best = getTaBest();
+  $('ta-best-disp').textContent = best > 0 ? 'ベストスコア: ' + best + '問' : 'まだ記録なし';
+  show('ta-start'); hide('ta-game'); hide('ta-result');
+}
+function taStart() {
+  clearInterval(taTimer);
+  TA.timeLeft = 60; TA.score = 0; TA.answered = false;
+  TA.qs = shuffle([...getActiveVocab()]);
+  TA.idx = 0;
+  hide('ta-start'); hide('ta-result'); show('ta-game');
+  $('ta-score').textContent = 0;
+  taRender();
+  taTimer = setInterval(taTick, 1000);
+}
+function taTick() {
+  TA.timeLeft--;
+  const el = $('ta-timer');
+  el.textContent = TA.timeLeft;
+  el.className = 'ta-timer' + (TA.timeLeft <= 10 ? ' warn' : '');
+  if (TA.timeLeft <= 0) { clearInterval(taTimer); taDone(); }
+}
+function taRender() {
+  const q = TA.qs[TA.idx % TA.qs.length];
+  TA.answered = false;
+  $('ta-question').textContent = q.w;
+  const decoys = shuffle(getActiveVocab().filter(x=>x.id!==q.id)).slice(0,3);
+  const choices = shuffle([...decoys, q]);
+  TA.correctIdx = choices.findIndex(c=>c.id===q.id);
+  for (let i=0;i<4;i++) {
+    const btn = $('tac'+i);
+    btn.textContent = getMeaning(choices[i]);
+    btn.className = 'qc';
+    btn.disabled  = false;
+    btn.onclick   = ()=>taAns(i, choices);
+  }
+}
+function taAns(idx, choices) {
+  if (TA.answered) return;
+  TA.answered = true;
+  const ok = idx === TA.correctIdx;
+  for (let i=0;i<4;i++) $('tac'+i).disabled = true;
+  $('tac'+idx).classList.add(ok ? 'correct' : 'wrong');
+  if (!ok) $('tac'+TA.correctIdx).classList.add('reveal');
+  if (ok) { TA.score++; $('ta-score').textContent = TA.score; }
+  TA.idx++;
+  setTimeout(()=>{ if (TA.timeLeft > 0) taRender(); }, ok ? 300 : 700);
+}
+function taDone() {
+  hide('ta-game');
+  const prev = getTaBest();
+  saveTaBest(TA.score);
+  show('ta-result');
+  $('ta-r-score').textContent = TA.score;
+  $('ta-r-best').textContent  = TA.score > prev ? '🎉 新記録！' : `ベスト: ${getTaBest()}問`;
+  homeUpdate();
+}
+
+// ────────────────────────────────────────────────────────────
+// EASY MODE (かんたん訳)
+// ────────────────────────────────────────────────────────────
+const EASY_MEANINGS = {
+  1:"ゆるす",2:"いっしょにやる・でかける",3:"おすすめする",
+  4:"きもちをつたえる・あらわす",5:"つくる・うみだす",6:"まもる・たすける",
+  7:"いれる・ふくむ",8:"ふえる・おおくなる",9:"きめる",
+  10:"おしえる・せつめいする",11:"みつける・はっけんする",
+  12:"やりとげる・できた",13:"うまくかいけつする",
+  14:"あいであをいう・もちかける",15:"よくする・うまくなる",
+  16:"もらう・うけとる",17:"じゅんびする",18:"おぼえている",
+  19:"つづける",20:"れんしゅうする",21:"さしだす・てをあげる",
+  22:"おこす・まねく",23:"おいわいする",24:"へらす・すくなくする",
+  25:"たすける・おうえんする",26:"そだてる・おおきくする",
+  27:"あたえる・わたす",28:"ひつようとする・いる",
+  29:"うまくいく・せいこうする",30:"えいきょうをあたえる",
+  31:"あつめる",32:"たのしみにまつ",33:"しんじる",
+  34:"きづく・わかる",35:"しょうかいする",
+  36:"はっぴょうする・つたえる",37:"とどける・はこぶ",
+  38:"たびする・りょこうする",39:"つくる・こうじょうでつくる",
+  40:"しっぱいする",
+  41:"かんきょう（まわりのしぜん）",42:"せいふ（くにをうごかすひとたち）",
+  43:"ちいき（じぶんのまちのあたり）",44:"きょういく（まなぶこと）",
+  45:"ぎじゅつ・きかい",46:"けいけん（じっさいにしたこと）",
+  47:"じょうほう・しらせ",48:"きかい・チャンス",
+  49:"じんこう（ひとのかず）",50:"こうこく",
+  51:"よやく",52:"くすり",53:"えんぎ・こうえん",
+  54:"ちしき（しっていること）",55:"いまのじょうきょう・ようす",
+  56:"かつどう・イベント",57:"ふんいき・くうき",
+  58:"ちゅうい・きをつけること",59:"たいど（きもちのもちかた）",
+  60:"けっか・おわりにどうなったか",61:"けんこう（からだのよさ）",
+  62:"ぶんか（くにのならわし）",63:"しゃかい（みんながくらすせかい）",
+  64:"けんきゅう・しらべること",65:"ちから・エネルギー",
+  66:"もんだい",67:"もくてき・めあて",68:"りゆう・なぜかというと",
+  69:"テーマ・はなしのだいざい",70:"おてつだい・サービス",
+  71:"つくったもの・せいひん",72:"できごと・イベント",
+  73:"むかしのこと・れきし",74:"100ねんのまとまり",
+  75:"がんばること・どりょく",76:"むずかしいこと・ちょうせん",
+  77:"えらぶこと",78:"えいきょう・こうか",
+  79:"いつもすること・しゅうかん",80:"きょうみ・かんしん",
+  81:"こまったこと・もんだい",82:"ざいりょう・つかうもの",
+  83:"やりかた・ほうほう",84:"しぜん",85:"けいかく・プラン",
+  86:"ほうこく・レポート",87:"やくわり・しごと",88:"とくいなこと・できること",
+  89:"みんなでやるしごと",90:"かがく",
+  91:"つかえる・てにはいる",92:"むかしからつたわってきた",
+  93:"うまくいった・せいこうした",94:"べんりな・つかいやすい",
+  95:"たいせつな",96:"きけんな・あぶない",
+  97:"すばらしい・とてもいい",98:"きもちいい・すごしやすい",
+  99:"じしんがある・つよい",100:"にんきのある・みんなにすかれている",
+  101:"よくある・ふつうの",102:"にている",
+  103:"さいきんの・あたらしい",104:"いろいろな",105:"ひつような・いる",
+  106:"できる",107:"いまふうの・いまどきの",
+  108:"せかいじゅうの",109:"たいへんな・まじめな",
+  110:"ひとりでできる",111:"とくに",
+  112:"じつは・ほんとうは",113:"ついに・さいごに",
+  114:"さいきん・このごろ",115:"たぶん",116:"でも・しかし",
+  117:"だから・そのため",118:"ざんねんだけど",
+  119:"ちょうど・ぴったり",120:"かならず・たしかに",
+  // Level 2 動詞 (121-165)
+  121:"〜をみとめる",122:"〜をかうよゆうがある",123:"〜にかんしゃする",
+  124:"〜をこわす",125:"〜をふせぐ",126:"〜をだす・しゅっぱんする",
+  127:"〜をみわける",128:"そんざいする・ある",129:"きょうそうする",
+  130:"〜にたよる",131:"〜をなんとかする・かんりする",132:"〜をおわらせる",
+  133:"〜をつなぐ",134:"〜をかんがえる",135:"〜にれんらくする",
+  136:"〜にやくだつ",137:"きょうりょくする",138:"〜についてはなしあう",
+  139:"〜をはげます",140:"〜をたもつ",141:"〜をてにいれる",
+  142:"〜をそうさする",143:"さんかする",144:"〜をおこなう・えんじる",
+  145:"リサイクルする",146:"ことわる",147:"〜をたよりにする",
+  148:"〜をとりかえる",149:"こたえる・へんじする",150:"〜をえらぶ",
+  151:"〜をわける・きょうゆうする",152:"がんばる・ふんとうする",
+  153:"とりひきする・こうかんする",154:"〜をほんやくする",
+  155:"〜にちゅういする",156:"〜をかりる",157:"〜をキャンセルする",
+  158:"〜をいためる・そんがいをあたえる",159:"〜をせっけいする・デザインする",
+  160:"〜をえる",161:"そつぎょうする",162:"〜をしょうたいする",
+  163:"〜をけがさせる",164:"〜をむだにする",165:"〜をひょうかする",
+  // Level 2 名詞 (166-225)
+  166:"さいがい・わざわい",167:"じこ",168:"こうどう・ふるまい",
+  169:"かんきゃく・ちょうしゅう",170:"どうぐ・きき",171:"えいきょう",
+  172:"みらい",173:"まちがい",174:"のうりょく・できること",
+  175:"きょり・へだたり",176:"ほうこう・しじ",177:"りえき・めりっと",
+  178:"しみん",179:"きょうそう・たいかい",180:"じょうたい・じょうけん",
+  181:"かいわ・おはなし",182:"きけん",183:"はってん・かいはつ",
+  184:"むずかしさ・こんなん",185:"せんもんか・くわしいひと",186:"ごみ",
+  187:"さんぎょう・こうぎょう",188:"ことば・げんご",189:"たいさく・てだて",
+  190:"くに・こくみん",191:"きんじょ・まわり",192:"にんたい・がまん",
+  193:"わくせい・ほし",194:"よごれ・おせん",195:"しんぽ・しんてん",
+  196:"しつ・ひんしつ",197:"あんぜん",198:"かいけつさく・こたえ",
+  199:"もと・じょうほうげん",200:"せいこう・うまくいくこと",
+  201:"システム・せいど",202:"わだい・テーマ",203:"でんとう",
+  204:"こうつう・のりもの",205:"ボランティア",206:"むだ・はいきぶつ",
+  207:"ふくし・しあわせ",208:"かんこう・りょこう",209:"かんこうきゃく",
+  210:"じょうきゃく",211:"よほう",212:"わりびき・やすくすること",
+  213:"はつめい",214:"はんざい",215:"ゆうき",216:"ぼうけん",
+  217:"ごうい・やくそく",218:"りょう・きんがく",219:"きじ・しなもの",
+  220:"しきてん・セレモニー",221:"じぜんかつどう",222:"かいてきさ・なぐさめ",
+  223:"せだい",224:"いんしょう・イメージ",225:"しげん",
+  // Level 2 形容詞 (226-245)
+  226:"むかしの・こだいの",227:"きづいている・しっている",
+  228:"まんなかの・ちゅうしんの",229:"いろいろないろの・あざやかな",
+  230:"こんでいる・こんざつした",231:"がっかりした",
+  232:"つかれはてた・へとへとな",233:"こうへいな・ただしい",
+  234:"とてもおおきい・きょだいな",235:"ありそうな・たぶん〜だろう",
+  236:"うまれたくにの・もとからいる",237:"きんちょうした・そわそわした",
+  238:"こうしきの・きまりの",239:"からだの・しんたいてきな",
+  240:"せきにんがある",241:"てんけいてきな・よくある",
+  242:"どくじの・ユニークな",243:"としの・まちの",
+  244:"かちのある・たいせつな",245:"ぜんたいの・すべての",
+  // Level 2 副詞 (246-260)
+  246:"かいがいで・そとのくにで",247:"まえに・さきに",248:"ひとりで",
+  249:"とにかく",250:"かんたんに",251:"〜でさえ・さらに",
+  252:"とおくに",253:"そのかわりに",254:"さいきん",255:"うんよく",
+  256:"ちかくに",257:"そとで・おくがいで",258:"すぐに",
+  259:"ほとんど・もうすこしで",260:"たえず・いつも",
+  // Level 3 動詞 (261-300)
+  261:"かむ・かみつく",262:"おりたたむ",263:"〜をかくにんする",
+  264:"〜をひていする",265:"〜をあつかう・もてなす",266:"〜をぬすむ",
+  267:"かくれる・かくす",268:"いっちする・あう",269:"えをかく・ペンキをぬる",
+  270:"〜のようにみえる",271:"〜にたべものをあげる",272:"〜をせつめいする",
+  273:"ふしぎにおもう・きになる",274:"〜をなおす・こていする",
+  275:"〜をなげる",276:"〜をひく",277:"〜をおおう",278:"〜をおす",
+  279:"しょくじをだす・つかえる",280:"かいさいする・もつ",
+  281:"〜にしたがう・ついていく",282:"〜にさんかする・くわわる",
+  283:"〜をうえる",284:"くつろぐ・リラックスする",
+  285:"ちゅうもんする・めいじる",286:"〜をおどろかせる",
+  287:"けっこんする",288:"〜をとりいれる・さいようする",289:"〜をやとう",
+  290:"〜をせいげんする",291:"〜をまぜる",292:"〜をまとめる・せいりする",
+  293:"〜をしゅうりする・なおす",294:"〜をかえす・もどる",
+  295:"〜をすくう・せつやくする",296:"かつ",297:"〜をうけいれる",
+  298:"〜をおうようする・もうしこむ",299:"〜をさける",
+  300:"〜をたてる・つくりあげる",
+  // Level 3 名詞 (301-350)
+  301:"パンや",302:"つうろ・ひとふし",303:"とち・りくち",
+  304:"はんばい・セール",305:"かんこうりょこう・ツアー",
+  306:"ひょうしき・あいず",307:"とうきゅう・せいせき",308:"アパート",
+  309:"し・うた",310:"おくりもの・プレゼント",311:"もくざい・もり",
+  312:"だいがくのせんせい・きょうじゅ",313:"はいゆう",
+  314:"せいきゅうしょ・おさつ",315:"じゅうしょ",316:"ようし・かたち",
+  317:"だいとうりょう・かいちょう",318:"もちぬし・オーナー",
+  319:"いちば・マーケット",320:"しま",321:"しょくじ",
+  322:"おおぜいのひと",323:"ひこうき・フライト",324:"ショッピングモール",
+  325:"こんちゅう・むし",326:"もり・しんりん",327:"びん・ボトル",
+  328:"さわがしいおと・そうおん",329:"くさ・しばふ",330:"あじ・フレーバー",
+  331:"ふく・いるい",332:"となりのひと・きんじょのひと",
+  333:"うちゅう・くうかん",334:"どうぐ・ツール",335:"やさい",
+  336:"やくにん・けいさつかん",337:"ぶもん・がっか",338:"デザート",
+  339:"しょくりょうひん",340:"トラック",341:"アイデア・かんがえ",
+  342:"じじつ",343:"トラブル・こまったこと",344:"がわ・そくめん",
+  345:"くわしいこと・しょうさい",346:"がっき・どうぐ",347:"しゃりん・タイヤ",
+  348:"いっしょにはたらくひと・どうりょう",349:"しゅるい・タイプ",
+  350:"まんなか・センター",
+  // Level 3 形容詞 (351-375)
+  351:"たいくつな・つまらない",352:"ぐたいてきな・はっきりした",
+  353:"そうぞうりょくのある・クリエイティブな",354:"きょうみしんしんな・しりたがりの",
+  355:"とてもおいしい",356:"しょほの・きほんてきな",
+  357:"いっぱんてきな・よくある",358:"こじんの・ひとりひとりの",
+  359:"こころの・せいしんてきな",360:"めあたらしい・ざんしんな",
+  361:"とくていの・ある〜",362:"かわいい・かなり",
+  363:"せんもんてきな・プロの",364:"てごろな・ごうりてきな",
+  365:"めだつ・ちゅうもくすべき",366:"かがくてきな",
+  367:"おおきな・じゅうような",368:"ぐたいてきな・とくていの",
+  369:"ぎじゅつてきな",370:"てきしていること・むいている",
+  371:"たいらな・ひらたい",372:"ひろい・はばがある",
+  373:"じもとの・ちほうの",374:"しゃかいてきな・みんなの",375:"しぜんな",
+  // Level 3 副詞 (376-400)
+  376:"かんぜんに・まったく",377:"ちょくせつ・まっすぐ",
+  378:"じょじょに・だんだん",379:"おもに・ほとんど",
+  380:"てきせつに・きちんと",381:"ていきてきに・きまって",
+  382:"わずかに・すこし",383:"とつぜん・きゅうに",
+  384:"まだ・もう",385:"かつて・いちど",386:"ちゅういぶかく・ていねいに",
+  387:"ふつうは・たいてい",388:"すでに・もう",389:"まだ・それでも",
+  390:"〜もまた・それに",391:"ふたたび・もういちど",
+  392:"しかしながら・でも",393:"たしかに・ほんとうに",
+  394:"さもなければ・そうでないと",395:"たぶん・もしかしたら",
+  396:"かなり・まったく",397:"かなり・むしろ",398:"たんに・かんたんに",
+  399:"ほんとうに",400:"ひろく・たくさんのひとに",
+};
+
+// カタカナ→ひらがな変換
+function toHiragana(text) {
+  if (!text) return '';
+  return text.replace(/[ァ-ヶ]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60));
+}
+
+// 例文の漢字にルビを振る
+function addRuby(text) {
+  if (!text) return '';
+  const map = {
+    '学校':'がっこう','友達':'ともだち','先生':'せんせい','電話':'でんわ',
+    '家族':'かぞく','仕事':'しごと','会社':'かいしゃ','自分':'じぶん',
+    '時間':'じかん','毎日':'まいにち','音楽':'おんがく','映画':'えいが',
+    '旅行':'りょこう','料理':'りょうり','運動':'うんどう','自然':'しぜん',
+    '社会':'しゃかい','文化':'ぶんか','歴史':'れきし','科学':'かがく',
+    '技術':'ぎじゅつ','環境':'かんきょう','経験':'けいけん','情報':'じょうほう',
+    '機会':'きかい','人口':'じんこう','活動':'かつどう','知識':'ちしき',
+    '状況':'じょうきょう','結果':'けっか','研究':'けんきゅう','問題':'もんだい',
+    '目的':'もくてき','理由':'りゆう','方法':'ほうほう','計画':'けいかく',
+    '役割':'やくわり','挑戦':'ちょうせん','習慣':'しゅうかん','興味':'きょうみ',
+    '努力':'どりょく','影響':'えいきょう','成功':'せいこう','改善':'かいぜん',
+    '参加':'さんか','提案':'ていあん','表現':'ひょうげん','紹介':'しょうかい',
+    '発表':'はっぴょう','意見':'いけん','態度':'たいど','準備':'じゅんび',
+    '言葉':'ことば','気持ち':'きもち','考え':'かんがえ','大切':'たいせつ',
+    '必要':'ひつよう','世界':'せかい','地域':'ちいき','教育':'きょういく',
+    '政府':'せいふ','人々':'ひとびと','生活':'せいかつ','場所':'ばしょ',
+    '様々':'さまざま','重要':'じゅうよう','一般':'いっぱん','現代':'げんだい',
+    '伝統':'でんとう','独立':'どくりつ','特に':'とくに','実は':'じつは',
+    '最近':'さいきん','残念':'ざんねん','確かに':'たしかに','特別':'とくべつ',
+    '地球':'ちきゅう','動物':'どうぶつ','植物':'しょくぶつ','人間':'にんげん',
+    '自由':'じゆう','平和':'へいわ','幸せ':'しあわせ','夢':'ゆめ',
+    '未来':'みらい','過去':'かこ','現在':'げんざい','今後':'こんご',
+    '以前':'いぜん','以来':'いらい','最初':'さいしょ','最後':'さいご',
+    // Level1 例文頻出
+    '目標':'もくひょう','達成':'たっせい','解決':'かいけつ',
+    '向上':'こうじょう','試験':'しけん','彼女':'かのじょ',
+    '忘れる':'わすれる','地震':'じしん','被害':'ひがい',
+    '切手':'きって','趣味':'しゅみ','期待':'きたい',
+    '可能性':'かのうせい','荷物':'にもつ','工場':'こうじょう',
+    '製造':'せいぞう','失敗':'しっぱい','提供':'ていきょう',
+    '配達':'はいたつ','生産':'せいさん','受け取る':'うけとる',
+    '続ける':'つづける','集める':'あつめる','祝う':'いわう',
+    '減らす':'へらす','法律':'ほうりつ','将来':'しょうらい',
+    '最新':'さいしん','調べる':'しらべる','減少':'げんしょう',
+    '広告':'こうこく','風邪':'かぜ','薬':'くすり',
+    '身につける':'みにつける','直面':'ちょくめん',
+    '雰囲気':'ふんいき','注意':'ちゅうい','前向き':'まえむき',
+    '注目':'ちゅうもく','遅刻':'ちこく','教科':'きょうか',
+    '素晴らしい':'すばらしい','製品':'せいひん','選択':'せんたく',
+    '効果':'こうか','磨く':'みがく','日々':'ひび',
+    '便利':'べんり','夜道':'よみち','優秀':'ゆうしゅう',
+    '自信':'じしん','人気':'にんき','関心':'かんしん',
+    '各自':'かくじ','自立':'じりつ','叶う':'かなう',
+    '温暖化':'おんだんか','世紀':'せいき','正確':'せいかく',
+    '調査':'ちょうさ','英語力':'えいごりょく',
+    '引き起こす':'ひきおこす','申し出る':'もうしでる',
+    '支援':'しえん','提出':'ていしゅつ','報告書':'ほうこくしょ',
+    '二人':'ふたり','正しい':'ただしい','彼':'かれ',
+    '取り組む':'とりくむ','申し込む':'もうしこむ',
+    // Level2-3 例文頻出漢字
+    '間違い':'まちがい','認める':'みとめる','余裕':'よゆう',
+    '感謝':'かんしゃ','破壊':'はかい','防ぐ':'ふせぐ',
+    '出版':'しゅっぱん','認識':'にんしき','存在':'そんざい',
+    '競争':'きょうそう','依存':'いぞん','管理':'かんり',
+    '完成':'かんせい','考慮':'こうりょ','連絡':'れんらく',
+    '貢献':'こうけん','協力':'きょうりょく','議論':'ぎろん',
+    '励ます':'はげます','維持':'いじ','操作':'そうさ',
+    '行う':'おこなう','断る':'ことわる','応答':'おうとう',
+    '選ぶ':'えらぶ','共有':'きょうゆう','奮闘':'ふんとう',
+    '取引':'とりひき','交換':'こうかん','翻訳':'ほんやく',
+    '警告':'けいこく','借りる':'かりる','損害':'そんがい',
+    '設計':'せっけい','卒業':'そつぎょう','招待':'しょうたい',
+    '怪我':'けが','無駄':'むだ','評価':'ひょうか',
+    '災害':'さいがい','事故':'じこ','振る舞い':'ふるまい',
+    '設備':'せつび','能力':'のうりょく','距離':'きょり',
+    '方向':'ほうこう','指示':'しじ','利益':'りえき',
+    '市民':'しみん','状態':'じょうたい','条件':'じょうけん',
+    '会話':'かいわ','危険':'きけん','発展':'はってん',
+    '開発':'かいはつ','困難':'こんなん','専門家':'せんもんか',
+    '産業':'さんぎょう','言語':'げんご','対策':'たいさく',
+    '国民':'こくみん','近所':'きんじょ','忍耐':'にんたい',
+    '惑星':'わくせい','汚染':'おせん','進歩':'しんぽ',
+    '品質':'ひんしつ','安全':'あんぜん','解決策':'かいけつさく',
+    '情報源':'じょうほうげん','制度':'せいど','話題':'わだい',
+    '交通':'こうつう','廃棄物':'はいきぶつ','福祉':'ふくし',
+    '旅行者':'りょこうしゃ','観光客':'かんこうきゃく','乗客':'じょうきゃく',
+    '予報':'よほう','割引':'わりびき','発明':'はつめい',
+    '犯罪':'はんざい','勇気':'ゆうき','冒険':'ぼうけん',
+    '合意':'ごうい','記事':'きじ','式典':'しきてん',
+    '慈善活動':'じぜんかつどう','世代':'せだい','資源':'しげん',
+    '古代':'こだい','混雑':'こんざつ','失望':'しつぼう',
+    '緊張':'きんちょう','責任':'せきにん','確認':'かくにん',
+    '否定':'ひてい','修理':'しゅうり','開催':'かいさい',
+    '成績':'せいせき','標識':'ひょうしき','森林':'しんりん',
+    '騒音':'そうおん','衣類':'いるい','昆虫':'こんちゅう',
+    '楽器':'がっき','車輪':'しゃりん','同僚':'どうりょう',
+    '退屈':'たいくつ','突然':'とつぜん','完全':'かんぜん',
+    '定期的':'ていきてき','直接':'ちょくせつ',
+    '病気':'びょうき','予防':'よぼう','小説':'しょうせつ',
+    '宇宙人':'うちゅうじん','選手':'せんしゅ','一人':'ひとり',
+    '対処':'たいしょ','課題':'かだい','二つ':'ふたつ',
+    '話し合う':'はなしあう','応援':'おうえん','健康':'けんこう',
+    '入手':'にゅうしゅ','機械':'きかい','演奏':'えんそう',
+    '外国':'がいこく','貿易':'ぼうえき','予約':'よやく',
+    '台風':'たいふう','建物':'たてもの','来春':'らいしゅん',
+    '大学':'だいがく','誕生日':'たんじょうび','試合':'しあい',
+    '観客':'かんきゃく','信じる':'しんじる','天気':'てんき',
+    '電車':'でんしゃ','練習':'れんしゅう','相談':'そうだん',
+    '捨てる':'すてる','学ぶ':'まなぶ','諦める':'あきらめる',
+    '景色':'けしき','読書':'どくしょ','屋外':'おくがい',
+    '食料品':'しょくりょうひん','贈り物':'おくりもの',
+    '木材':'もくざい','教授':'きょうじゅ','俳優':'はいゆう',
+    '請求書':'せいきゅうしょ','住所':'じゅうしょ',
+    '大統領':'だいとうりょう','市場':'いちば','芝生':'しばふ',
+    '宇宙':'うちゅう','空間':'くうかん','野菜':'やさい',
+    '警察官':'けいさつかん','詳細':'しょうさい','結婚':'けっこん',
+    '採用':'さいよう','制限':'せいげん','企画':'きかく',
+    '節約':'せつやく','通路':'つうろ','土地':'とち',
+    '販売':'はんばい','合図':'あいず','等級':'とうきゅう',
+    '所有者':'しょゆうしゃ','群衆':'ぐんしゅう','事実':'じじつ',
+    '側面':'そくめん','部門':'ぶもん','学科':'がっか',
+    '食事':'しょくじ','卒業式':'そつぎょうしき','拍手':'はくしゅ',
+    '巨大':'きょだい','体力':'たいりょく','行動':'こうどう',
+    '典型的':'てんけいてき','価値':'かち','海外':'かいがい',
+    '寄付':'きふ','変える':'かえる','守る':'まもる',
+    '増える':'ふえる','調和':'ちょうわ','固定':'こてい',
+    '整理':'せいり','避ける':'さける','観光産業':'かんこうさんぎょう',
+    '大気':'たいき','深刻':'しんこく','着実':'ちゃくじつ',
+    '信頼':'しんらい','取り替える':'とりかえる','取り消す':'とりけす',
+    '立ち向かう':'たちむかう','折りたたむ':'おりたたむ',
+    '礼儀正しい':'れいぎただしい','心地よい':'ここちよい',
+    '仕上げる':'しあげる','取り組む':'とりくむ',
+    '申し込む':'もうしこむ','受け入れる':'うけいれる',
+  };
+  const keys = Object.keys(map).sort((a,b)=>b.length-a.length);
+  const re = new RegExp('(' + keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')', 'g');
+  return text.replace(re, m => `<ruby>${m}<rt>${map[m]}</rt></ruby>`);
+}
+
+function getMeaning(word) {
+  if (!word) return '';
+  const m = Array.isArray(word.m) ? word.m.join('・') : (word.m || '');
+  if (!S.easyMode) return m;
+  const raw = word.me || (typeof EASY_MEANINGS !== 'undefined' && EASY_MEANINGS[word.id]) || m || '';
+  return toHiragana(raw);
+}
+function toggleEasyMode() {
+  S.easyMode = !S.easyMode;
+  localStorage.setItem('easyMode', S.easyMode ? '1' : '0');
+  const btn = $('easy-bar-btn');
+  btn.textContent = S.easyMode ? 'ON' : 'OFF';
+  btn.classList.toggle('on', S.easyMode);
+
+  // フラッシュカード画面の即時更新
+  const fcWrap = $('fc-wrap');
+  if (fcWrap && !fcWrap.classList.contains('hidden') && S.fc && S.fc.deck && S.fc.deck[S.fc.idx]) {
+    $('fc-meaning').textContent = getMeaning(S.fc.deck[S.fc.idx]);
+  }
+
+  // クイズ画面の即時更新（選択肢の順番を変えない・qRender呼ばない）
+  const qGame = $('q-game');
+  if (qGame && !qGame.classList.contains('hidden') && S.q && S.q.choices && !S.q.answered) {
+    for (let i = 0; i < 4; i++) {
+      const b = $('qc' + i);
+      if (b && S.q.choices[i]) {
+        b.textContent = S.q.mode === 'en-ja'
+          ? getMeaning(S.q.choices[i])
+          : S.q.choices[i].w;
+      }
+    }
+    // ja-enモードでは問題文も更新
+    if (S.q.mode === 'ja-en') {
+      const q = S.q.qs[S.q.idx];
+      if (q) $('q-question').textContent = getMeaning(q);
+    }
+  }
+}
+function initEasyMode() {
+  S.easyMode = localStorage.getItem('easyMode') === '1';
+  const btn = $('easy-bar-btn');
+  btn.textContent = S.easyMode ? 'ON' : 'OFF';
+  btn.classList.toggle('on', S.easyMode);
+}
+
+// ────────────────────────────────────────────────────────────
+// BOOT
+// ────────────────────────────────────────────────────────────
+window.addEventListener('load', ()=>{
+  initEasyMode();
+  const savedGrade = localStorage.getItem('eitan_grade');
+  if (savedGrade) {
+    // 前回の級が保存されていればそのまま読み込む
+    selectGrade(savedGrade);
+  }
+  // 保存なし → grade-select-overlay が表示されたままになる
+});
+</script>
+</body>
+</html>
