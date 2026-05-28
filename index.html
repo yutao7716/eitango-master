@@ -100,23 +100,33 @@
       position: absolute; width: 100%; height: 100%;
       backface-visibility: hidden; -webkit-backface-visibility: hidden;
       border-radius: var(--radius);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 24px; box-shadow: var(--shadow);
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      padding: 16px 14px; box-shadow: var(--shadow);
     }
-    .fc-front { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; padding: 16px 14px; }
+    .fc-front { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; }
     .fc-back  { background: linear-gradient(135deg, #00b894, #55efc4); color: #fff; transform: rotateY(180deg); }
-    /* 表面：左コンテンツ＋右ボタンの横並び */
-    .fc-front-inner { display: flex; align-items: center; width: 100%; gap: 10px; }
+    /* 表面・裏面 共通：左コンテンツ＋右アクションの横並び */
+    .fc-front-inner,
+    .fc-back-inner  { display: flex; align-items: center; width: 100%; gap: 10px; }
     .fc-front-content { flex: 1; text-align: left; min-width: 0; }
-    .fc-front-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; }
+    .fc-front-actions,
+    .fc-back-actions  { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; }
+    /* 表面 */
     .fc-word  { font-size: 36px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
     .fc-kana  { font-size: 14px; opacity: .85; margin-bottom: 4px; }
     .fc-pos   { font-size: 11px; background: rgba(255,255,255,.25); padding: 2px 10px; border-radius: 50px; display: inline-block; }
     .fc-en-ex { font-size: 12px; opacity: .88; margin-top: 8px; line-height: 1.5; font-style: italic; }
-    /* 裏面 */
-    .fc-back-word { font-size: 18px; font-weight: bold; opacity: .75; margin-bottom: 6px; }
-    .fc-meaning { font-size: 24px; font-weight: bold; margin-bottom: 8px; text-align: center; }
-    .fc-ex    { font-size: 12px; opacity: .85; text-align: center; line-height: 1.6; margin-top: 6px; }
+    /* 裏面：ペア表示 */
+    .fc-back-pairs { flex: 1; min-width: 0; }
+    .fc-back-row   { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+    .fc-back-row:last-child { margin-bottom: 0; }
+    .fc-back-sep   { opacity: .6; font-size: 13px; flex-shrink: 0; }
+    .fc-back-col-en { flex: 1; min-width: 0; }
+    .fc-back-col-ja { flex: 1; min-width: 0; }
+    .fc-back-en-word { font-size: 20px; font-weight: bold; }
+    .fc-meaning { font-size: 20px; font-weight: bold; text-align: left; }
+    .fc-back-en-ex { font-size: 11px; opacity: .88; font-style: italic; line-height: 1.4; }
+    .fc-ex    { font-size: 11px; opacity: .88; line-height: 1.4; text-align: left; }
     ruby { ruby-position: over; }
     rt   { font-size: 0.6em; opacity: .75; }
     .tap-hint { font-size: 11px; opacity: .65; margin-top: 10px; }
@@ -713,10 +723,33 @@
         </div>
       </div>
       <div class="fc-back">
-        <div class="fc-back-word" id="fc-back-word"></div>
-        <div class="fc-meaning" id="fc-meaning">できること・とくいなこと</div>
-        <div class="fc-ex"      id="fc-ex"></div>
-        <div class="tap-hint">👆 タップしてもどる</div>
+        <div class="fc-back-inner">
+          <div class="fc-back-pairs">
+            <!-- 単語ペア -->
+            <div class="fc-back-row">
+              <div class="fc-back-col-en">
+                <div class="fc-back-en-word" id="fc-back-en-word"></div>
+              </div>
+              <div class="fc-back-sep">→</div>
+              <div class="fc-back-col-ja">
+                <div class="fc-meaning" id="fc-meaning"></div>
+              </div>
+            </div>
+            <!-- 例文ペア -->
+            <div class="fc-back-row" id="fc-ex-row">
+              <div class="fc-back-col-en">
+                <div class="fc-back-en-ex" id="fc-back-en-ex2"></div>
+              </div>
+              <div class="fc-back-sep">→</div>
+              <div class="fc-back-col-ja">
+                <div class="fc-ex" id="fc-ex"></div>
+              </div>
+            </div>
+          </div>
+          <div class="fc-back-actions">
+            <div class="tap-hint" style="text-align:center;">👆 タップして<br>もどる</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1297,18 +1330,26 @@ function fcInit() {
 function fcRender() {
   const word = S.fc.deck[S.fc.idx];
   if (!word) { fcDone(); return; }
+  // ── 表面 ──
   $('fc-word').textContent = word.w;
   $('fc-kana').textContent = word.k || '';
   $('fc-pos').textContent  = word.p;
-  // 表面：英語例文（ee フィールド優先、なければ4級形式の英語 ex）
+  // 英語例文（ee フィールド優先、なければ4級形式の英語 ex）
   const enEx = word.ee || (currentGrade === '4' ? (word.ex || '') : '');
   $('fc-en-ex').textContent = enEx;
-  // 裏面：単語表示
-  $('fc-back-word').textContent = word.w + (word.k ? '　' + word.k : '');
+  // ── 裏面 ──
+  // 単語ペア
+  $('fc-back-en-word').textContent = word.w;
   $('fc-meaning').textContent = getMeaning(word);
-  // 裏面：日本語例文（exj があれば優先、なければ4級以外の ex）
+  // 例文ペア：英語例文
+  $('fc-back-en-ex2').textContent = enEx;
+  // 例文ペア：日本語例文（exj があれば優先、4級は英語 ex なので空）
   const jaEx = word.exj || (currentGrade !== '4' ? (word.ex || '') : '');
   $('fc-ex').innerHTML = addRuby(jaEx);
+  // 例文行の表示制御（英・日ともに空の場合は非表示）
+  const exRow = $('fc-ex-row');
+  if (exRow) exRow.style.display = (enEx || jaEx) ? '' : 'none';
+  // ── 共通 ──
   $('fc-counter').textContent = `${S.fc.idx+1} / ${S.fc.deck.length}`;
   $('fc-prog').style.width = `${(S.fc.idx/S.fc.deck.length)*100}%`;
   $('fc-stars').textContent= S.fc.sessionStars;
