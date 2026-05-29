@@ -9,7 +9,8 @@
         "〜を許可する"
       ],
       "ex": "彼は私がここに入ることを許可してくれた。",
-      "level": 1
+      "level": 1,
+      "ee": "He allowed me to come in here."
     },
     {
       "id": 2,
@@ -20,7 +21,8 @@
         "出席する"
       ],
       "ex": "彼女は毎週の会議に出席する。",
-      "level": 1
+      "level": 1,
+      "ee": "She attends the weekly meetings."
     },
     {
       "id": 3,
@@ -31,7 +33,8 @@
         "〜を推薦する"
       ],
       "ex": "このレストランを強くお勧めします。",
-      "level": 1
+      "level": 1,
+      "ee": "I strongly recommend this restaurant."
     },
     {
       "id": 4,
@@ -42,7 +45,8 @@
         "〜を表現する"
       ],
       "ex": "自分の気持ちを言葉で表現するのは難しい。",
-      "level": 1
+      "level": 1,
+      "ee": "It is hard to express your feelings in words."
     },
     {
       "id": 5,
@@ -54,7 +58,8 @@
         "作り出す"
       ],
       "ex": "新しいアイデアを生み出すことが大切だ。",
-      "level": 1
+      "level": 1,
+      "ee": "It is important to create new ideas."
     },
     {
       "id": 6,
@@ -65,7 +70,8 @@
         "〜を保護する"
       ],
       "ex": "環境を守るために行動しよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's take action to protect the environment."
     },
     {
       "id": 7,
@@ -76,7 +82,8 @@
         "〜を含む"
       ],
       "ex": "この料金には税金が含まれている。",
-      "level": 1
+      "level": 1,
+      "ee": "This price includes tax."
     },
     {
       "id": 8,
@@ -88,7 +95,8 @@
         "増やす"
       ],
       "ex": "気温が年々上昇している。",
-      "level": 1
+      "level": 1,
+      "ee": "Temperatures have been rising every year."
     },
     {
       "id": 9,
@@ -99,7 +107,8 @@
         "〜を決心する"
       ],
       "ex": "大学に進学することを決めた。",
-      "level": 1
+      "level": 1,
+      "ee": "I decided to go to university."
     },
     {
       "id": 10,
@@ -110,7 +119,8 @@
         "〜を説明する"
       ],
       "ex": "先生が問題を分かりやすく説明してくれた。",
-      "level": 1
+      "level": 1,
+      "ee": "The teacher explained the problem in an easy-to-understand way."
     },
     {
       "id": 11,
@@ -121,7 +131,8 @@
         "〜を発見する"
       ],
       "ex": "科学者が新しい惑星を発見した。",
-      "level": 1
+      "level": 1,
+      "ee": "Scientists discovered a new planet."
     },
     {
       "id": 12,
@@ -132,7 +143,8 @@
         "〜を達成する"
       ],
       "ex": "目標を達成するために努力した。",
-      "level": 1
+      "level": 1,
+      "ee": "I worked hard to achieve my goal."
     },
     {
       "id": 13,
@@ -143,7 +155,8 @@
         "〜を解決する"
       ],
       "ex": "この問題を解決する方法を考えよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's think of a way to solve this problem."
     },
     {
       "id": 14,
@@ -154,7 +167,8 @@
         "〜を提案する"
       ],
       "ex": "別の方法を提案します。",
-      "level": 1
+      "level": 1,
+      "ee": "I suggest a different method."
     },
     {
       "id": 15,
@@ -165,7 +179,8 @@
         "〜を改善する"
       ],
       "ex": "英語力を向上させたい。",
-      "level": 1
+      "level": 1,
+      "ee": "I want to improve my English skills."
     },
     {
       "id": 16,
@@ -176,7 +191,8 @@
         "〜を受け取る"
       ],
       "ex": "友達からプレゼントをもらった。",
-      "level": 1
+      "level": 1,
+      "ee": "I received a present from my friend."
     },
     {
       "id": 17,
@@ -187,7 +203,8 @@
         "〜を準備する"
       ],
       "ex": "試験のために準備が必要だ。",
-      "level": 1
+      "level": 1,
+      "ee": "I need to prepare for the exam."
     },
     {
       "id": 18,
@@ -198,7 +215,8 @@
         "〜を覚えている"
       ],
       "ex": "彼女の誕生日を忘れないようにしよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's not forget her birthday."
     },
     {
       "id": 19,
@@ -209,7 +227,8 @@
         "〜を続ける"
       ],
       "ex": "雨が降っても練習を続けた。",
-      "level": 1
+      "level": 1,
+      "ee": "I continued practicing even in the rain."
     },
     {
       "id": 20,
@@ -220,7 +239,8 @@
         "〜を練習する"
       ],
       "ex": "毎日ピアノを練習しています。",
-      "level": 1
+      "level": 1,
+      "ee": "I practice the piano every day."
     },
     {
       "id": 21,
@@ -232,7 +252,8 @@
         "申し出る"
       ],
       "ex": "助けを申し出た。",
-      "level": 1
+      "level": 1,
+      "ee": "I offered to help."
     },
     {
       "id": 22,
@@ -243,7 +264,8 @@
         "〜を引き起こす"
       ],
       "ex": "地震が大きな被害をもたらした。",
-      "level": 1
+      "level": 1,
+      "ee": "The earthquake caused a lot of damage."
     },
     {
       "id": 23,
@@ -254,7 +276,8 @@
         "〜を祝う"
       ],
       "ex": "誕生日をみんなで祝った。",
-      "level": 1
+      "level": 1,
+      "ee": "We all celebrated his birthday together."
     },
     {
       "id": 24,
@@ -265,7 +288,8 @@
         "〜を減らす"
       ],
       "ex": "ゴミの量を減らす努力が必要だ。",
-      "level": 1
+      "level": 1,
+      "ee": "We need to try to reduce the amount of garbage."
     },
     {
       "id": 25,
@@ -276,7 +300,8 @@
         "〜を支援する"
       ],
       "ex": "友達を応援した。",
-      "level": 1
+      "level": 1,
+      "ee": "I supported my friend."
     },
     {
       "id": 26,
@@ -287,7 +312,8 @@
         "〜を発展させる"
       ],
       "ex": "新しい技術を開発する。",
-      "level": 1
+      "level": 1,
+      "ee": "We are developing new technology."
     },
     {
       "id": 27,
@@ -298,7 +324,8 @@
         "〜を提供する"
       ],
       "ex": "学校が教材を提供してくれた。",
-      "level": 1
+      "level": 1,
+      "ee": "The school provided teaching materials for us."
     },
     {
       "id": 28,
@@ -309,7 +336,8 @@
         "〜を必要とする"
       ],
       "ex": "このアルバイトは経験が必要だ。",
-      "level": 1
+      "level": 1,
+      "ee": "This part-time job requires experience."
     },
     {
       "id": 29,
@@ -320,7 +348,8 @@
         "成功する"
       ],
       "ex": "何度も挑戦してついに成功した。",
-      "level": 1
+      "level": 1,
+      "ee": "I tried many times and finally succeeded."
     },
     {
       "id": 30,
@@ -331,7 +360,8 @@
         "〜に影響を与える"
       ],
       "ex": "読書は人生に大きな影響を与える。",
-      "level": 1
+      "level": 1,
+      "ee": "Reading has a big influence on your life."
     },
     {
       "id": 31,
@@ -342,7 +372,8 @@
         "〜を集める"
       ],
       "ex": "切手を集めるのが趣味です。",
-      "level": 1
+      "level": 1,
+      "ee": "My hobby is collecting stamps."
     },
     {
       "id": 32,
@@ -353,7 +384,8 @@
         "〜を期待する"
       ],
       "ex": "良い結果を期待している。",
-      "level": 1
+      "level": 1,
+      "ee": "I'm expecting good results."
     },
     {
       "id": 33,
@@ -364,7 +396,8 @@
         "〜を信じる"
       ],
       "ex": "自分の可能性を信じよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Believe in your own possibilities."
     },
     {
       "id": 34,
@@ -376,7 +409,8 @@
         "実現する"
       ],
       "ex": "間違いに気づいた。",
-      "level": 1
+      "level": 1,
+      "ee": "I realized I had made a mistake."
     },
     {
       "id": 35,
@@ -387,7 +421,8 @@
         "〜を紹介する"
       ],
       "ex": "新しい友達を紹介してもらった。",
-      "level": 1
+      "level": 1,
+      "ee": "I was introduced to a new friend."
     },
     {
       "id": 36,
@@ -398,7 +433,8 @@
         "〜を発表する"
       ],
       "ex": "新しい計画を発表した。",
-      "level": 1
+      "level": 1,
+      "ee": "We announced the new plan."
     },
     {
       "id": 37,
@@ -409,7 +445,8 @@
         "〜を配達する"
       ],
       "ex": "荷物を届けてもらった。",
-      "level": 1
+      "level": 1,
+      "ee": "They delivered the package to me."
     },
     {
       "id": 38,
@@ -420,7 +457,8 @@
         "旅行する"
       ],
       "ex": "来年、海外旅行をしたい。",
-      "level": 1
+      "level": 1,
+      "ee": "I want to travel abroad next year."
     },
     {
       "id": 39,
@@ -431,7 +469,8 @@
         "〜を生産する"
       ],
       "ex": "この工場では車を製造している。",
-      "level": 1
+      "level": 1,
+      "ee": "This factory produces cars."
     },
     {
       "id": 40,
@@ -442,7 +481,8 @@
         "失敗する"
       ],
       "ex": "失敗を恐れずに挑戦しよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Don't be afraid of failure — keep trying."
     },
     {
       "id": 41,
@@ -453,7 +493,8 @@
         "環境"
       ],
       "ex": "地球の環境を守ることが重要だ。",
-      "level": 1
+      "level": 1,
+      "ee": "It is important to protect the global environment."
     },
     {
       "id": 42,
@@ -464,7 +505,8 @@
         "政府"
       ],
       "ex": "政府が新しい法律を作った。",
-      "level": 1
+      "level": 1,
+      "ee": "The government made a new law."
     },
     {
       "id": 43,
@@ -475,7 +517,8 @@
         "地域社会"
       ],
       "ex": "地域のボランティア活動に参加した。",
-      "level": 1
+      "level": 1,
+      "ee": "I took part in volunteer activities in the community."
     },
     {
       "id": 44,
@@ -486,7 +529,8 @@
         "教育"
       ],
       "ex": "教育は将来のために大切だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Education is important for the future."
     },
     {
       "id": 45,
@@ -497,7 +541,8 @@
         "技術"
       ],
       "ex": "最新技術が生活を変えている。",
-      "level": 1
+      "level": 1,
+      "ee": "The latest technology is changing our lives."
     },
     {
       "id": 46,
@@ -508,7 +553,8 @@
         "経験"
       ],
       "ex": "海外での経験がとても役に立った。",
-      "level": 1
+      "level": 1,
+      "ee": "My experience abroad was very useful."
     },
     {
       "id": 47,
@@ -519,7 +565,8 @@
         "情報"
       ],
       "ex": "インターネットで情報を調べた。",
-      "level": 1
+      "level": 1,
+      "ee": "I looked up information on the Internet."
     },
     {
       "id": 48,
@@ -530,7 +577,8 @@
         "機会"
       ],
       "ex": "良いチャンスを逃さないようにしよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Don't miss a good opportunity."
     },
     {
       "id": 49,
@@ -541,7 +589,8 @@
         "人口"
       ],
       "ex": "日本の人口は減少している。",
-      "level": 1
+      "level": 1,
+      "ee": "Japan's population is decreasing."
     },
     {
       "id": 50,
@@ -552,7 +601,8 @@
         "広告"
       ],
       "ex": "テレビのコマーシャルが気になった。",
-      "level": 1
+      "level": 1,
+      "ee": "The TV commercial caught my attention."
     },
     {
       "id": 51,
@@ -563,7 +613,8 @@
         "予約"
       ],
       "ex": "レストランの予約をした。",
-      "level": 1
+      "level": 1,
+      "ee": "I made a reservation at the restaurant."
     },
     {
       "id": 52,
@@ -574,7 +625,8 @@
         "薬"
       ],
       "ex": "風邪の薬を飲んだ。",
-      "level": 1
+      "level": 1,
+      "ee": "I took medicine for my cold."
     },
     {
       "id": 53,
@@ -586,7 +638,8 @@
         "公演"
       ],
       "ex": "コンサートの演奏がすばらしかった。",
-      "level": 1
+      "level": 1,
+      "ee": "The concert performance was wonderful."
     },
     {
       "id": 54,
@@ -597,7 +650,8 @@
         "知識"
       ],
       "ex": "幅広い知識を身につけたい。",
-      "level": 1
+      "level": 1,
+      "ee": "I want to gain a wide range of knowledge."
     },
     {
       "id": 55,
@@ -608,7 +662,8 @@
         "状況"
       ],
       "ex": "難しい状況に直面した。",
-      "level": 1
+      "level": 1,
+      "ee": "I faced a difficult situation."
     },
     {
       "id": 56,
@@ -619,7 +674,8 @@
         "活動"
       ],
       "ex": "学校での課外活動が楽しい。",
-      "level": 1
+      "level": 1,
+      "ee": "I enjoy extracurricular activities at school."
     },
     {
       "id": 57,
@@ -631,7 +687,8 @@
         "大気"
       ],
       "ex": "そのカフェの雰囲気がとても好きだ。",
-      "level": 1
+      "level": 1,
+      "ee": "I really like the atmosphere of that café."
     },
     {
       "id": 58,
@@ -643,7 +700,8 @@
         "注目"
       ],
       "ex": "先生の話に注意を向けよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's pay attention to the teacher's words."
     },
     {
       "id": 59,
@@ -654,7 +712,8 @@
         "態度"
       ],
       "ex": "前向きな態度が大切だ。",
-      "level": 1
+      "level": 1,
+      "ee": "A positive attitude is important."
     },
     {
       "id": 60,
@@ -665,7 +724,8 @@
         "結果"
       ],
       "ex": "試験の結果が発表された。",
-      "level": 1
+      "level": 1,
+      "ee": "The exam results were announced."
     },
     {
       "id": 61,
@@ -676,7 +736,8 @@
         "健康"
       ],
       "ex": "健康が一番大切だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Health is the most important thing."
     },
     {
       "id": 62,
@@ -687,7 +748,8 @@
         "文化"
       ],
       "ex": "日本の文化に興味がある。",
-      "level": 1
+      "level": 1,
+      "ee": "I am interested in Japanese culture."
     },
     {
       "id": 63,
@@ -698,7 +760,8 @@
         "社会"
       ],
       "ex": "社会の問題について考えよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's think about problems in society."
     },
     {
       "id": 64,
@@ -710,7 +773,8 @@
         "調査"
       ],
       "ex": "環境について調査を行った。",
-      "level": 1
+      "level": 1,
+      "ee": "We conducted research on the environment."
     },
     {
       "id": 65,
@@ -721,7 +785,8 @@
         "エネルギー"
       ],
       "ex": "再生可能エネルギーが注目されている。",
-      "level": 1
+      "level": 1,
+      "ee": "Renewable energy is getting a lot of attention."
     },
     {
       "id": 66,
@@ -732,7 +797,8 @@
         "問題"
       ],
       "ex": "環境問題は深刻だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Environmental problems are serious."
     },
     {
       "id": 67,
@@ -743,7 +809,8 @@
         "目的"
       ],
       "ex": "旅行の目的は何ですか？",
-      "level": 1
+      "level": 1,
+      "ee": "What is the purpose of your trip?"
     },
     {
       "id": 68,
@@ -754,7 +821,8 @@
         "理由"
       ],
       "ex": "遅刻した理由を説明した。",
-      "level": 1
+      "level": 1,
+      "ee": "I explained the reason I was late."
     },
     {
       "id": 69,
@@ -766,7 +834,8 @@
         "話題"
       ],
       "ex": "好きな教科は英語です。",
-      "level": 1
+      "level": 1,
+      "ee": "My favorite subject is English."
     },
     {
       "id": 70,
@@ -777,7 +846,8 @@
         "サービス"
       ],
       "ex": "このホテルのサービスは素晴らしい。",
-      "level": 1
+      "level": 1,
+      "ee": "The service at this hotel is wonderful."
     },
     {
       "id": 71,
@@ -788,7 +858,8 @@
         "製品"
       ],
       "ex": "新製品を発売した。",
-      "level": 1
+      "level": 1,
+      "ee": "We launched a new product."
     },
     {
       "id": 72,
@@ -800,7 +871,8 @@
         "行事"
       ],
       "ex": "地域のイベントに参加した。",
-      "level": 1
+      "level": 1,
+      "ee": "I participated in a local event."
     },
     {
       "id": 73,
@@ -811,7 +883,8 @@
         "歴史"
       ],
       "ex": "日本の歴史を学んでいる。",
-      "level": 1
+      "level": 1,
+      "ee": "I am studying Japanese history."
     },
     {
       "id": 74,
@@ -822,7 +895,8 @@
         "世紀"
       ],
       "ex": "21世紀は情報の時代だ。",
-      "level": 1
+      "level": 1,
+      "ee": "The 21st century is the age of information."
     },
     {
       "id": 75,
@@ -833,7 +907,8 @@
         "努力"
       ],
       "ex": "努力すれば夢は叶う。",
-      "level": 1
+      "level": 1,
+      "ee": "If you make an effort, your dreams will come true."
     },
     {
       "id": 76,
@@ -844,7 +919,8 @@
         "挑戦"
       ],
       "ex": "新しいことに挑戦しよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's try new challenges."
     },
     {
       "id": 77,
@@ -855,7 +931,8 @@
         "選択"
       ],
       "ex": "自分で選択する力が大切だ。",
-      "level": 1
+      "level": 1,
+      "ee": "It is important to have the ability to make your own choices."
     },
     {
       "id": 78,
@@ -867,7 +944,8 @@
         "影響"
       ],
       "ex": "この薬はすぐに効果が出た。",
-      "level": 1
+      "level": 1,
+      "ee": "This medicine worked quickly."
     },
     {
       "id": 79,
@@ -878,7 +956,8 @@
         "習慣"
       ],
       "ex": "良い習慣を身につけよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's develop good habits."
     },
     {
       "id": 80,
@@ -890,7 +969,8 @@
         "関心"
       ],
       "ex": "音楽に強い関心がある。",
-      "level": 1
+      "level": 1,
+      "ee": "I have a strong interest in music."
     },
     {
       "id": 81,
@@ -902,7 +982,8 @@
         "課題"
       ],
       "ex": "環境問題は重要な課題だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Environmental issues are an important challenge."
     },
     {
       "id": 82,
@@ -914,7 +995,8 @@
         "素材"
       ],
       "ex": "環境に優しい材料を使う。",
-      "level": 1
+      "level": 1,
+      "ee": "We use eco-friendly materials."
     },
     {
       "id": 83,
@@ -925,7 +1007,8 @@
         "方法"
       ],
       "ex": "効果的な学習方法を見つけよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's find an effective study method."
     },
     {
       "id": 84,
@@ -936,7 +1019,8 @@
         "自然"
       ],
       "ex": "自然の中でリフレッシュした。",
-      "level": 1
+      "level": 1,
+      "ee": "I refreshed myself in nature."
     },
     {
       "id": 85,
@@ -947,7 +1031,8 @@
         "計画"
       ],
       "ex": "旅行の計画を立てた。",
-      "level": 1
+      "level": 1,
+      "ee": "I made a travel plan."
     },
     {
       "id": 86,
@@ -959,7 +1044,8 @@
         "レポート"
       ],
       "ex": "調査報告書を提出した。",
-      "level": 1
+      "level": 1,
+      "ee": "I submitted a research report."
     },
     {
       "id": 87,
@@ -970,7 +1056,8 @@
         "役割"
       ],
       "ex": "各自の役割を確認した。",
-      "level": 1
+      "level": 1,
+      "ee": "We confirmed each person's role."
     },
     {
       "id": 88,
@@ -982,7 +1069,8 @@
         "スキル"
       ],
       "ex": "コミュニケーションスキルを磨こう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's improve our communication skills."
     },
     {
       "id": 89,
@@ -994,7 +1082,8 @@
         "計画"
       ],
       "ex": "グループで取り組んでいる。",
-      "level": 1
+      "level": 1,
+      "ee": "We are working on it as a group."
     },
     {
       "id": 90,
@@ -1005,7 +1094,8 @@
         "科学"
       ],
       "ex": "科学は日々進歩している。",
-      "level": 1
+      "level": 1,
+      "ee": "Science is advancing day by day."
     },
     {
       "id": 91,
@@ -1017,7 +1107,8 @@
         "入手可能な"
       ],
       "ex": "この商品は今すぐ手に入ります。",
-      "level": 1
+      "level": 1,
+      "ee": "This product is available right now."
     },
     {
       "id": 92,
@@ -1028,7 +1119,8 @@
         "伝統的な"
       ],
       "ex": "日本の伝統的な文化が好きだ。",
-      "level": 1
+      "level": 1,
+      "ee": "I like traditional Japanese culture."
     },
     {
       "id": 93,
@@ -1039,7 +1131,8 @@
         "成功した"
       ],
       "ex": "彼は成功したビジネスマンだ。",
-      "level": 1
+      "level": 1,
+      "ee": "He is a successful businessman."
     },
     {
       "id": 94,
@@ -1050,7 +1143,8 @@
         "便利な"
       ],
       "ex": "駅近くの家は便利だ。",
-      "level": 1
+      "level": 1,
+      "ee": "A house near the station is convenient."
     },
     {
       "id": 95,
@@ -1061,7 +1155,8 @@
         "重要な"
       ],
       "ex": "健康が最も重要なことだ。",
-      "level": 1
+      "level": 1,
+      "ee": "Health is the most important thing."
     },
     {
       "id": 96,
@@ -1072,7 +1167,8 @@
         "危険な"
       ],
       "ex": "一人で夜道を歩くのは危険だ。",
-      "level": 1
+      "level": 1,
+      "ee": "It is dangerous to walk alone at night."
     },
     {
       "id": 97,
@@ -1084,7 +1180,8 @@
         "素晴らしい"
       ],
       "ex": "彼女の成績は優秀だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Her grades are excellent."
     },
     {
       "id": 98,
@@ -1095,7 +1192,8 @@
         "快適な"
       ],
       "ex": "このソファは座り心地がいい。",
-      "level": 1
+      "level": 1,
+      "ee": "This sofa is very comfortable to sit on."
     },
     {
       "id": 99,
@@ -1106,7 +1204,8 @@
         "自信のある"
       ],
       "ex": "自信を持って発表できた。",
-      "level": 1
+      "level": 1,
+      "ee": "I was able to give the presentation with confidence."
     },
     {
       "id": 100,
@@ -1117,7 +1216,8 @@
         "人気のある"
       ],
       "ex": "この曲はとても人気がある。",
-      "level": 1
+      "level": 1,
+      "ee": "This song is very popular."
     },
     {
       "id": 101,
@@ -1129,7 +1229,8 @@
         "よくある"
       ],
       "ex": "風邪は冬によくある病気だ。",
-      "level": 1
+      "level": 1,
+      "ee": "A cold is a common illness in winter."
     },
     {
       "id": 102,
@@ -1140,7 +1241,8 @@
         "類似した"
       ],
       "ex": "二人の意見は似ている。",
-      "level": 1
+      "level": 1,
+      "ee": "The two opinions are similar."
     },
     {
       "id": 103,
@@ -1151,7 +1253,8 @@
         "最近の"
       ],
       "ex": "最近のニュースをチェックしよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Let's check recent news."
     },
     {
       "id": 104,
@@ -1162,7 +1265,8 @@
         "様々な"
       ],
       "ex": "様々な意見を聞いた。",
-      "level": 1
+      "level": 1,
+      "ee": "I heard various opinions."
     },
     {
       "id": 105,
@@ -1173,7 +1277,8 @@
         "必要な"
       ],
       "ex": "英語の勉強は将来必要だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Studying English will be necessary in the future."
     },
     {
       "id": 106,
@@ -1184,7 +1289,8 @@
         "可能な"
       ],
       "ex": "何でも可能だと信じよう。",
-      "level": 1
+      "level": 1,
+      "ee": "Believe that anything is possible."
     },
     {
       "id": 107,
@@ -1195,7 +1301,8 @@
         "現代的な"
       ],
       "ex": "現代的なデザインが好きだ。",
-      "level": 1
+      "level": 1,
+      "ee": "I like modern design."
     },
     {
       "id": 108,
@@ -1206,7 +1313,8 @@
         "世界的な"
       ],
       "ex": "地球温暖化は世界的な問題だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Global warming is a worldwide problem."
     },
     {
       "id": 109,
@@ -1218,7 +1326,8 @@
         "まじめな"
       ],
       "ex": "これは深刻な問題だ。",
-      "level": 1
+      "level": 1,
+      "ee": "This is a serious problem."
     },
     {
       "id": 110,
@@ -1230,7 +1339,8 @@
         "自主的な"
       ],
       "ex": "自立した考えを持つ人。",
-      "level": 1
+      "level": 1,
+      "ee": "She is a person with independent thinking."
     },
     {
       "id": 111,
@@ -1241,7 +1351,8 @@
         "特に"
       ],
       "ex": "特にスポーツが好きです。",
-      "level": 1
+      "level": 1,
+      "ee": "I especially like sports."
     },
     {
       "id": 112,
@@ -1253,7 +1364,8 @@
         "実は"
       ],
       "ex": "実は英語が得意なんです。",
-      "level": 1
+      "level": 1,
+      "ee": "Actually, I'm good at English."
     },
     {
       "id": 113,
@@ -1265,7 +1377,8 @@
         "最終的に"
       ],
       "ex": "ついに夢が叶った。",
-      "level": 1
+      "level": 1,
+      "ee": "My dream finally came true."
     },
     {
       "id": 114,
@@ -1276,7 +1389,8 @@
         "最近"
       ],
       "ex": "最近、新しい本を読んだ。",
-      "level": 1
+      "level": 1,
+      "ee": "I recently read a new book."
     },
     {
       "id": 115,
@@ -1287,7 +1401,8 @@
         "たぶん"
       ],
       "ex": "たぶん彼は正しい。",
-      "level": 1
+      "level": 1,
+      "ee": "He is probably right."
     },
     {
       "id": 116,
@@ -1298,7 +1413,8 @@
         "しかしながら"
       ],
       "ex": "しかし、状況は変わった。",
-      "level": 1
+      "level": 1,
+      "ee": "However, the situation has changed."
     },
     {
       "id": 117,
@@ -1309,7 +1425,8 @@
         "それゆえ"
       ],
       "ex": "したがって、この方法が最善だ。",
-      "level": 1
+      "level": 1,
+      "ee": "Therefore, this method is the best."
     },
     {
       "id": 118,
@@ -1320,7 +1437,8 @@
         "残念ながら"
       ],
       "ex": "残念ながら、試験に落ちた。",
-      "level": 1
+      "level": 1,
+      "ee": "Unfortunately, I failed the exam."
     },
     {
       "id": 119,
@@ -1332,7 +1450,8 @@
         "正確に"
       ],
       "ex": "それが正確に私の言いたいことだ。",
-      "level": 1
+      "level": 1,
+      "ee": "That is exactly what I want to say."
     },
     {
       "id": 120,
@@ -1343,7 +1462,8 @@
         "確かに"
       ],
       "ex": "確かにそれは正しい。",
-      "level": 1
+      "level": 1,
+      "ee": "That is certainly correct."
     },
     {
       "id": 121,
@@ -1354,7 +1474,8 @@
         "〜を認める"
       ],
       "ex": "間違いを認めることが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is important to admit your mistakes."
     },
     {
       "id": 122,
@@ -1365,7 +1486,8 @@
         "〜を買う余裕がある"
       ],
       "ex": "この車を買う余裕がない。",
-      "level": 2
+      "level": 2,
+      "ee": "I can't afford to buy this car."
     },
     {
       "id": 123,
@@ -1376,7 +1498,8 @@
         "〜に感謝する"
       ],
       "ex": "助けてくれて感謝します。",
-      "level": 2
+      "level": 2,
+      "ee": "I appreciate your help."
     },
     {
       "id": 124,
@@ -1387,7 +1510,8 @@
         "〜を破壊する"
       ],
       "ex": "嵐が家を破壊した。",
-      "level": 2
+      "level": 2,
+      "ee": "The storm destroyed the house."
     },
     {
       "id": 125,
@@ -1398,7 +1522,8 @@
         "〜を防ぐ"
       ],
       "ex": "病気を予防するために手を洗おう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's wash our hands to prevent illness."
     },
     {
       "id": 126,
@@ -1409,7 +1534,8 @@
         "〜を出版する"
       ],
       "ex": "小説を出版した。",
-      "level": 2
+      "level": 2,
+      "ee": "I published a novel."
     },
     {
       "id": 127,
@@ -1420,7 +1546,8 @@
         "〜を認識する"
       ],
       "ex": "遠くから友達の顔を認識できた。",
-      "level": 2
+      "level": 2,
+      "ee": "I could recognize my friend's face from far away."
     },
     {
       "id": 128,
@@ -1431,7 +1558,8 @@
         "存在する"
       ],
       "ex": "宇宙人は存在するだろうか？",
-      "level": 2
+      "level": 2,
+      "ee": "I wonder if aliens exist."
     },
     {
       "id": 129,
@@ -1442,7 +1570,8 @@
         "競争する"
       ],
       "ex": "世界の選手たちと競い合う。",
-      "level": 2
+      "level": 2,
+      "ee": "We compete against athletes from around the world."
     },
     {
       "id": 130,
@@ -1453,7 +1582,8 @@
         "〜に依存する"
       ],
       "ex": "成功は努力次第だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Success depends on your effort."
     },
     {
       "id": 131,
@@ -1465,7 +1595,8 @@
         "管理する"
       ],
       "ex": "一人でなんとか対処した。",
-      "level": 2
+      "level": 2,
+      "ee": "I managed to handle it on my own."
     },
     {
       "id": 132,
@@ -1476,7 +1607,8 @@
         "〜を完成させる"
       ],
       "ex": "課題を仕上げた。",
-      "level": 2
+      "level": 2,
+      "ee": "I completed the task."
     },
     {
       "id": 133,
@@ -1487,7 +1619,8 @@
         "〜をつなぐ"
       ],
       "ex": "二つの場所をつないだ。",
-      "level": 2
+      "level": 2,
+      "ee": "We connected the two places."
     },
     {
       "id": 134,
@@ -1498,7 +1631,8 @@
         "〜を考慮する"
       ],
       "ex": "様々な意見を考慮した。",
-      "level": 2
+      "level": 2,
+      "ee": "I considered various opinions."
     },
     {
       "id": 135,
@@ -1509,7 +1643,8 @@
         "〜に連絡する"
       ],
       "ex": "後で連絡します。",
-      "level": 2
+      "level": 2,
+      "ee": "I will contact you later."
     },
     {
       "id": 136,
@@ -1520,7 +1655,8 @@
         "〜に貢献する"
       ],
       "ex": "社会に貢献したい。",
-      "level": 2
+      "level": 2,
+      "ee": "I want to contribute to society."
     },
     {
       "id": 137,
@@ -1531,7 +1667,8 @@
         "協力する"
       ],
       "ex": "チームで協力して仕事をした。",
-      "level": 2
+      "level": 2,
+      "ee": "We cooperated as a team to do the work."
     },
     {
       "id": 138,
@@ -1542,7 +1679,8 @@
         "〜を議論する"
       ],
       "ex": "環境問題について話し合った。",
-      "level": 2
+      "level": 2,
+      "ee": "We discussed environmental issues."
     },
     {
       "id": 139,
@@ -1553,7 +1691,8 @@
         "〜を励ます"
       ],
       "ex": "友達を応援した。",
-      "level": 2
+      "level": 2,
+      "ee": "I encouraged my friend."
     },
     {
       "id": 140,
@@ -1564,7 +1703,8 @@
         "〜を維持する"
       ],
       "ex": "健康を維持することが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is important to maintain your health."
     },
     {
       "id": 141,
@@ -1575,7 +1715,8 @@
         "〜を手に入れる"
       ],
       "ex": "必要な情報を入手した。",
-      "level": 2
+      "level": 2,
+      "ee": "I obtained the necessary information."
     },
     {
       "id": 142,
@@ -1586,7 +1727,8 @@
         "〜を操作する"
       ],
       "ex": "機械を上手に操作する。",
-      "level": 2
+      "level": 2,
+      "ee": "I operate the machine well."
     },
     {
       "id": 143,
@@ -1597,7 +1739,8 @@
         "参加する"
       ],
       "ex": "討論会に参加した。",
-      "level": 2
+      "level": 2,
+      "ee": "I participated in the debate."
     },
     {
       "id": 144,
@@ -1609,7 +1752,8 @@
         "演じる"
       ],
       "ex": "ステージで演奏した。",
-      "level": 2
+      "level": 2,
+      "ee": "I performed on stage."
     },
     {
       "id": 145,
@@ -1620,7 +1764,8 @@
         "リサイクルする"
       ],
       "ex": "ペットボトルをリサイクルする。",
-      "level": 2
+      "level": 2,
+      "ee": "I recycle plastic bottles."
     },
     {
       "id": 146,
@@ -1631,7 +1776,8 @@
         "断る"
       ],
       "ex": "誘いを断った。",
-      "level": 2
+      "level": 2,
+      "ee": "I refused the invitation."
     },
     {
       "id": 147,
@@ -1642,7 +1788,8 @@
         "〜を頼りにする"
       ],
       "ex": "家族を頼りにしている。",
-      "level": 2
+      "level": 2,
+      "ee": "I rely on my family."
     },
     {
       "id": 148,
@@ -1653,7 +1800,8 @@
         "〜を取り替える"
       ],
       "ex": "古いものを新しいものに替えた。",
-      "level": 2
+      "level": 2,
+      "ee": "I replaced the old one with a new one."
     },
     {
       "id": 149,
@@ -1664,7 +1812,8 @@
         "応答する"
       ],
       "ex": "すぐに返事した。",
-      "level": 2
+      "level": 2,
+      "ee": "I responded right away."
     },
     {
       "id": 150,
@@ -1675,7 +1824,8 @@
         "〜を選ぶ"
       ],
       "ex": "最良のものを選んだ。",
-      "level": 2
+      "level": 2,
+      "ee": "I selected the best one."
     },
     {
       "id": 151,
@@ -1686,7 +1836,8 @@
         "〜を共有する"
       ],
       "ex": "情報を共有しよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's share information."
     },
     {
       "id": 152,
@@ -1698,7 +1849,8 @@
         "努力する"
       ],
       "ex": "困難に立ち向かって奮闘した。",
-      "level": 2
+      "level": 2,
+      "ee": "I struggled to overcome the difficulty."
     },
     {
       "id": 153,
@@ -1710,7 +1862,8 @@
         "交換する"
       ],
       "ex": "外国と貿易する。",
-      "level": 2
+      "level": 2,
+      "ee": "We trade with foreign countries."
     },
     {
       "id": 154,
@@ -1721,7 +1874,8 @@
         "〜を翻訳する"
       ],
       "ex": "英語を日本語に翻訳した。",
-      "level": 2
+      "level": 2,
+      "ee": "I translated English into Japanese."
     },
     {
       "id": 155,
@@ -1732,7 +1886,8 @@
         "〜に警告する"
       ],
       "ex": "危険を知らせた。",
-      "level": 2
+      "level": 2,
+      "ee": "I warned them of the danger."
     },
     {
       "id": 156,
@@ -1743,7 +1898,8 @@
         "〜を借りる"
       ],
       "ex": "友達に本を借りた。",
-      "level": 2
+      "level": 2,
+      "ee": "I borrowed a book from my friend."
     },
     {
       "id": 157,
@@ -1754,7 +1910,8 @@
         "〜を取り消す"
       ],
       "ex": "予約をキャンセルした。",
-      "level": 2
+      "level": 2,
+      "ee": "I canceled the reservation."
     },
     {
       "id": 158,
@@ -1765,7 +1922,8 @@
         "〜に損害を与える"
       ],
       "ex": "台風が建物を破損させた。",
-      "level": 2
+      "level": 2,
+      "ee": "The typhoon damaged the building."
     },
     {
       "id": 159,
@@ -1777,7 +1935,8 @@
         "デザインする"
       ],
       "ex": "ウェブサイトをデザインした。",
-      "level": 2
+      "level": 2,
+      "ee": "I designed the website."
     },
     {
       "id": 160,
@@ -1788,7 +1947,8 @@
         "〜を得る"
       ],
       "ex": "多くの経験を得た。",
-      "level": 2
+      "level": 2,
+      "ee": "I gained a lot of experience."
     },
     {
       "id": 161,
@@ -1799,7 +1959,8 @@
         "卒業する"
       ],
       "ex": "来春、大学を卒業する。",
-      "level": 2
+      "level": 2,
+      "ee": "I will graduate from university next spring."
     },
     {
       "id": 162,
@@ -1810,7 +1971,8 @@
         "〜を招待する"
       ],
       "ex": "誕生日パーティーに招待した。",
-      "level": 2
+      "level": 2,
+      "ee": "I invited them to the birthday party."
     },
     {
       "id": 163,
@@ -1821,7 +1983,8 @@
         "〜を怪我させる"
       ],
       "ex": "試合で足を怪我した。",
-      "level": 2
+      "level": 2,
+      "ee": "I injured my leg during the game."
     },
     {
       "id": 164,
@@ -1832,7 +1995,8 @@
         "〜を無駄にする"
       ],
       "ex": "時間を無駄にしないようにしよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Don't waste your time."
     },
     {
       "id": 165,
@@ -1843,7 +2007,8 @@
         "〜を評価する"
       ],
       "ex": "自分の力を評価する。",
-      "level": 2
+      "level": 2,
+      "ee": "I evaluate my own abilities."
     },
     {
       "id": 166,
@@ -1854,7 +2019,8 @@
         "災害"
       ],
       "ex": "自然災害への備えが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is important to be prepared for natural disasters."
     },
     {
       "id": 167,
@@ -1865,7 +2031,8 @@
         "事故"
       ],
       "ex": "交通事故に巻き込まれた。",
-      "level": 2
+      "level": 2,
+      "ee": "I was involved in a traffic accident."
     },
     {
       "id": 168,
@@ -1877,7 +2044,8 @@
         "振る舞い"
       ],
       "ex": "礼儀正しい振る舞いが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Polite behavior is important."
     },
     {
       "id": 169,
@@ -1889,7 +2057,8 @@
         "聴衆"
       ],
       "ex": "観客が大きな拍手をした。",
-      "level": 2
+      "level": 2,
+      "ee": "The audience gave a big round of applause."
     },
     {
       "id": 170,
@@ -1901,7 +2070,8 @@
         "機器"
       ],
       "ex": "スポーツ用品が揃っている。",
-      "level": 2
+      "level": 2,
+      "ee": "We have sports equipment ready."
     },
     {
       "id": 171,
@@ -1912,7 +2082,8 @@
         "影響"
       ],
       "ex": "音楽は人の心に影響を与える。",
-      "level": 2
+      "level": 2,
+      "ee": "Music has an influence on people's hearts."
     },
     {
       "id": 172,
@@ -1923,7 +2094,8 @@
         "未来"
       ],
       "ex": "未来のために今から準備しよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's prepare now for the future."
     },
     {
       "id": 173,
@@ -1934,7 +2106,8 @@
         "間違い"
       ],
       "ex": "間違いから学ぶことが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is important to learn from mistakes."
     },
     {
       "id": 174,
@@ -1945,7 +2118,8 @@
         "能力"
       ],
       "ex": "自分の能力を信じよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Believe in your own ability."
     },
     {
       "id": 175,
@@ -1956,7 +2130,8 @@
         "距離"
       ],
       "ex": "学校まで歩いて15分の距離だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is a 15-minute walk to school."
     },
     {
       "id": 176,
@@ -1968,7 +2143,8 @@
         "指示"
       ],
       "ex": "道の方向を教えてもらった。",
-      "level": 2
+      "level": 2,
+      "ee": "They told me the direction."
     },
     {
       "id": 177,
@@ -1980,7 +2156,8 @@
         "恩恵"
       ],
       "ex": "運動は健康に多くの利点がある。",
-      "level": 2
+      "level": 2,
+      "ee": "Exercise has many benefits for your health."
     },
     {
       "id": 178,
@@ -1991,7 +2168,8 @@
         "市民"
       ],
       "ex": "良い市民として社会に貢献しよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's contribute to society as good citizens."
     },
     {
       "id": 179,
@@ -2003,7 +2181,8 @@
         "競技会"
       ],
       "ex": "英語スピーチコンテストに出た。",
-      "level": 2
+      "level": 2,
+      "ee": "I entered an English speech contest."
     },
     {
       "id": 180,
@@ -2015,7 +2194,8 @@
         "条件"
       ],
       "ex": "天気の状況を確認した。",
-      "level": 2
+      "level": 2,
+      "ee": "I checked the weather conditions."
     },
     {
       "id": 181,
@@ -2026,7 +2206,8 @@
         "会話"
       ],
       "ex": "英語で会話の練習をした。",
-      "level": 2
+      "level": 2,
+      "ee": "I practiced having a conversation in English."
     },
     {
       "id": 182,
@@ -2037,7 +2218,8 @@
         "危険"
       ],
       "ex": "危険を冒さないようにしよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Don't take unnecessary risks."
     },
     {
       "id": 183,
@@ -2049,7 +2231,8 @@
         "開発"
       ],
       "ex": "技術の発展が速い。",
-      "level": 2
+      "level": 2,
+      "ee": "Technology is developing rapidly."
     },
     {
       "id": 184,
@@ -2060,7 +2243,8 @@
         "困難"
       ],
       "ex": "困難を乗り越えた。",
-      "level": 2
+      "level": 2,
+      "ee": "I overcame the difficulty."
     },
     {
       "id": 185,
@@ -2071,7 +2255,8 @@
         "専門家"
       ],
       "ex": "医療の専門家に相談した。",
-      "level": 2
+      "level": 2,
+      "ee": "I consulted a medical expert."
     },
     {
       "id": 186,
@@ -2082,7 +2267,8 @@
         "ゴミ"
       ],
       "ex": "ゴミを分別して捨てよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's sort and throw away garbage."
     },
     {
       "id": 187,
@@ -2094,7 +2280,8 @@
         "工業"
       ],
       "ex": "観光産業が発展している。",
-      "level": 2
+      "level": 2,
+      "ee": "The tourism industry is developing."
     },
     {
       "id": 188,
@@ -2105,7 +2292,8 @@
         "言語"
       ],
       "ex": "外国語を学ぶのは楽しい。",
-      "level": 2
+      "level": 2,
+      "ee": "It is fun to learn a foreign language."
     },
     {
       "id": 189,
@@ -2117,7 +2305,8 @@
         "手段"
       ],
       "ex": "安全対策を講じた。",
-      "level": 2
+      "level": 2,
+      "ee": "We put safety measures in place."
     },
     {
       "id": 190,
@@ -2129,7 +2318,8 @@
         "国民"
       ],
       "ex": "多くの国々が協力している。",
-      "level": 2
+      "level": 2,
+      "ee": "Many nations are cooperating."
     },
     {
       "id": 191,
@@ -2141,7 +2331,8 @@
         "地域"
       ],
       "ex": "近所の人たちと仲良くしている。",
-      "level": 2
+      "level": 2,
+      "ee": "I get along well with the neighbors."
     },
     {
       "id": 192,
@@ -2152,7 +2343,8 @@
         "忍耐"
       ],
       "ex": "忍耐力が成功の鍵だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Patience is the key to success."
     },
     {
       "id": 193,
@@ -2163,7 +2355,8 @@
         "惑星"
       ],
       "ex": "地球は美しい惑星だ。",
-      "level": 2
+      "level": 2,
+      "ee": "The Earth is a beautiful planet."
     },
     {
       "id": 194,
@@ -2174,7 +2367,8 @@
         "汚染"
       ],
       "ex": "大気汚染が深刻な問題だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Air pollution is a serious problem."
     },
     {
       "id": 195,
@@ -2186,7 +2380,8 @@
         "進展"
       ],
       "ex": "着実に進歩している。",
-      "level": 2
+      "level": 2,
+      "ee": "I am making steady progress."
     },
     {
       "id": 196,
@@ -2198,7 +2393,8 @@
         "品質"
       ],
       "ex": "高品質の製品を作る。",
-      "level": 2
+      "level": 2,
+      "ee": "We make high-quality products."
     },
     {
       "id": 197,
@@ -2209,7 +2405,8 @@
         "安全"
       ],
       "ex": "交通安全に気をつけよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's be careful about traffic safety."
     },
     {
       "id": 198,
@@ -2220,7 +2417,8 @@
         "解決策"
       ],
       "ex": "問題の解決策を考えた。",
-      "level": 2
+      "level": 2,
+      "ee": "I thought of a solution to the problem."
     },
     {
       "id": 199,
@@ -2232,7 +2430,8 @@
         "情報源"
       ],
       "ex": "信頼できる情報源を使おう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's use reliable sources."
     },
     {
       "id": 200,
@@ -2243,7 +2442,8 @@
         "成功"
       ],
       "ex": "成功するために努力した。",
-      "level": 2
+      "level": 2,
+      "ee": "I worked hard to succeed."
     },
     {
       "id": 201,
@@ -2255,7 +2455,8 @@
         "制度"
       ],
       "ex": "新しいシステムを導入した。",
-      "level": 2
+      "level": 2,
+      "ee": "We introduced a new system."
     },
     {
       "id": 202,
@@ -2267,7 +2468,8 @@
         "トピック"
       ],
       "ex": "今日の話題は環境問題だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Today's topic is environmental issues."
     },
     {
       "id": 203,
@@ -2278,7 +2480,8 @@
         "伝統"
       ],
       "ex": "日本の伝統を守りたい。",
-      "level": 2
+      "level": 2,
+      "ee": "I want to preserve Japanese traditions."
     },
     {
       "id": 204,
@@ -2290,7 +2493,8 @@
         "輸送"
       ],
       "ex": "公共交通機関を使おう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's use public transportation."
     },
     {
       "id": 205,
@@ -2301,7 +2505,8 @@
         "ボランティア"
       ],
       "ex": "地域のボランティア活動に参加した。",
-      "level": 2
+      "level": 2,
+      "ee": "I participated in local volunteer activities."
     },
     {
       "id": 206,
@@ -2313,7 +2518,8 @@
         "無駄"
       ],
       "ex": "食べ物の無駄をなくそう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's stop wasting food."
     },
     {
       "id": 207,
@@ -2324,7 +2530,8 @@
         "福祉"
       ],
       "ex": "社会福祉の向上に努める。",
-      "level": 2
+      "level": 2,
+      "ee": "We work to improve social welfare."
     },
     {
       "id": 208,
@@ -2335,7 +2542,8 @@
         "観光"
       ],
       "ex": "観光業が地域経済を支えている。",
-      "level": 2
+      "level": 2,
+      "ee": "Tourism supports the local economy."
     },
     {
       "id": 209,
@@ -2347,7 +2555,8 @@
         "観光客"
       ],
       "ex": "外国からの観光客が増えた。",
-      "level": 2
+      "level": 2,
+      "ee": "The number of tourists from abroad has increased."
     },
     {
       "id": 210,
@@ -2358,7 +2567,8 @@
         "乗客"
       ],
       "ex": "満員電車の乗客が多い。",
-      "level": 2
+      "level": 2,
+      "ee": "There are many passengers on the crowded train."
     },
     {
       "id": 211,
@@ -2369,7 +2579,8 @@
         "予報"
       ],
       "ex": "天気予報を確認した。",
-      "level": 2
+      "level": 2,
+      "ee": "I checked the weather forecast."
     },
     {
       "id": 212,
@@ -2380,7 +2591,8 @@
         "割引"
       ],
       "ex": "セールで割引になっている。",
-      "level": 2
+      "level": 2,
+      "ee": "There is a discount at the sale."
     },
     {
       "id": 213,
@@ -2391,7 +2603,8 @@
         "発明"
       ],
       "ex": "電話の発明は生活を変えた。",
-      "level": 2
+      "level": 2,
+      "ee": "The invention of the telephone changed our lives."
     },
     {
       "id": 214,
@@ -2402,7 +2615,8 @@
         "犯罪"
       ],
       "ex": "犯罪を防ぐために努力している。",
-      "level": 2
+      "level": 2,
+      "ee": "We are making efforts to prevent crime."
     },
     {
       "id": 215,
@@ -2413,7 +2627,8 @@
         "勇気"
       ],
       "ex": "勇気を持って挑戦しよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's have the courage to try."
     },
     {
       "id": 216,
@@ -2424,7 +2639,8 @@
         "冒険"
       ],
       "ex": "新しい冒険に出かけよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's go on a new adventure."
     },
     {
       "id": 217,
@@ -2436,7 +2652,8 @@
         "契約"
       ],
       "ex": "両者が合意に達した。",
-      "level": 2
+      "level": 2,
+      "ee": "Both sides reached an agreement."
     },
     {
       "id": 218,
@@ -2448,7 +2665,8 @@
         "金額"
       ],
       "ex": "少量から始めてみよう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's start with a small amount."
     },
     {
       "id": 219,
@@ -2460,7 +2678,8 @@
         "物品"
       ],
       "ex": "英語の記事を読んだ。",
-      "level": 2
+      "level": 2,
+      "ee": "I read an English article."
     },
     {
       "id": 220,
@@ -2472,7 +2691,8 @@
         "儀式"
       ],
       "ex": "卒業式に参加した。",
-      "level": 2
+      "level": 2,
+      "ee": "I attended the graduation ceremony."
     },
     {
       "id": 221,
@@ -2483,7 +2703,8 @@
         "慈善活動"
       ],
       "ex": "慈善団体に寄付した。",
-      "level": 2
+      "level": 2,
+      "ee": "I donated to a charity."
     },
     {
       "id": 222,
@@ -2495,7 +2716,8 @@
         "慰め"
       ],
       "ex": "心地よい環境で過ごした。",
-      "level": 2
+      "level": 2,
+      "ee": "I spent time in a comfortable environment."
     },
     {
       "id": 223,
@@ -2506,7 +2728,8 @@
         "世代"
       ],
       "ex": "若い世代が社会を変える。",
-      "level": 2
+      "level": 2,
+      "ee": "The younger generation will change society."
     },
     {
       "id": 224,
@@ -2518,7 +2741,8 @@
         "イメージ"
       ],
       "ex": "良いイメージを与えることが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is important to give a good image."
     },
     {
       "id": 225,
@@ -2529,7 +2753,8 @@
         "資源"
       ],
       "ex": "天然資源を大切に使おう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's use natural resources carefully."
     },
     {
       "id": 226,
@@ -2540,7 +2765,8 @@
         "古代の"
       ],
       "ex": "古代ローマの歴史を学んだ。",
-      "level": 2
+      "level": 2,
+      "ee": "I studied the history of ancient Rome."
     },
     {
       "id": 227,
@@ -2551,7 +2777,8 @@
         "気づいている"
       ],
       "ex": "問題の重要性を認識している。",
-      "level": 2
+      "level": 2,
+      "ee": "I am aware of the importance of the problem."
     },
     {
       "id": 228,
@@ -2563,7 +2790,8 @@
         "中央の"
       ],
       "ex": "駅の近くにある中心的な場所。",
-      "level": 2
+      "level": 2,
+      "ee": "It is a central place near the station."
     },
     {
       "id": 229,
@@ -2574,7 +2802,8 @@
         "色彩豊かな"
       ],
       "ex": "色鮮やかな絵が並んでいる。",
-      "level": 2
+      "level": 2,
+      "ee": "Colorful paintings are displayed."
     },
     {
       "id": 230,
@@ -2585,7 +2814,8 @@
         "混雑した"
       ],
       "ex": "朝の電車はとても混んでいる。",
-      "level": 2
+      "level": 2,
+      "ee": "The morning train is very crowded."
     },
     {
       "id": 231,
@@ -2596,7 +2826,8 @@
         "失望した"
       ],
       "ex": "試合に負けてがっかりした。",
-      "level": 2
+      "level": 2,
+      "ee": "I was disappointed to lose the game."
     },
     {
       "id": 232,
@@ -2607,7 +2838,8 @@
         "ひどく疲れた"
       ],
       "ex": "一日中働いてへとへとだ。",
-      "level": 2
+      "level": 2,
+      "ee": "I'm exhausted after working all day."
     },
     {
       "id": 233,
@@ -2619,7 +2851,8 @@
         "公平な"
       ],
       "ex": "公平なルールが必要だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Fair rules are necessary."
     },
     {
       "id": 234,
@@ -2630,7 +2863,8 @@
         "巨大な"
       ],
       "ex": "巨大な建物に驚いた。",
-      "level": 2
+      "level": 2,
+      "ee": "I was amazed by the huge building."
     },
     {
       "id": 235,
@@ -2641,7 +2875,8 @@
         "ありそうな"
       ],
       "ex": "雨が降りそうだ。",
-      "level": 2
+      "level": 2,
+      "ee": "It looks like it will rain."
     },
     {
       "id": 236,
@@ -2653,7 +2888,8 @@
         "その土地の"
       ],
       "ex": "母国語で話すのが一番楽だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is most comfortable to speak in your native language."
     },
     {
       "id": 237,
@@ -2664,7 +2900,8 @@
         "緊張した"
       ],
       "ex": "発表の前はとても緊張した。",
-      "level": 2
+      "level": 2,
+      "ee": "I was very nervous before the presentation."
     },
     {
       "id": 238,
@@ -2676,7 +2913,8 @@
         "公的な"
       ],
       "ex": "公式サイトから情報を確認した。",
-      "level": 2
+      "level": 2,
+      "ee": "I checked the information on the official website."
     },
     {
       "id": 239,
@@ -2687,7 +2925,8 @@
         "身体的な"
       ],
       "ex": "体力づくりが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "It is important to build up your physical strength."
     },
     {
       "id": 240,
@@ -2698,7 +2937,8 @@
         "責任のある"
       ],
       "ex": "自分の行動に責任を持とう。",
-      "level": 2
+      "level": 2,
+      "ee": "Let's take responsibility for our own actions."
     },
     {
       "id": 241,
@@ -2709,7 +2949,8 @@
         "典型的な"
       ],
       "ex": "典型的な日本の朝食。",
-      "level": 2
+      "level": 2,
+      "ee": "A typical Japanese breakfast."
     },
     {
       "id": 242,
@@ -2721,7 +2962,8 @@
         "ユニークな"
       ],
       "ex": "独自のアイデアを持っている。",
-      "level": 2
+      "level": 2,
+      "ee": "I have a unique idea."
     },
     {
       "id": 243,
@@ -2732,7 +2974,8 @@
         "都市の"
       ],
       "ex": "都市生活のリズムが速い。",
-      "level": 2
+      "level": 2,
+      "ee": "The pace of urban life is fast."
     },
     {
       "id": 244,
@@ -2743,7 +2986,8 @@
         "価値のある"
       ],
       "ex": "貴重な経験ができた。",
-      "level": 2
+      "level": 2,
+      "ee": "I had a valuable experience."
     },
     {
       "id": 245,
@@ -2754,7 +2998,8 @@
         "全体の"
       ],
       "ex": "クラス全体で参加した。",
-      "level": 2
+      "level": 2,
+      "ee": "The whole class participated."
     },
     {
       "id": 246,
@@ -2765,7 +3010,8 @@
         "海外で"
       ],
       "ex": "来年、海外留学をしたい。",
-      "level": 2
+      "level": 2,
+      "ee": "I want to study abroad next year."
     },
     {
       "id": 247,
@@ -2777,7 +3023,8 @@
         "先に"
       ],
       "ex": "計画を前倒しにした。",
-      "level": 2
+      "level": 2,
+      "ee": "We moved the plan ahead of schedule."
     },
     {
       "id": 248,
@@ -2788,7 +3035,8 @@
         "一人で"
       ],
       "ex": "一人で旅行するのも楽しい。",
-      "level": 2
+      "level": 2,
+      "ee": "It is also fun to travel alone."
     },
     {
       "id": 249,
@@ -2799,7 +3047,8 @@
         "とにかく"
       ],
       "ex": "とにかく諦めないことが大切だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Anyway, it is important not to give up."
     },
     {
       "id": 250,
@@ -2810,7 +3059,8 @@
         "簡単に"
       ],
       "ex": "この問題は簡単に解けた。",
-      "level": 2
+      "level": 2,
+      "ee": "This problem is easy to solve."
     },
     {
       "id": 251,
@@ -2822,7 +3072,8 @@
         "さらに"
       ],
       "ex": "子どもでも解ける問題だ。",
-      "level": 2
+      "level": 2,
+      "ee": "Even a child can solve this problem."
     },
     {
       "id": 252,
@@ -2833,7 +3084,8 @@
         "遠くに"
       ],
       "ex": "遠くの景色が見える。",
-      "level": 2
+      "level": 2,
+      "ee": "I can see the scenery far away."
     },
     {
       "id": 253,
@@ -2844,7 +3096,8 @@
         "その代わりに"
       ],
       "ex": "バスの代わりに電車を使った。",
-      "level": 2
+      "level": 2,
+      "ee": "I took the train instead of the bus."
     },
     {
       "id": 254,
@@ -2855,7 +3108,8 @@
         "最近"
       ],
       "ex": "最近、読書をよくする。",
-      "level": 2
+      "level": 2,
+      "ee": "I have been reading a lot lately."
     },
     {
       "id": 255,
@@ -2866,7 +3120,8 @@
         "運よく"
       ],
       "ex": "運よく電車に間に合った。",
-      "level": 2
+      "level": 2,
+      "ee": "Luckily, I made it to the train on time."
     },
     {
       "id": 256,
@@ -2877,7 +3132,8 @@
         "近くに"
       ],
       "ex": "近くにコンビニがある。",
-      "level": 2
+      "level": 2,
+      "ee": "There is a convenience store nearby."
     },
     {
       "id": 257,
@@ -2888,7 +3144,8 @@
         "屋外で"
       ],
       "ex": "屋外で運動するのが好きだ。",
-      "level": 2
+      "level": 2,
+      "ee": "I like exercising outdoors."
     },
     {
       "id": 258,
@@ -2899,7 +3156,8 @@
         "すぐに"
       ],
       "ex": "緊急事態はすぐに対応すべきだ。",
-      "level": 2
+      "level": 2,
+      "ee": "Emergencies should be handled immediately."
     },
     {
       "id": 259,
@@ -2910,7 +3168,8 @@
         "ほとんど"
       ],
       "ex": "ほとんど終わりに近い。",
-      "level": 2
+      "level": 2,
+      "ee": "We are nearly at the end."
     },
     {
       "id": 260,
@@ -2921,7 +3180,8 @@
         "絶えず"
       ],
       "ex": "技術は絶えず進歩している。",
-      "level": 2
+      "level": 2,
+      "ee": "Technology is constantly advancing."
     },
     {
       "id": 261,
@@ -2933,7 +3193,8 @@
         "かみつく"
       ],
       "ex": "犬に噛まれた。",
-      "level": 3
+      "level": 3,
+      "ee": "I was bitten by a dog."
     },
     {
       "id": 262,
@@ -2944,7 +3205,8 @@
         "折りたたむ"
       ],
       "ex": "紙を折りたたんで封筒に入れた。",
-      "level": 3
+      "level": 3,
+      "ee": "I folded the paper and put it in an envelope."
     },
     {
       "id": 263,
@@ -2955,7 +3217,8 @@
         "〜を確認する"
       ],
       "ex": "予約を確認した。",
-      "level": 3
+      "level": 3,
+      "ee": "I confirmed the reservation."
     },
     {
       "id": 264,
@@ -2966,7 +3229,8 @@
         "〜を否定する"
       ],
       "ex": "疑惑を否定した。",
-      "level": 3
+      "level": 3,
+      "ee": "I denied the accusation."
     },
     {
       "id": 265,
@@ -2978,7 +3242,8 @@
         "もてなす"
       ],
       "ex": "友達を食事でもてなした。",
-      "level": 3
+      "level": 3,
+      "ee": "I treated my friend to a meal."
     },
     {
       "id": 266,
@@ -2989,7 +3254,8 @@
         "〜を盗む"
       ],
       "ex": "財布を盗まれた。",
-      "level": 3
+      "level": 3,
+      "ee": "My wallet was stolen."
     },
     {
       "id": 267,
@@ -3001,7 +3267,8 @@
         "隠す"
       ],
       "ex": "かくれんぼで隠れた。",
-      "level": 3
+      "level": 3,
+      "ee": "I hid during the game of hide-and-seek."
     },
     {
       "id": 268,
@@ -3013,7 +3280,8 @@
         "調和する"
       ],
       "ex": "服の色が合っている。",
-      "level": 3
+      "level": 3,
+      "ee": "The colors of the clothes match."
     },
     {
       "id": 269,
@@ -3025,7 +3293,8 @@
         "ペンキを塗る"
       ],
       "ex": "壁にペンキを塗った。",
-      "level": 3
+      "level": 3,
+      "ee": "I painted the wall."
     },
     {
       "id": 270,
@@ -3036,7 +3305,8 @@
         "〜のように見える"
       ],
       "ex": "彼は疲れているように見える。",
-      "level": 3
+      "level": 3,
+      "ee": "He seems to be tired."
     },
     {
       "id": 271,
@@ -3047,7 +3317,8 @@
         "〜に食事を与える"
       ],
       "ex": "猫にえさをやった。",
-      "level": 3
+      "level": 3,
+      "ee": "I fed the cat."
     },
     {
       "id": 272,
@@ -3059,7 +3330,8 @@
         "説明する"
       ],
       "ex": "状況を詳しく説明した。",
-      "level": 3
+      "level": 3,
+      "ee": "I described the situation in detail."
     },
     {
       "id": 273,
@@ -3070,7 +3342,8 @@
         "不思議に思う"
       ],
       "ex": "彼が来るかどうか気になった。",
-      "level": 3
+      "level": 3,
+      "ee": "I wondered if he would come."
     },
     {
       "id": 274,
@@ -3082,7 +3355,8 @@
         "固定する"
       ],
       "ex": "壊れた自転車を直した。",
-      "level": 3
+      "level": 3,
+      "ee": "I fixed the broken bicycle."
     },
     {
       "id": 275,
@@ -3093,7 +3367,8 @@
         "〜を投げる"
       ],
       "ex": "ボールを遠くに投げた。",
-      "level": 3
+      "level": 3,
+      "ee": "I threw the ball far."
     },
     {
       "id": 276,
@@ -3104,7 +3379,8 @@
         "〜を引く"
       ],
       "ex": "ドアを引いて開けた。",
-      "level": 3
+      "level": 3,
+      "ee": "I pulled the door to open it."
     },
     {
       "id": 277,
@@ -3115,7 +3391,8 @@
         "〜を覆う"
       ],
       "ex": "毛布で体を覆った。",
-      "level": 3
+      "level": 3,
+      "ee": "I covered my body with a blanket."
     },
     {
       "id": 278,
@@ -3126,7 +3403,8 @@
         "〜を押す"
       ],
       "ex": "ボタンを押した。",
-      "level": 3
+      "level": 3,
+      "ee": "I pushed the button."
     },
     {
       "id": 279,
@@ -3138,7 +3416,8 @@
         "仕える"
       ],
       "ex": "料理をテーブルに運んだ。",
-      "level": 3
+      "level": 3,
+      "ee": "I served the food at the table."
     },
     {
       "id": 280,
@@ -3150,7 +3429,8 @@
         "持つ"
       ],
       "ex": "学校でイベントを開催した。",
-      "level": 3
+      "level": 3,
+      "ee": "A school event was held."
     },
     {
       "id": 281,
@@ -3162,7 +3442,8 @@
         "ついていく"
       ],
       "ex": "先生の指示に従った。",
-      "level": 3
+      "level": 3,
+      "ee": "I followed the teacher's instructions."
     },
     {
       "id": 282,
@@ -3174,7 +3455,8 @@
         "加わる"
       ],
       "ex": "クラブに入部した。",
-      "level": 3
+      "level": 3,
+      "ee": "I joined the club."
     },
     {
       "id": 283,
@@ -3185,7 +3467,8 @@
         "〜を植える"
       ],
       "ex": "庭に花を植えた。",
-      "level": 3
+      "level": 3,
+      "ee": "I planted flowers in the garden."
     },
     {
       "id": 284,
@@ -3196,7 +3479,8 @@
         "くつろぐ"
       ],
       "ex": "休日はゆったりくつろいだ。",
-      "level": 3
+      "level": 3,
+      "ee": "I relaxed on my day off."
     },
     {
       "id": 285,
@@ -3208,7 +3492,8 @@
         "命じる"
       ],
       "ex": "レストランで食事を注文した。",
-      "level": 3
+      "level": 3,
+      "ee": "I ordered a meal at the restaurant."
     },
     {
       "id": 286,
@@ -3219,7 +3504,8 @@
         "〜を驚かせる"
       ],
       "ex": "誕生日にサプライズパーティーをした。",
-      "level": 3
+      "level": 3,
+      "ee": "We had a surprise party for his birthday."
     },
     {
       "id": 287,
@@ -3230,7 +3516,8 @@
         "結婚する"
       ],
       "ex": "来年結婚する予定だ。",
-      "level": 3
+      "level": 3,
+      "ee": "I plan to get married next year."
     },
     {
       "id": 288,
@@ -3241,7 +3528,8 @@
         "〜を採用する"
       ],
       "ex": "新しいルールを採用した。",
-      "level": 3
+      "level": 3,
+      "ee": "We adopted a new rule."
     },
     {
       "id": 289,
@@ -3252,7 +3540,8 @@
         "〜を雇う"
       ],
       "ex": "アルバイトを雇った。",
-      "level": 3
+      "level": 3,
+      "ee": "We hired a part-time worker."
     },
     {
       "id": 290,
@@ -3263,7 +3552,8 @@
         "〜を制限する"
       ],
       "ex": "利用時間を制限した。",
-      "level": 3
+      "level": 3,
+      "ee": "I limited the usage time."
     },
     {
       "id": 291,
@@ -3274,7 +3564,8 @@
         "〜を混ぜる"
       ],
       "ex": "材料を混ぜた。",
-      "level": 3
+      "level": 3,
+      "ee": "I mixed the ingredients."
     },
     {
       "id": 292,
@@ -3286,7 +3577,8 @@
         "整理する"
       ],
       "ex": "イベントを企画した。",
-      "level": 3
+      "level": 3,
+      "ee": "I organized the event."
     },
     {
       "id": 293,
@@ -3297,7 +3589,8 @@
         "〜を修理する"
       ],
       "ex": "壊れた機械を修理した。",
-      "level": 3
+      "level": 3,
+      "ee": "I repaired the broken machine."
     },
     {
       "id": 294,
@@ -3309,7 +3602,8 @@
         "戻る"
       ],
       "ex": "借りた本を図書館に返した。",
-      "level": 3
+      "level": 3,
+      "ee": "I returned the book to the library."
     },
     {
       "id": 295,
@@ -3321,7 +3615,8 @@
         "節約する"
       ],
       "ex": "環境を守るために節電しよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's save electricity to protect the environment."
     },
     {
       "id": 296,
@@ -3332,7 +3627,8 @@
         "勝つ"
       ],
       "ex": "試合に勝った。",
-      "level": 3
+      "level": 3,
+      "ee": "I won the game."
     },
     {
       "id": 297,
@@ -3343,7 +3639,8 @@
         "〜を受け入れる"
       ],
       "ex": "提案を受け入れた。",
-      "level": 3
+      "level": 3,
+      "ee": "I accepted the proposal."
     },
     {
       "id": 298,
@@ -3355,7 +3652,8 @@
         "申し込む"
       ],
       "ex": "大学に出願した。",
-      "level": 3
+      "level": 3,
+      "ee": "I applied to the university."
     },
     {
       "id": 299,
@@ -3366,7 +3664,8 @@
         "〜を避ける"
       ],
       "ex": "トラブルを避けよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's avoid trouble."
     },
     {
       "id": 300,
@@ -3378,7 +3677,8 @@
         "作り上げる"
       ],
       "ex": "新しい家を建てた。",
-      "level": 3
+      "level": 3,
+      "ee": "I built a new house."
     },
     {
       "id": 301,
@@ -3389,7 +3689,8 @@
         "パン屋"
       ],
       "ex": "近所のパン屋のパンがおいしい。",
-      "level": 3
+      "level": 3,
+      "ee": "The bread from the neighborhood bakery is delicious."
     },
     {
       "id": 302,
@@ -3401,7 +3702,8 @@
         "一節"
       ],
       "ex": "本の一節を読んだ。",
-      "level": 3
+      "level": 3,
+      "ee": "I read a passage from the book."
     },
     {
       "id": 303,
@@ -3413,7 +3715,8 @@
         "陸地"
       ],
       "ex": "広い土地に農場がある。",
-      "level": 3
+      "level": 3,
+      "ee": "There is a farm on a large piece of land."
     },
     {
       "id": 304,
@@ -3425,7 +3728,8 @@
         "特売"
       ],
       "ex": "デパートでセールが始まった。",
-      "level": 3
+      "level": 3,
+      "ee": "A sale started at the department store."
     },
     {
       "id": 305,
@@ -3437,7 +3741,8 @@
         "ツアー"
       ],
       "ex": "世界ツアーに参加した。",
-      "level": 3
+      "level": 3,
+      "ee": "I joined a world tour."
     },
     {
       "id": 306,
@@ -3449,7 +3754,8 @@
         "合図"
       ],
       "ex": "道路標識に従って進んだ。",
-      "level": 3
+      "level": 3,
+      "ee": "I followed the road sign."
     },
     {
       "id": 307,
@@ -3461,7 +3767,8 @@
         "成績"
       ],
       "ex": "試験の成績が上がった。",
-      "level": 3
+      "level": 3,
+      "ee": "My exam grades have gone up."
     },
     {
       "id": 308,
@@ -3472,7 +3779,8 @@
         "アパート"
       ],
       "ex": "駅近くのアパートに住んでいる。",
-      "level": 3
+      "level": 3,
+      "ee": "I live in an apartment near the station."
     },
     {
       "id": 309,
@@ -3483,7 +3791,8 @@
         "詩"
       ],
       "ex": "美しい詩を書いた。",
-      "level": 3
+      "level": 3,
+      "ee": "I wrote a beautiful poem."
     },
     {
       "id": 310,
@@ -3494,7 +3803,8 @@
         "贈り物"
       ],
       "ex": "誕生日に素敵な贈り物をもらった。",
-      "level": 3
+      "level": 3,
+      "ee": "I received a wonderful gift on my birthday."
     },
     {
       "id": 311,
@@ -3506,7 +3816,8 @@
         "森"
       ],
       "ex": "木材で家具を作った。",
-      "level": 3
+      "level": 3,
+      "ee": "I made furniture from wood."
     },
     {
       "id": 312,
@@ -3517,7 +3828,8 @@
         "教授"
       ],
       "ex": "大学の教授に相談した。",
-      "level": 3
+      "level": 3,
+      "ee": "I consulted with the university professor."
     },
     {
       "id": 313,
@@ -3528,7 +3840,8 @@
         "俳優"
       ],
       "ex": "好きな俳優の映画を見た。",
-      "level": 3
+      "level": 3,
+      "ee": "I watched a movie by my favorite actor."
     },
     {
       "id": 314,
@@ -3540,7 +3853,8 @@
         "紙幣"
       ],
       "ex": "電気代の請求書が届いた。",
-      "level": 3
+      "level": 3,
+      "ee": "I received the electricity bill."
     },
     {
       "id": 315,
@@ -3552,7 +3866,8 @@
         "演説"
       ],
       "ex": "住所を正確に書いた。",
-      "level": 3
+      "level": 3,
+      "ee": "I wrote my address clearly."
     },
     {
       "id": 316,
@@ -3564,7 +3879,8 @@
         "形"
       ],
       "ex": "申請書に記入した。",
-      "level": 3
+      "level": 3,
+      "ee": "I filled in the application form."
     },
     {
       "id": 317,
@@ -3576,7 +3892,8 @@
         "会長"
       ],
       "ex": "生徒会長に選ばれた。",
-      "level": 3
+      "level": 3,
+      "ee": "I was chosen as the student council president."
     },
     {
       "id": 318,
@@ -3587,7 +3904,8 @@
         "所有者"
       ],
       "ex": "店のオーナーに会った。",
-      "level": 3
+      "level": 3,
+      "ee": "I met the store owner."
     },
     {
       "id": 319,
@@ -3598,7 +3916,8 @@
         "市場"
       ],
       "ex": "地元の市場で野菜を買った。",
-      "level": 3
+      "level": 3,
+      "ee": "I bought vegetables at the local market."
     },
     {
       "id": 320,
@@ -3609,7 +3928,8 @@
         "島"
       ],
       "ex": "美しい島を訪れた。",
-      "level": 3
+      "level": 3,
+      "ee": "I visited a beautiful island."
     },
     {
       "id": 321,
@@ -3620,7 +3940,8 @@
         "食事"
       ],
       "ex": "バランスの良い食事をしよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's have a balanced meal."
     },
     {
       "id": 322,
@@ -3631,7 +3952,8 @@
         "群衆"
       ],
       "ex": "駅前に大勢の人が集まった。",
-      "level": 3
+      "level": 3,
+      "ee": "A large crowd gathered in front of the station."
     },
     {
       "id": 323,
@@ -3643,7 +3965,8 @@
         "フライト便"
       ],
       "ex": "東京行きのフライトに乗った。",
-      "level": 3
+      "level": 3,
+      "ee": "I took a flight to Tokyo."
     },
     {
       "id": 324,
@@ -3654,7 +3977,8 @@
         "ショッピングモール"
       ],
       "ex": "ショッピングモールで買い物した。",
-      "level": 3
+      "level": 3,
+      "ee": "I went shopping at the mall."
     },
     {
       "id": 325,
@@ -3665,7 +3989,8 @@
         "昆虫"
       ],
       "ex": "昆虫の観察が趣味だ。",
-      "level": 3
+      "level": 3,
+      "ee": "Observing insects is my hobby."
     },
     {
       "id": 326,
@@ -3676,7 +4001,8 @@
         "森林"
       ],
       "ex": "美しい森林を散歩した。",
-      "level": 3
+      "level": 3,
+      "ee": "I took a walk through a beautiful forest."
     },
     {
       "id": 327,
@@ -3688,7 +4014,8 @@
         "ボトル"
       ],
       "ex": "水のボトルを持参した。",
-      "level": 3
+      "level": 3,
+      "ee": "I brought a water bottle."
     },
     {
       "id": 328,
@@ -3699,7 +4026,8 @@
         "騒音"
       ],
       "ex": "工事の騒音がうるさい。",
-      "level": 3
+      "level": 3,
+      "ee": "The noise from construction is loud."
     },
     {
       "id": 329,
@@ -3711,7 +4039,8 @@
         "芝生"
       ],
       "ex": "芝生の上でランチをした。",
-      "level": 3
+      "level": 3,
+      "ee": "I had lunch on the grass."
     },
     {
       "id": 330,
@@ -3723,7 +4052,8 @@
         "風味"
       ],
       "ex": "チョコレート味のアイスが好き。",
-      "level": 3
+      "level": 3,
+      "ee": "I like chocolate-flavored ice cream."
     },
     {
       "id": 331,
@@ -3734,7 +4064,8 @@
         "衣類"
       ],
       "ex": "季節に合った服を着る。",
-      "level": 3
+      "level": 3,
+      "ee": "I wear clothes suitable for the season."
     },
     {
       "id": 332,
@@ -3746,7 +4077,8 @@
         "近所の人"
       ],
       "ex": "隣の人と仲良くしている。",
-      "level": 3
+      "level": 3,
+      "ee": "I get along well with my neighbor."
     },
     {
       "id": 333,
@@ -3758,7 +4090,8 @@
         "空間"
       ],
       "ex": "宇宙に夢を持っている。",
-      "level": 3
+      "level": 3,
+      "ee": "I have a dream about space."
     },
     {
       "id": 334,
@@ -3770,7 +4103,8 @@
         "ツール"
       ],
       "ex": "便利な道具を使って作業した。",
-      "level": 3
+      "level": 3,
+      "ee": "I worked using a convenient tool."
     },
     {
       "id": 335,
@@ -3781,7 +4115,8 @@
         "野菜"
       ],
       "ex": "毎日野菜を食べよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's eat vegetables every day."
     },
     {
       "id": 336,
@@ -3793,7 +4128,8 @@
         "警察官"
       ],
       "ex": "警察官が道を案内した。",
-      "level": 3
+      "level": 3,
+      "ee": "A police officer showed me the way."
     },
     {
       "id": 337,
@@ -3805,7 +4141,8 @@
         "学科"
       ],
       "ex": "科学部門で研究している。",
-      "level": 3
+      "level": 3,
+      "ee": "I am doing research in the science department."
     },
     {
       "id": 338,
@@ -3816,7 +4153,8 @@
         "デザート"
       ],
       "ex": "食後にケーキを食べた。",
-      "level": 3
+      "level": 3,
+      "ee": "I ate cake after dinner."
     },
     {
       "id": 339,
@@ -3827,7 +4165,8 @@
         "食料品"
       ],
       "ex": "スーパーで食料品を買った。",
-      "level": 3
+      "level": 3,
+      "ee": "I bought groceries at the supermarket."
     },
     {
       "id": 340,
@@ -3838,7 +4177,8 @@
         "トラック"
       ],
       "ex": "大きなトラックが道を走っている。",
-      "level": 3
+      "level": 3,
+      "ee": "A large truck is driving on the road."
     },
     {
       "id": 341,
@@ -3850,7 +4190,8 @@
         "考え"
       ],
       "ex": "良いアイデアを思いついた。",
-      "level": 3
+      "level": 3,
+      "ee": "I came up with a good idea."
     },
     {
       "id": 342,
@@ -3861,7 +4202,8 @@
         "事実"
       ],
       "ex": "事実をしっかり確認しよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's make sure to check the facts."
     },
     {
       "id": 343,
@@ -3873,7 +4215,8 @@
         "トラブル"
       ],
       "ex": "問題が起きた時は相談しよう。",
-      "level": 3
+      "level": 3,
+      "ee": "If a problem comes up, let's talk about it."
     },
     {
       "id": 344,
@@ -3885,7 +4228,8 @@
         "側面"
       ],
       "ex": "道の右側を歩こう。",
-      "level": 3
+      "level": 3,
+      "ee": "Walk on the right side of the road."
     },
     {
       "id": 345,
@@ -3896,7 +4240,8 @@
         "詳細"
       ],
       "ex": "詳細については後で説明します。",
-      "level": 3
+      "level": 3,
+      "ee": "I will explain the details later."
     },
     {
       "id": 346,
@@ -3908,7 +4253,8 @@
         "道具"
       ],
       "ex": "ピアノという楽器を弾く。",
-      "level": 3
+      "level": 3,
+      "ee": "I play a musical instrument called the piano."
     },
     {
       "id": 347,
@@ -3919,7 +4265,8 @@
         "車輪"
       ],
       "ex": "自転車の車輪が壊れた。",
-      "level": 3
+      "level": 3,
+      "ee": "The wheel of my bicycle broke."
     },
     {
       "id": 348,
@@ -3930,7 +4277,8 @@
         "同僚"
       ],
       "ex": "職場の同僚とランチをした。",
-      "level": 3
+      "level": 3,
+      "ee": "I had lunch with my co-worker."
     },
     {
       "id": 349,
@@ -3942,7 +4290,8 @@
         "型"
       ],
       "ex": "どんなタイプの音楽が好きですか？",
-      "level": 3
+      "level": 3,
+      "ee": "What type of music do you like?"
     },
     {
       "id": 350,
@@ -3954,7 +4303,8 @@
         "センター"
       ],
       "ex": "市の中心部にある施設。",
-      "level": 3
+      "level": 3,
+      "ee": "It is a facility in the center of the city."
     },
     {
       "id": 351,
@@ -3965,7 +4315,8 @@
         "退屈な"
       ],
       "ex": "退屈な授業を我慢した。",
-      "level": 3
+      "level": 3,
+      "ee": "I put up with the boring class."
     },
     {
       "id": 352,
@@ -3976,7 +4327,8 @@
         "具体的な"
       ],
       "ex": "具体的な例を挙げてください。",
-      "level": 3
+      "level": 3,
+      "ee": "Please give a concrete example."
     },
     {
       "id": 353,
@@ -3987,7 +4339,8 @@
         "創造的な"
       ],
       "ex": "創造的な解決策が必要だ。",
-      "level": 3
+      "level": 3,
+      "ee": "We need a creative solution."
     },
     {
       "id": 354,
@@ -3998,7 +4351,8 @@
         "好奇心旺盛な"
       ],
       "ex": "知らないことに興味を持とう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's be curious about things we don't know."
     },
     {
       "id": 355,
@@ -4009,7 +4363,8 @@
         "非常においしい"
       ],
       "ex": "手作りの料理はとてもおいしい。",
-      "level": 3
+      "level": 3,
+      "ee": "Homemade cooking is very delicious."
     },
     {
       "id": 356,
@@ -4021,7 +4376,8 @@
         "基本的な"
       ],
       "ex": "基本的な英語から始めよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's start with elementary English."
     },
     {
       "id": 357,
@@ -4032,7 +4388,8 @@
         "一般的な"
       ],
       "ex": "一般的な知識が必要だ。",
-      "level": 3
+      "level": 3,
+      "ee": "You need general knowledge."
     },
     {
       "id": 358,
@@ -4043,7 +4400,8 @@
         "個人の"
       ],
       "ex": "個人の意見を尊重しよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's respect individual opinions."
     },
     {
       "id": 359,
@@ -4054,7 +4412,8 @@
         "精神的な"
       ],
       "ex": "精神的な健康も大切だ。",
-      "level": 3
+      "level": 3,
+      "ee": "Mental health is also important."
     },
     {
       "id": 360,
@@ -4066,7 +4425,8 @@
         "斬新な"
       ],
       "ex": "斬新なアイデアに感心した。",
-      "level": 3
+      "level": 3,
+      "ee": "I was impressed by the novel idea."
     },
     {
       "id": 361,
@@ -4077,7 +4437,8 @@
         "特定の"
       ],
       "ex": "特定の科目が得意だ。",
-      "level": 3
+      "level": 3,
+      "ee": "I am good at a particular subject."
     },
     {
       "id": 362,
@@ -4089,7 +4450,8 @@
         "かなり"
       ],
       "ex": "かわいいデザインの服。",
-      "level": 3
+      "level": 3,
+      "ee": "The design of the clothes is cute."
     },
     {
       "id": 363,
@@ -4101,7 +4463,8 @@
         "プロの"
       ],
       "ex": "プロのスポーツ選手を目指す。",
-      "level": 3
+      "level": 3,
+      "ee": "I aim to be a professional athlete."
     },
     {
       "id": 364,
@@ -4113,7 +4476,8 @@
         "手頃な"
       ],
       "ex": "値段が手頃で助かった。",
-      "level": 3
+      "level": 3,
+      "ee": "The price was reasonable and helpful."
     },
     {
       "id": 365,
@@ -4124,7 +4488,8 @@
         "注目すべき"
       ],
       "ex": "注目すべき発見があった。",
-      "level": 3
+      "level": 3,
+      "ee": "There was a remarkable discovery."
     },
     {
       "id": 366,
@@ -4135,7 +4500,8 @@
         "科学的な"
       ],
       "ex": "科学的な根拠が必要だ。",
-      "level": 3
+      "level": 3,
+      "ee": "You need scientific evidence."
     },
     {
       "id": 367,
@@ -4146,7 +4512,8 @@
         "重大な"
       ],
       "ex": "重大な変化が起きた。",
-      "level": 3
+      "level": 3,
+      "ee": "A significant change occurred."
     },
     {
       "id": 368,
@@ -4158,7 +4525,8 @@
         "特定の"
       ],
       "ex": "具体的な計画を立てよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's make a specific plan."
     },
     {
       "id": 369,
@@ -4169,7 +4537,8 @@
         "技術的な"
       ],
       "ex": "技術的な問題が発生した。",
-      "level": 3
+      "level": 3,
+      "ee": "A technical problem occurred."
     },
     {
       "id": 370,
@@ -4181,7 +4550,8 @@
         "ふさわしい"
       ],
       "ex": "この仕事に向いている人材。",
-      "level": 3
+      "level": 3,
+      "ee": "She is a suitable person for this job."
     },
     {
       "id": 371,
@@ -4192,7 +4562,8 @@
         "平らな"
       ],
       "ex": "平らな土地に家を建てた。",
-      "level": 3
+      "level": 3,
+      "ee": "I built a house on flat land."
     },
     {
       "id": 372,
@@ -4203,7 +4574,8 @@
         "（幅が）広い"
       ],
       "ex": "道路が広い。",
-      "level": 3
+      "level": 3,
+      "ee": "The road is wide."
     },
     {
       "id": 373,
@@ -4215,7 +4587,8 @@
         "地方の"
       ],
       "ex": "地元の食材を使った料理。",
-      "level": 3
+      "level": 3,
+      "ee": "A dish made with local ingredients."
     },
     {
       "id": 374,
@@ -4226,7 +4599,8 @@
         "社会的な"
       ],
       "ex": "SNSは社会的なツールだ。",
-      "level": 3
+      "level": 3,
+      "ee": "Social media is a social tool."
     },
     {
       "id": 375,
@@ -4237,7 +4611,8 @@
         "自然な"
       ],
       "ex": "自然な食品を選ぼう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's choose natural foods."
     },
     {
       "id": 376,
@@ -4248,7 +4623,8 @@
         "完全に"
       ],
       "ex": "完全に理解できた。",
-      "level": 3
+      "level": 3,
+      "ee": "I completely understood."
     },
     {
       "id": 377,
@@ -4259,7 +4635,8 @@
         "直接に"
       ],
       "ex": "直接電話した。",
-      "level": 3
+      "level": 3,
+      "ee": "I called directly."
     },
     {
       "id": 378,
@@ -4270,7 +4647,8 @@
         "徐々に"
       ],
       "ex": "徐々に英語が上達している。",
-      "level": 3
+      "level": 3,
+      "ee": "My English is gradually improving."
     },
     {
       "id": 379,
@@ -4282,7 +4660,8 @@
         "ほとんど"
       ],
       "ex": "主に英語で話している。",
-      "level": 3
+      "level": 3,
+      "ee": "I mostly speak in English."
     },
     {
       "id": 380,
@@ -4293,7 +4672,8 @@
         "適切に"
       ],
       "ex": "正しい方法で行おう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's do it in the proper way."
     },
     {
       "id": 381,
@@ -4304,7 +4684,8 @@
         "定期的に"
       ],
       "ex": "定期的に運動しよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's exercise regularly."
     },
     {
       "id": 382,
@@ -4315,7 +4696,8 @@
         "わずかに"
       ],
       "ex": "少し遅刻した。",
-      "level": 3
+      "level": 3,
+      "ee": "I was slightly late."
     },
     {
       "id": 383,
@@ -4326,7 +4708,8 @@
         "突然"
       ],
       "ex": "突然雨が降り出した。",
-      "level": 3
+      "level": 3,
+      "ee": "It suddenly started raining."
     },
     {
       "id": 384,
@@ -4338,7 +4721,8 @@
         "もう"
       ],
       "ex": "まだ宿題が終わっていない。",
-      "level": 3
+      "level": 3,
+      "ee": "I haven't finished my homework yet."
     },
     {
       "id": 385,
@@ -4350,7 +4734,8 @@
         "一度"
       ],
       "ex": "かつてここに城があった。",
-      "level": 3
+      "level": 3,
+      "ee": "There was once a castle here."
     },
     {
       "id": 386,
@@ -4361,7 +4746,8 @@
         "注意深く"
       ],
       "ex": "慎重に計画を考えた。",
-      "level": 3
+      "level": 3,
+      "ee": "I carefully thought about the plan."
     },
     {
       "id": 387,
@@ -4373,7 +4759,8 @@
         "たいてい"
       ],
       "ex": "普通は電車で通学している。",
-      "level": 3
+      "level": 3,
+      "ee": "I usually commute by train."
     },
     {
       "id": 388,
@@ -4384,7 +4771,8 @@
         "すでに"
       ],
       "ex": "もう宿題は終わった。",
-      "level": 3
+      "level": 3,
+      "ee": "I have already finished my homework."
     },
     {
       "id": 389,
@@ -4396,7 +4784,8 @@
         "それでも"
       ],
       "ex": "まだ雨が降っている。",
-      "level": 3
+      "level": 3,
+      "ee": "It is still raining."
     },
     {
       "id": 390,
@@ -4407,7 +4796,8 @@
         "〜もまた"
       ],
       "ex": "英語だけでなく数学も好きだ。",
-      "level": 3
+      "level": 3,
+      "ee": "I like not only English but also math."
     },
     {
       "id": 391,
@@ -4418,7 +4808,8 @@
         "再び"
       ],
       "ex": "もう一度試してみよう。",
-      "level": 3
+      "level": 3,
+      "ee": "Let's try again."
     },
     {
       "id": 392,
@@ -4429,7 +4820,8 @@
         "しかしながら"
       ],
       "ex": "それでも諦めなかった。",
-      "level": 3
+      "level": 3,
+      "ee": "However, I didn't give up."
     },
     {
       "id": 393,
@@ -4441,7 +4833,8 @@
         "実に"
       ],
       "ex": "確かに彼の言う通りだ。",
-      "level": 3
+      "level": 3,
+      "ee": "Indeed, he is right."
     },
     {
       "id": 394,
@@ -4452,7 +4845,8 @@
         "さもなければ"
       ],
       "ex": "急ぎなさい、さもなければ遅刻するよ。",
-      "level": 3
+      "level": 3,
+      "ee": "Hurry up, otherwise you'll be late."
     },
     {
       "id": 395,
@@ -4464,7 +4858,8 @@
         "もしかしたら"
       ],
       "ex": "もしかしたら雨が降るかもしれない。",
-      "level": 3
+      "level": 3,
+      "ee": "Perhaps it will rain."
     },
     {
       "id": 396,
@@ -4476,7 +4871,8 @@
         "まったく"
       ],
       "ex": "かなり疲れた。",
-      "level": 3
+      "level": 3,
+      "ee": "I'm quite tired."
     },
     {
       "id": 397,
@@ -4488,7 +4884,8 @@
         "むしろ"
       ],
       "ex": "むしろ歩いた方が良い。",
-      "level": 3
+      "level": 3,
+      "ee": "I'd rather walk."
     },
     {
       "id": 398,
@@ -4500,7 +4897,8 @@
         "簡単に"
       ],
       "ex": "ただ練習するだけでいい。",
-      "level": 3
+      "level": 3,
+      "ee": "You just need to practice."
     },
     {
       "id": 399,
@@ -4511,7 +4909,8 @@
         "本当に"
       ],
       "ex": "本当にありがとうございます。",
-      "level": 3
+      "level": 3,
+      "ee": "Thank you truly."
     },
     {
       "id": 400,
@@ -4522,7 +4921,8 @@
         "広く"
       ],
       "ex": "この意見は広く知られている。",
-      "level": 3
+      "level": 3,
+      "ee": "This opinion is widely known."
     }
   ],
   "phrases": [
