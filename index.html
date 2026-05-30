@@ -438,6 +438,7 @@
       transition: all .2s;
     }
     .grade-card:active { transform: scale(.97); }
+    .grade-card.g2   { border-color: #0984e3; }
     .grade-card.pre2 { border-color: var(--primary); }
     .grade-card.g3   { border-color: #e17055; }
     .grade-card.g4   { border-color: var(--accent2); }
@@ -486,6 +487,13 @@
   <div class="grade-select-title">🌟 えいたんごマスター</div>
   <div class="grade-select-sub">べんきょうする<ruby>級<rt>きゅう</rt></ruby>をえらんでね！</div>
   <div class="grade-cards">
+    <div class="grade-card g2" onclick="selectGrade('2')">
+      <span class="grade-card-em">📕</span>
+      <div class="grade-card-info">
+        <div class="grade-card-name"><ruby>英検<rt>えいけん</rt></ruby>２<ruby>級<rt>きゅう</rt></ruby></div>
+        <div class="grade-card-desc"><ruby>高校生<rt>こうこうせい</rt></ruby>〜<ruby>大学生<rt>だいがくせい</rt></ruby>レベル・320語＋熟語100</div>
+      </div>
+    </div>
     <div class="grade-card pre2" onclick="selectGrade('pre2')">
       <span class="grade-card-em">📘</span>
       <div class="grade-card-info">
@@ -1124,7 +1132,7 @@ let currentGrade = null;
 // ────────────────────────────────────────────────────────────
 // GRADE SELECT
 // ────────────────────────────────────────────────────────────
-const GRADE_LABELS = { 'pre2': '英検準2級', '3': '英検3級', '4': '英検4級' };
+const GRADE_LABELS = { '2': '英検2級', 'pre2': '英検準2級', '3': '英検3級', '4': '英検4級' };
 
 function showGradeSelect() {
   document.getElementById('grade-select-overlay').classList.remove('hidden');
