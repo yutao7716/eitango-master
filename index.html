@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🌟 えいたんごマスター</title>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#6c5ce7">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="えいたんご">
   <style>
     :root {
       --primary: #6c5ce7;
@@ -1349,7 +1355,7 @@ function fcRender() {
   $('fc-kana').textContent = word.k || '';
   $('fc-pos').textContent  = word.p;
   // 英語例文（ee フィールド優先、なければ4級形式の英語 ex）
-  const enEx = word.ee || (currentGrade === '4' ? (word.ex || '') : '');
+  const enEx = word.ee || word.ex || '';  // ee 優先、なければ全級共通の ex を使用
   $('fc-en-ex').textContent = enEx;
   // ── 裏面 ──
   // 単語ペア
@@ -1363,7 +1369,7 @@ function fcRender() {
   // 例文ペア：英語例文
   $('fc-back-en-ex2').textContent = enEx;
   // 例文ペア：日本語例文（exj があれば優先、4級は英語 ex なので空）
-  const jaEx = word.exj || (currentGrade !== '4' ? (word.ex || '') : '');
+  const jaEx = word.exj || '';  // 全級共通の exj フィールドを使用
   $('fc-ex').innerHTML = addRuby(jaEx);
   // 例文行の表示制御（英・日ともに空の場合は非表示）
   const exRow = $('fc-ex-row');
@@ -3938,6 +3944,17 @@ window.addEventListener('load', ()=>{
   }
   // 保存なし → grade-select-overlay が表示されたままになる
 });
+</script>
+
+<script>
+  // Service Worker 登録（PWA オフライン対応）
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('[SW] 登録完了:', reg.scope))
+        .catch(err => console.warn('[SW] 登録失敗:', err));
+    });
+  }
 </script>
 </body>
 </html>
