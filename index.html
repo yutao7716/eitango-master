@@ -1403,8 +1403,11 @@ function fcRender() {
   $('fc-word').textContent = word.w;
   $('fc-kana').textContent = word.k || '';
   $('fc-pos').textContent  = word.p;
-  // 英語例文（ee フィールド優先、なければ4級形式の英語 ex）
-  const enEx = word.ee || word.ex || '';  // ee 優先、なければ全級共通の ex を使用
+  // 例文の英語・日本語を取得（2方式のフィールド命名に対応）
+  //  方式A（1級/2級/3級/準2級）: ee=英語, ex=日本語
+  //  方式B（4級/5級）          : ex=英語, exj=日本語
+  const enEx = word.ee || word.ex || '';
+  const jaEx = word.ee ? (word.exj || word.ex || '') : (word.exj || '');
   $('fc-en-ex').textContent = enEx;
   // ── 裏面 ──
   // 単語ペア
@@ -1417,8 +1420,7 @@ function fcRender() {
   }
   // 例文ペア：英語例文
   $('fc-back-en-ex2').textContent = enEx;
-  // 例文ペア：日本語例文（exj があれば優先、4級は英語 ex なので空）
-  const jaEx = word.exj || '';  // 全級共通の exj フィールドを使用
+  // 例文ペア：日本語例文（上で方式A/Bを判定済み）
   $('fc-ex').innerHTML = addRuby(jaEx);
   // 例文行の表示制御（英・日ともに空の場合は非表示）
   const exRow = $('fc-ex-row');
